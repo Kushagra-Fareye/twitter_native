@@ -18,7 +18,7 @@ export const getAllUsers = async () => {
 
 export const getAllBlueTickRequests = async () => {
   const {userId, token} = await getToken();
-  return Axios.get('/user/bluetick')
+  return Axios.get('/user/admin/bluetick')
     .then(res => {
       return res.data;
     })
@@ -27,27 +27,22 @@ export const getAllBlueTickRequests = async () => {
 
 export const blueTickResponse = async (data,status) => {
   const {userId} = data;
+  
+  console.log(`user/admin/bluetick/status/${userId}/${status}`);
   return Axios.put(
-    `bluetick/status/${userId}/${status}`,
-    {data},
-    {
-      auth: {
-        username: 'foo',
-        password: 'bar',
-      },
-    },
+    `user/admin/bluetick/status/${userId}/${status}`,   
   ).then(res => {
-    console.log(res);
+    console.log(res.data);
     return res.data;
-  });
+  }).catch(e =>console.log("error",e));
 };
 
 
 export const deleteUser = async data => {
   const {userId, token} = await getToken();
-  // return Axios.delete(`/user/${userId}`,
-  // {data},
-  // ).then(res => {
-  //   return res.data;
-  // })
+  return Axios.delete(`/user/${userId}`,
+  ).then(res => {
+    console.log(res.data);
+    return res.data;
+  }).catch( err =>console.log('Delete user api error',err));
 };

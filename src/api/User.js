@@ -60,9 +60,19 @@ export const logout = async () => {
 export const followUser = async followerId => {
   let {userId, token} = await getToken();
 
-  await Axios.put(`/follow/${userId}/${followerId}`)
+  await Axios.put(`/user/${userId}/following`)
     .then(res => {
       return res.data;
     })
     .catch(e => console.log(e));
+};
+
+export const ApplyBluetick = async data =>{
+  let {userId, token} = await getToken();
+
+  await Axios.put(`/user/bluetick/${userId}`).then(res =>{
+    console.log('resuuuuuuuuuuult =',res.status);
+    return res.data;
+  })
+  .catch(e=> console.log("Apply blue tick erroro" , e));
 };

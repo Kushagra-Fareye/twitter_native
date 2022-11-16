@@ -11,6 +11,8 @@ import {imageProfile} from '../assets/index';
 import {deleteUser} from '../api/AdminApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AsyncStorageConstants} from '../constants/AsyncStorageConstants';
+import { color } from 'react-native-reanimated';
+import { black } from 'react-native-paper/lib/typescript/styles/colors';
 
 export default function AdminUserCard(props) {
   const {data} = props;
@@ -53,7 +55,7 @@ export default function AdminUserCard(props) {
           <Text style={styles.handle}>@{data.userName}</Text>
         </View>
         <View>
-          <Text style={styles.dob}>dob: {data.dob}</Text>
+          <Text style={styles.dob}>DOB: {data?.dob?.substring(0, 10)}</Text>
         </View>
         <View>
           <Text style={styles.followers}>
@@ -72,10 +74,10 @@ export default function AdminUserCard(props) {
         </View>
       ) : data.isFollowing ? (
         <TouchableOpacity onPress={handleFollowClick}>
-          <Text>Follow</Text>
+          <Text style= {styles.followingList}>Follow</Text>
         </TouchableOpacity>
       ) : (
-        <Text>Following</Text>
+        <Text style= {styles.followingList}>Following</Text>
       )}
     </View>
   );
@@ -116,22 +118,22 @@ const styles = StyleSheet.create({
   },
 
   handle: {
-    alignSelf: 'center',
+    // alignSelf: 'center',
   },
   dob: {
     color: 'black',
     paddingLeft: 10,
-    paddingRight: 5,
+    // paddingRight: 5,
   },
   followers: {
     color: 'black',
     paddingLeft: 10,
-    paddingRight: 5,
+    // paddingRight: 5,
   },
   following: {
     color: 'black',
     paddingLeft: 10,
-    paddingRight: 5,
+    // paddingRight: 5,
   },
 
   button: {
@@ -144,4 +146,15 @@ const styles = StyleSheet.create({
     marginTop: 50,
     marginLeft: -40,
   },
+  followingList:{
+    padding: 10,
+    color: 'black',
+    fontSize: 15,
+    flex: 1,
+    marginTop: 45,
+    position:'absolute',
+    right:10
+    // alignItems: 'flex-end'
+    // alignContent: 'flex-end',
+  }
 });

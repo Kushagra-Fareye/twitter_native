@@ -3,11 +3,13 @@ import React from 'react';
 import {blueTickResponse} from '../api/AdminApi';
 
 export default function AdminBlueTickRequestCard(props) {
+  
   const {data} = props;
   async function handleAcceptButtonClick() {
     await blueTickResponse(data,true);
   }
   async function handleDeclineButtonClick() {
+    console.log(data,"fghjklkjhgfghjk");
     await blueTickResponse(data,false);
   }
   return (
@@ -26,7 +28,7 @@ export default function AdminBlueTickRequestCard(props) {
         </Text>
         <Text
           onPress={() => {
-            handleDeclineButtonClick;
+            handleDeclineButtonClick();
           }}
           style={{color: 'red', fontWeight: 'bold'}}>
           Decline
