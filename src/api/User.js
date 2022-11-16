@@ -52,7 +52,6 @@ export const logout = async () => {
     .then(res => {
       return res.data;
     })
-    .catch(e => console.log(e));
   await AsyncStorage.setItem(AsyncStorageConstants.USER_DETAILS, '');
   await AsyncStorage.setItem(AsyncStorageConstants.USER_ID, '');
 };
@@ -62,6 +61,7 @@ export const followUser = async followerId => {
 
   await Axios.put(`/user/${userId}/following`)
     .then(res => {
+      console.log('i am here')
       return res.data;
     })
     .catch(e => console.log(e));
