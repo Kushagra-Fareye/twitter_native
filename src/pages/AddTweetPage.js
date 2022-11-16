@@ -20,6 +20,8 @@ import * as ImagePicker from 'react-native-image-picker';
 import {uploadImageToAWS} from '../api/AWSImageApi';
 import {postTweet} from '../api/Tweet';
 import storage from '@react-native-firebase/storage';
+import {firebase} from '../components/config'
+import {getDownloadURL} from 'firebase/storage'
 
 let profilepic = 'set';
 let isVerified = 'set';
@@ -100,9 +102,9 @@ const AddTweetPage = ({navigation}) => {
       } else {
         const source = {uri: response.uri};
         setImageData({
-          uri: res.assets[0].uri,
-          type: res.assets[0].type,
-          name: res.assets[0].fileName,
+          uri: response.assets[0].uri,
+          type: response.assets[0].type,
+          name: response.assets[0].fileName,
         });
       }
     });
@@ -110,11 +112,33 @@ const AddTweetPage = ({navigation}) => {
 
   async function handleAddTweetClick() {
     // const imageUrl = await uploadImageToAWS(imageData);
-    const reference = storage().ref(imageData.name);
-    await reference.putFile(imageData.uri);
+    // const reference = storage().ref(imageData.name);
+    // await reference.putFile(imageData.uri);
 
-    const res = await postTweet({tweetText, image: imageUrl});
-    navigation.goBack();
+    let imageFirebase = await fetch(imageData.uri)
+    console.log(imageData.uri)
+    let blob = await imageFirebase.blob();
+    let fileName = imageData.uri.substring(imageData.uri.lastIndexOf('/'));
+    var ref = firebase.storage().ref().child(fileName).put(blob).then(data => {
+      data.ref.getDownloadURL().then(url => {
+        console.log(url);
+       postTweet({tweetText, image: url});
+      })
+    });
+      
+      // ref.on("state_changed", () => {
+      //   getDownloadURL(ref.snapshot.ref).then((downlodUrl) => {console.log(downlodUrl)});
+      //   // firebase.storage().ref().child(fileName).getDownloadURL().then((url) => console.log(url));
+      // });
+
+    // try{
+    //   await ref;
+    // } catch (e) {
+    //   console.log(e)
+    // }
+
+    
+    // navigation.goBack();
   }
   return (
     <KeyboardAvoidingView style={styles.container}>
