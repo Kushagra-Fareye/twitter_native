@@ -25,10 +25,10 @@ export const getAllBlueTickRequests = async () => {
     .catch(e => console.log(e, 'there is error in this request'));
 };
 
-export const acceptBlueTickRequests = async data => {
+export const blueTickResponse = async (data,status) => {
   const {userId} = data;
   return Axios.put(
-    `bluetick/status/${userId}`,
+    `bluetick/status/${userId}/${status}`,
     {data},
     {
       auth: {
@@ -42,11 +42,6 @@ export const acceptBlueTickRequests = async data => {
   });
 };
 
-export const rejectBlueTickRequests = async data => {
-  const {userId, token} = await getToken();
-
-  return new Promise(resolve => setTimeout(resolve, 5000, false));
-};
 
 export const deleteUser = async data => {
   const {userId, token} = await getToken();

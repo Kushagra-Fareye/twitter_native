@@ -1,14 +1,14 @@
 import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
-import {acceptBlueTickRequests, rejectBlueTickRequests} from '../api/AdminApi';
+import {blueTickResponse} from '../api/AdminApi';
 
 export default function AdminBlueTickRequestCard(props) {
   const {data} = props;
   async function handleAcceptButtonClick() {
-    await acceptBlueTickRequests(data);
+    await blueTickResponse(data,true);
   }
   async function handleDeclineButtonClick() {
-    rejectBlueTickRequests();
+    await blueTickResponse(data,false);
   }
   return (
     <View style={styles.mainContainer}>
