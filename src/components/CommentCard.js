@@ -10,21 +10,18 @@ import {
 import React, {useState} from 'react';
 import {imageProfile} from '../assets/index';
 
-export default function CommentCard(tweet, key) {
+export default function CommentCard({tweet}) {
   return (
     <View style={styles.commentContainer}>
       <View style={styles.tweetContainer}>
         <Image style={styles.profileImage} source={imageProfile}></Image>
-        {/* <Text>jandcjhaidu</Text> */}
         <View style={styles.details}>
           <View style={styles.tweetHeader}>
-            <Text style={styles.username}>{tweet.tweet.user.name}</Text>
-            <Text style={styles.username}>@{tweet.tweet.user.userName}</Text>
-
-            {/* <Text style={styles.handle}>{tweet.userName}</Text> */}
+            <Text style={styles.username}>{tweet.user.name}</Text>
+            <Text style={styles.username}>@{tweet.user.userName}</Text>
           </View>
           <View>
-            <Text style={styles.comment}>{tweet.tweet.commentText}</Text>
+            <Text style={styles.comment}>{tweet.commentText}</Text>
           </View>
         </View>
       </View>

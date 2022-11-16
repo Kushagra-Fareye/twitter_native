@@ -7,6 +7,7 @@ import {
   imageHome,
   imageMessages,
   imageNotification,
+  SearchIcon,
 } from '../assets';
 import {StackNavigator} from './StackNavigator';
 
@@ -49,7 +50,7 @@ const BottomTabNavigator = () => {
         options={{
           tabBarLabel: 'Search',
           tabBarIcon: ({}) => (
-            <Image source={imageBookmark} style={styles.bookmarksIcon} />
+            <Image source={SearchIcon} style={styles.bookmarksIcon} />
           ),
         }}
       />

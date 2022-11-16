@@ -111,6 +111,13 @@ const Login = ({navigation}) => {
                   Login
                 </Text>
               </TouchableOpacity>
+              <TouchableOpacity style={styles.forgotButton}>
+                <Text
+                  style={{fontSize: 12, color: 'white'}}
+                  onPress={() => navigation.navigate('Forgot Password Page')}>
+                  Forgot Password..?
+                </Text>
+              </TouchableOpacity>
               <Text style={styles.innerText}>Don't have an account?</Text>
               <TouchableOpacity style={styles.button2}>
                 <Text
@@ -131,7 +138,9 @@ const styles = StyleSheet.create({
   container: {
     //   flex: 1
   },
-
+  forgotButton: {
+    alignSelf: 'center',
+  },
   adminButton: {
     marginTop: 20,
     flexDirection: 'row',

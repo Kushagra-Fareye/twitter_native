@@ -17,6 +17,7 @@ import UserListPage from './UserListPage';
 import CommentPage from './CommentPage';
 import Logout from './Logout';
 import SearchPage from './SearchPage';
+import ForgotPasswordPage from './ForgotPasswordPage';
 export {
   Home,
   BookMarkPage,
@@ -37,4 +38,5 @@ export {
   CommentPage,
   Logout,
   SearchPage,
+  ForgotPasswordPage,
 };

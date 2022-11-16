@@ -21,7 +21,6 @@ import {
 } from '../assets/index';
 
 function TweetCard(props) {
-  console.log(props);
   const [tweetData, setTweetData] = useState(props.tweet);
   const [isBookmarked, toggleBookmark] = useState(false);
   const [isLiked, toggleLiked] = useState(false);
@@ -149,7 +148,9 @@ function TweetCard(props) {
               });
             }}>
             <Text style={styles.username}>{tweetData.createdUser?.name}</Text>
-            <Text style={styles.handle}>{tweetData.createdUser?.userName}</Text>
+            <Text style={styles.handle}>
+              @{tweetData.createdUser?.userName}
+            </Text>
           </TouchableOpacity>
           <Image
             style={styles.verifiedImage}
@@ -162,7 +163,9 @@ function TweetCard(props) {
           <View>
             <Text style={styles.tweetMessage}>{tweetData.text}</Text>
           </View>
-          {tweetData.image &&<TweetImageRendering noOfPics={1} images={tweetData.image} />}
+          {tweetData.image && (
+            <TweetImageRendering noOfPics={1} images={tweetData.image} />
+          )}
         </View>
         <View style={styles.tweetFooter}>
           <TouchableOpacity
