@@ -8,6 +8,7 @@ import {
   Dimensions,
   PermissionsAndroid,
   KeyboardAvoidingView,
+  Alert,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {
@@ -20,8 +21,10 @@ import * as ImagePicker from 'react-native-image-picker';
 import {uploadImageToAWS} from '../api/AWSImageApi';
 import {postTweet} from '../api/Tweet';
 import storage from '@react-native-firebase/storage';
-import {firebase} from '../components/config'
-import {getDownloadURL} from 'firebase/storage'
+import {firebase} from '../components/config';
+import {getDownloadURL} from 'firebase/storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {AsyncStorageConstants} from '../constants/AsyncStorageConstants';
 
 let profilepic = 'set';
 let isVerified = 'set';
@@ -114,31 +117,29 @@ const AddTweetPage = ({navigation}) => {
     // const imageUrl = await uploadImageToAWS(imageData);
     // const reference = storage().ref(imageData.name);
     // await reference.putFile(imageData.uri);
+    const userId = await AsyncStorage.getItem(AsyncStorageConstants.USER_ID);
 
-    let imageFirebase = await fetch(imageData.uri)
-    console.log(imageData.uri)
+    let imageFirebase = await fetch(imageData.uri);
+    console.log(imageData.uri);
     let blob = await imageFirebase.blob();
     let fileName = imageData.uri.substring(imageData.uri.lastIndexOf('/'));
-    var ref = firebase.storage().ref().child(fileName).put(blob).then(data => {
-      data.ref.getDownloadURL().then(url => {
-        console.log(url);
-       postTweet({tweetText, image: url});
-      })
-    });
-      
-      // ref.on("state_changed", () => {
-      //   getDownloadURL(ref.snapshot.ref).then((downlodUrl) => {console.log(downlodUrl)});
-      //   // firebase.storage().ref().child(fileName).getDownloadURL().then((url) => console.log(url));
-      // });
+    var ref = firebase
+      .storage()
+      .ref()
+      .child(fileName)
+      .put(blob)
+      .then(data => {
+        data.ref.getDownloadURL().then(async url => {
+          const res = await postTweet({
+            text: tweetText,
+            image: url,
+            createdUserId: userId,
+          });
+          console.log(res, 'new tweetdata');
+        });
+      });
 
-    // try{
-    //   await ref;
-    // } catch (e) {
-    //   console.log(e)
-    // }
-
-    
-    // navigation.goBack();
+    navigation.navigate('Feed Page', {screen: 'Home'});
   }
   return (
     <KeyboardAvoidingView style={styles.container}>

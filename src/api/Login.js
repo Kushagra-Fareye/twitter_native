@@ -1,8 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {AsyncStorageConstants} from '../constants/AsyncStorageConstants';
 import Axios from './Axios';
+import {AsyncStorageConstants} from '../constants/AsyncStorageConstants';
 
 export const login = async data => {
+  console.log(data.name, data.password);
   const xy = await Axios.post(
     `/login?username=${data.name}&password=${data.password}`,
     {
@@ -13,6 +14,7 @@ export const login = async data => {
       return true;
     })
     .catch(e => {
+      console.log(e);
       return false;
     });
   if (!xy) return xy;
@@ -55,5 +57,7 @@ export const signUp = async user => {
     .then(res => {
       return res.data;
     })
-    .catch(error => console.log(error.response.request._response));
+    .catch(error => {
+      return error.response.status;
+    });
 };

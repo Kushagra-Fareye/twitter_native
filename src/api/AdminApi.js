@@ -55,6 +55,4 @@ export const deleteUser = async data => {
   // ).then(res => {
   //   return res.data;
   // })
-
-  // return new Promise(resolve => setTimeout(resolve, 5000, false));
 };

@@ -27,7 +27,7 @@ const AdminLoginPage = ({navigation}) => {
   const [password, setPassword] = useState('');
 
   async function handleAdminLogin() {
-    const isSuccessful = await login(name, password);
+    const isSuccessful = await login({name, password});
     if (isSuccessful) {
       navigation.navigate('Admin Pages');
     }
@@ -75,6 +75,7 @@ const AdminLoginPage = ({navigation}) => {
                 placeholder="Type your password..."
                 style={styles.input}
                 value={password}
+                secureTextEntry={true}
                 onChangeText={password => {
                   setPassword(password);
                 }}></TextInput>

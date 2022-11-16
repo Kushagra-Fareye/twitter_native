@@ -1,15 +1,14 @@
 import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
-import React, { useState } from 'react';
-import { ProfilePicture } from '../assets';
-import { FlatList } from 'react-native-gesture-handler';
+import React, {useState} from 'react';
+import {ProfilePicture} from '../assets';
+import {FlatList} from 'react-native-gesture-handler';
 import Axios from '../api/Axios';
 import SearchBar from '../components/SearchBar';
 
-
 export default function SearchPage() {
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState('');
   const [articles, setArticles] = useState([]);
-  console.log(searchText)
+  console.log(searchText);
   // const searchArticles = (keyword) =>{
   //   Axios.get(`/user/tweets/search/${keyword}`,{
   //     params:{
@@ -25,12 +24,12 @@ export default function SearchPage() {
   //   .then(function(){
 
   //   });
-    
+
   // }
   return (
     <View>
-        <SearchBar />
-        {/* <TouchableOpacity
+      <SearchBar />
+      {/* <TouchableOpacity
             style={styles.headerIconContainer}
             // onPress={() => navigation.openDrawer()}
             >
@@ -43,15 +42,15 @@ export default function SearchPage() {
             // onSubmit={searchArticles}
             // value={searchArticles}
 
-            /> */} 
-          </View>
-      
+            /> */}
+    </View>
+
     // </View>
   );
 }
 
 const styles = StyleSheet.create({
-    headerIconContainer: {margin: 5},
-    headerIcon: {height: 25, width: 25, resizeMode: 'contain', borderRadius: 50},
-    searchbar: {flex: 1, backgroundColor: "#fff"}
+  headerIconContainer: {margin: 5},
+  headerIcon: {height: 25, width: 25, resizeMode: 'contain', borderRadius: 50},
+  searchbar: {flex: 1, backgroundColor: '#fff'},
 });

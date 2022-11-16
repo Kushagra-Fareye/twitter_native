@@ -60,7 +60,7 @@ export const logout = async () => {
 export const followUser = async followerId => {
   let {userId, token} = await getToken();
 
-  await Axios.put(`/follow/${userId}/${followerId}`)
+  await Axios.put(`/user/${userId}/following`)
     .then(res => {
       return res.data;
     })

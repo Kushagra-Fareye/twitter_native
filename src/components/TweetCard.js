@@ -21,7 +21,6 @@ import {
 } from '../assets/index';
 
 function TweetCard(props) {
-  console.log(props);
   const [tweetData, setTweetData] = useState(props.tweet);
   const [isBookmarked, toggleBookmark] = useState(false);
   const [isLiked, toggleLiked] = useState(false);
@@ -149,7 +148,9 @@ function TweetCard(props) {
               });
             }}>
             <Text style={styles.username}>{tweetData.createdUser?.name}</Text>
-            <Text style={styles.handle}>{tweetData.createdUser?.userName}</Text>
+            <Text style={styles.handle}>
+              @{tweetData.createdUser?.userName}
+            </Text>
           </TouchableOpacity>
           <Image
             style={styles.verifiedImage}
@@ -162,7 +163,9 @@ function TweetCard(props) {
           <View>
             <Text style={styles.tweetMessage}>{tweetData.text}</Text>
           </View>
-          <TweetImageRendering noOfPics={1} images={tweetData.image} />
+          {tweetData.image && (
+            <TweetImageRendering noOfPics={1} images={tweetData.image} />
+          )}
         </View>
         <View style={styles.tweetFooter}>
           <TouchableOpacity
@@ -210,7 +213,7 @@ function TweetCard(props) {
 
 const styles = StyleSheet.create({
   tweetContainer: {
-    borderBottomWidth: 0.5,
+    borderBottomWidth: 1,
     borderColor: 'gray',
     flexDirection: 'row',
     // marginVertical: 5,
@@ -226,7 +229,7 @@ const styles = StyleSheet.create({
   },
   details: {
     marginRight: 10,
-    marginTop: 0,
+    marginTop: 10,
   },
   tweetHeader: {
     flexDirection: 'row',
@@ -236,6 +239,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     paddingLeft: 10,
     paddingRight: 5,
+    paddingTop: 8,
     fontWeight: 'bold',
     color: 'black',
   },
@@ -252,7 +256,8 @@ const styles = StyleSheet.create({
 
   tweetMessage: {
     color: 'black',
-    marginRight: 95,
+    // marginRight: ,
+    fontSize: 15,
   },
   tweetImageContainer: {
     flexDirection: 'row',

@@ -7,6 +7,7 @@ import {
   imageHome,
   imageMessages,
   imageNotification,
+  SearchIcon,
 } from '../assets';
 import {StackNavigator} from './StackNavigator';
 
@@ -43,16 +44,16 @@ const BottomTabNavigator = () => {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="SearchPage"
         component={SearchPage}
         options={{
           tabBarLabel: 'Search',
           tabBarIcon: ({}) => (
-            <Image source={imageBookmark} style={styles.bookmarksIcon} />
+            <Image source={SearchIcon} style={styles.bookmarksIcon} />
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="NotificationsPage"
         component={NotificationsPage}
