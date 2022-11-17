@@ -29,7 +29,7 @@ export default function UserCard(props) {
   }
   useEffect(() => {
     onLoad();
-  }, []);
+  }, [userFollowing]);
 
   async function handleFollowClick() {
     await followUser(data.userId);
@@ -37,22 +37,24 @@ export default function UserCard(props) {
       AsyncStorageConstants.USER_FOLLOWINGS_IDS,
       JSON.stringify([...userFollowing, data.userId]),
     );
+    setUserFollowing([...userFollowing, data.userId])
   }
   async function handleRemoveFollowClick() {
     await unfollowUser(data.userId);
     const index = userFollowing.indexOf(data.userId);
-    const updatedList = userFollowing.splice(index, 1);
-    await AsyncStorage.setItem(
+    userFollowing.splice(index, 1);
+       await AsyncStorage.setItem(
       AsyncStorageConstants.USER_FOLLOWINGS_IDS,
-      JSON.stringify(updatedList),
+      JSON.stringify(userFollowing),
     );
-    setUserFollowing(updatedList);
+    toggleIsFollowed(false);
+    setUserFollowing(userFollowing);
   }
 
   return (
     <View style={styles.tweetContainer}>
       <Image style={styles.profileImage} source={imageProfile}></Image>
-
+      
       <View style={styles.details}>
         <View style={styles.tweetHeader}>
           <Text style={styles.username}>{data.name}</Text>
