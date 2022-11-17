@@ -39,7 +39,7 @@ export const getUserComment = async data => {
   return Axios.get(`/user/tweets/${tweetId}/comments`).then(res =>{
 
     return res.data;
-  });
+  }).catch(e => console.log(e, 'error in getUserComment'));;
 };
 
 export const postComment = async data => {
@@ -57,14 +57,14 @@ export const getTweetData = async tweetId => {
 
   return Axios.get(`/user/tweets/${tweetId}`).then(res => {
     return res.data;
-  });
+  }).catch(e => console.log(e, 'error in getTweetData'));;
 };
 
 export const postRetweet = async (tweetId, tweet) => {
   const {userId, token} = await getToken();
   return Axios.post(`/${userId}/retweets`, {tweet}).then(res => {
     return res.data;
-  });
+  }).catch(e => console.log(e, 'error in postRetweet'));;
 };
 
 export const postTweet = async tweetText => {
@@ -80,5 +80,5 @@ export const addBookmark = async tweetId => {
     tweetId: tweetId,
   }).then(res => {
     return res.data;
-  });
+  }).catch(e => console.log(e, 'error in addBookmark'));;
 };

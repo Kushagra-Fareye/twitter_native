@@ -64,5 +64,5 @@ export const followUser = async followerId => {
       console.log('i am here')
       return res.data;
     })
-    .catch(e => console.log(e));
+    .catch(e => console.log(e, 'error in followUser'));
 };

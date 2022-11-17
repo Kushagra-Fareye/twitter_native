@@ -31,7 +31,7 @@ export default function MessagesPage({navigation}) {
         <FlatList
           data={allMessages}
           renderItem={({item}) => (
-            <TouchableOpacity onPress={() => navigation.navigate('Chat Page')}>
+            <TouchableOpacity onPress={() => navigation.navigate('Chat Page',{data:item})}>
               <MessageScreenCard data={item} key={item.id} />
             </TouchableOpacity>
           )}

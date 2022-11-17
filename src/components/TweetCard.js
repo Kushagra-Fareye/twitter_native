@@ -21,7 +21,6 @@ import {
 } from '../assets/index';
 
 function TweetCard(props) {
-  console.log(props);
   const [tweetData, setTweetData] = useState(props.tweet);
   const [isBookmarked, toggleBookmark] = useState(false);
   const [isLiked, toggleLiked] = useState(false);

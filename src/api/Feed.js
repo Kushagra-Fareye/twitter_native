@@ -14,10 +14,9 @@ export const getUserFeed = async data => {
   const {userId, token} = await getToken();
   return Axios.get(`/user/${userId}/feeds`)
     .then(res => {
-      // console.log("api")
       return res.data;
     })
-    .catch(e => console.log(e));
+    .catch(e => console.log(e, 'error in getUserFeed'));
 };
 
 export const getSortedFeed = async ({param}) => {
@@ -36,7 +35,7 @@ export const getSortedFeed = async ({param}) => {
       {id: 3, text: 's2356432'},
       {id: 2, text: 'somethi24354236273463g is here2'},
     ]),
-  );
+  ).catch(e => console.log(e, 'error in getSortedFeed'));;
 };
 
 export const getUserBookmarkedFeed = async data => {
@@ -44,5 +43,5 @@ export const getUserBookmarkedFeed = async data => {
 
   return Axios.get(`/user/bookmark/${userId}`).then(res => {
     return res.data;
-  });
+  }).catch(e => console.log(e, 'error in getUserBookmarkedFeed'));;
 };

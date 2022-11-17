@@ -13,7 +13,8 @@ export const getAllUsers = async () => {
 
   return Axios.get('/user').then(res => {
     return res.data;
-  });
+  })
+  .catch(e => console.log(e, 'error in getAllUsers'));
 };
 
 export const getAllBlueTickRequests = async () => {
@@ -22,7 +23,7 @@ export const getAllBlueTickRequests = async () => {
     .then(res => {
       return res.data;
     })
-    .catch(e => console.log(e, 'there is error in this request'));
+    .catch(e => console.log(e, 'there is error in getAllBluetickRequests'));
 };
 
 export const acceptBlueTickRequests = async data => {
@@ -39,13 +40,14 @@ export const acceptBlueTickRequests = async data => {
   ).then(res => {
     console.log(res);
     return res.data;
-  });
+  }).catch(e => console.log(e, 'there is error in acceptBlueTickRequests'));;
 };
 
 export const rejectBlueTickRequests = async data => {
   const {userId, token} = await getToken();
 
-  return new Promise(resolve => setTimeout(resolve, 5000, false));
+  return new Promise(resolve => setTimeout(resolve, 5000, false))
+  .catch(e => console.log(e, 'there is error in rejectBlueTickRequests'));;
 };
 
 export const deleteUser = async data => {
