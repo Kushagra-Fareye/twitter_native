@@ -7,7 +7,8 @@ import {
   Dimensions,
   Alert,
 } from 'react-native';
-import {imageBanner, imageProfile} from '../assets';
+import {imageBanner, imageDefault, imageProfile} from '../assets';
+import {firebase} from '../components/config';
 
 import React, {useEffect, useState} from 'react';
 import {TextInput} from 'react-native-gesture-handler';
@@ -32,10 +33,10 @@ export default function EditProfilePage({navigation}) {
     const data = await AsyncStorage.getItem(AsyncStorageConstants.USER_DETAILS);
     const user = JSON.parse(data);
     setName(user.name);
-    setHandle(user.userName);
+    setUserName(user.userName);
     setBio(user.bio);
     setAvatar(user.avatar);
-    setBanner(user.banner);
+    setBanner(user.bannerImage);
   }
   useEffect(() => {
     fetchUserInfo();
@@ -47,7 +48,7 @@ export default function EditProfilePage({navigation}) {
     const updatedUser = {
       ...user,
       name,
-      userName: handle,
+      userName: userName,
       bio,
     };
     await updateUserDetails(updatedUser);
@@ -81,32 +82,94 @@ export default function EditProfilePage({navigation}) {
           type: response.assets[0].type,
           name: response.assets[0].fileName,
         });
-        if (val === 'banner') setBanner(response.assets[0].uri);
-        if (val === 'avatar') setAvatar(response.assets[0].uri);
+        if (val === 'banner') {
+          setBanner(response.assets[0].uri);
+          handleBackgroundPicUpdate();
+        }
+        if (val === 'avatar') {
+          setAvatar(response.assets[0].uri);
+          handleProfilePicUpdate();
+        }
       }
     });
   };
 
   const handleProfilePicUpdate = async () => {
-    const imageUrl = await uploadImageToAWS(imageData);
-    const user = await AsyncStorage.getItem(AsyncStorageConstants.USER_DETAILS);
-    const updatedUser = await updateUserDetails({...user, avatar: imageUrl});
-    await AsyncStorage.setItem(
-      AsyncStorageConstants.USER_DETAILS,
-      JSON.stringify(updatedUser),
-    );
-    navigation.goBack();
+    let imageFirebase = await fetch(imageData.uri);
+    console.log(imageData.uri);
+    let blob = await imageFirebase.blob();
+    let fileName = imageData.uri.substring(imageData.uri.lastIndexOf('/'));
+    var ref = firebase
+      .storage()
+      .ref()
+      .child(fileName)
+      .put(blob)
+      .then(data => {
+        data.ref.getDownloadURL().then(async url => {
+          console.log(url);
+          const user = await AsyncStorage.getItem(
+            AsyncStorageConstants.USER_DETAILS,
+          );
+          const datas = JSON.parse(user);
+          console.log('qqqqqqq', user);
+          console.log('eeeee', user['userName']);
+          console.log('wwwwwwwww', user.avatar);
+
+          const updatedUser = await updateUserDetails({...datas, avatar: url});
+          console.log(updatedUser, 'new tweetdata');
+          await AsyncStorage.setItem(
+            AsyncStorageConstants.USER_DETAILS,
+            JSON.stringify(updatedUser),
+          );
+          // const users= await AsyncStorage.getItem(AsyncStorageConstants.USER_DETAILS);
+          // console.log("qqqqqqqeeeeeeeeeee",users)
+
+          // navigation.navigate('Feed Page', {screen: 'Home'});
+        });
+      });
   };
 
   const handleBackgroundPicUpdate = async () => {
-    const imageUrl = await uploadImageToAWS(imageData);
-    const user = await AsyncStorage.getItem(AsyncStorageConstants.USER_DETAILS);
-    const updatedUser = await updateUserDetails({...user, bgPic: imageUrl});
-    await AsyncStorage.setItem(
-      AsyncStorageConstants.USER_DETAILS,
-      JSON.stringify(updatedUser),
-    );
-    navigation.goBack();
+    // const imageUrl = await uploadImageToAWS(imageData);
+    let imageFirebase = await fetch(imageData.uri);
+    console.log(imageData.uri);
+    let blob = await imageFirebase.blob();
+    let fileName = imageData.uri.substring(imageData.uri.lastIndexOf('/'));
+    var ref = firebase
+      .storage()
+      .ref()
+      .child(fileName)
+      .put(blob)
+      .then(data => {
+        data.ref.getDownloadURL().then(async url => {
+          console.log(url);
+          const user = await AsyncStorage.getItem(
+            AsyncStorageConstants.USER_DETAILS,
+          );
+          const datas = JSON.parse(user);
+          console.log('qqqqqqq', user);
+          console.log('eeeee', user['userName']);
+          console.log('wwwwwwwww', user.bannerImage);
+
+          const updatedUser = await updateUserDetails({
+            ...datas,
+            bannerImage: url,
+          });
+          console.log(updatedUser, 'new tweetdata');
+          await AsyncStorage.setItem(
+            AsyncStorageConstants.USER_DETAILS,
+            JSON.stringify(updatedUser),
+          );
+          // const users= await AsyncStorage.getItem(AsyncStorageConstants.USER_DETAILS);
+          // console.log("qqqqqqqeeeeeeeeeee",users)
+
+          // navigation.navigate('Feed Page', {screen: 'Home'});
+        });
+      });
+
+    // const updatedUser = await updateUserDetails({...user, bgPic: imageUrl});
+
+    // navigation.goBack();
   };
 
   return (
@@ -126,7 +189,7 @@ export default function EditProfilePage({navigation}) {
           this.launchImageLibrary('avatar');
         }}>
         <Image
-          source={avatar ? {uri: avatar} : imageProfile}
+          source={avatar ? {uri: avatar} : imageDefault}
           style={styles.profileImage}></Image>
       </TouchableOpacity>
       <View style={styles.nameContainer}>

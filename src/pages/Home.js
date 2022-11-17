@@ -70,6 +70,7 @@ export default function Home({navigation}) {
   const [showDropdown, toggleDropdown] = useState(false);
 
   const isFocused = useIsFocused();
+
   async function fetchFeed() {
     console.log("home");
     const data = await getUserFeed(userId);
@@ -116,7 +117,7 @@ export default function Home({navigation}) {
 
         <View style={styles.bodyContainer}>
           {isLoading ? (
-            <View style={{flex: 1, justifyContent: 'center'}}>
+            <View style={{flex: 1, marginVertical: '50%',  justifyContent: 'center'}}>
               <ActivityIndicator size={'large'} color="rgba(42,169,224,255)" />
             </View>
           ) : (
@@ -185,7 +186,9 @@ const styles = StyleSheet.create({
   headerIcon: {height: 45, width: 45, resizeMode: 'contain',},
   headerIcon2: {height: 35, width: 35, resizeMode: 'contain', marginTop: 5},
 
-  bodyContainer: {},
+  bodyContainer: {
+    marginBottom: 45,
+  },
   sortDropdown: {
     position: 'absolute',
     backgroundColor: 'white',
@@ -228,7 +231,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     position: 'absolute',
     right: 35,
-    top: 700,
+    bottom: 30,
     elevation: 10,
     shadowOffset: {
       width: 0,

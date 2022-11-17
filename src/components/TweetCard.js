@@ -30,6 +30,7 @@ function TweetCard(props) {
   async function fetchTweet(tweetId) {
     const tweet = await getTweetData(tweetId);
     setTweetData(tweet);
+    console.log("bbbbbbbbbbbbbb", tweet)
   }
   useEffect(() => {
     if (props.tweet?.msg) {
@@ -134,23 +135,19 @@ function TweetCard(props) {
       <Image
         style={styles.profileImage}
         source={
-          tweetData?.createdUser?.avatar
-            ? {uri: `${tweetData?.createdUser?.avatar}`}
-            : imageDefault
+          tweetData.createdUser?.avatar ? {uri: tweetData.createdUser?.avatar} : imageDefault
         }
       />
       <View style={styles.details}>
         <View style={styles.tweetHeader}>
-          <TouchableOpacity
+          <TouchableOpacity style = {{flexDirection: 'row'}}
             onPress={() => {
               props.navigation.navigate('Profile', {
                 userId: tweetData.postedUserId,
               });
             }}>
             <Text style={styles.username}>{tweetData.createdUser?.name}</Text>
-            <Text style={styles.handle}>
-              @{tweetData.createdUser?.userName}
-            </Text>
+            <Text style={styles.handle}>@{tweetData.createdUser?.userName}</Text>
           </TouchableOpacity>
           <Image
             style={styles.verifiedImage}
@@ -214,18 +211,18 @@ function TweetCard(props) {
 const styles = StyleSheet.create({
   tweetContainer: {
     borderBottomWidth: 1,
-    borderColor: 'gray',
+    borderColor: 'lightgray',
     flexDirection: 'row',
     // marginVertical: 5,
     // margin: 5,
     backgroundColor: 'white',
   },
   profileImage: {
-    height: 70,
-    width: 70,
+    height: 60,
+    width: 60,
     borderRadius: 35,
-    marginVertical: 10,
-    marginLeft: 10,
+    marginVertical: 20,
+    marginHorizontal: 10,
   },
   details: {
     marginRight: 10,
@@ -233,19 +230,23 @@ const styles = StyleSheet.create({
   },
   tweetHeader: {
     flexDirection: 'row',
-    marginTop: 0,
+    marginTop: 10,
   },
   username: {
-    alignSelf: 'center',
-    paddingLeft: 10,
+    // alignSelf: 'center',
+    paddingLeft: 0,
     paddingRight: 5,
     paddingTop: 8,
     fontWeight: 'bold',
     color: 'black',
+    fontSize: 15
   },
 
   handle: {
-    alignSelf: 'center',
+    // alignSelf: 'center',
+    paddingLeft: 0,
+    paddingRight: 5,
+    paddingTop: 8,
   },
 
   tweet: {
@@ -257,7 +258,9 @@ const styles = StyleSheet.create({
   tweetMessage: {
     color: 'black',
     // marginRight: ,
-    fontSize: 15,
+    fontSize: 18,
+    marginBottom: 10,
+    marginTop: 5
   },
   tweetImageContainer: {
     flexDirection: 'row',
@@ -265,7 +268,7 @@ const styles = StyleSheet.create({
   tweetImage: {
     height: 250,
     width: 280,
-    marginTop: 20,
+    // marginTop: 10,
     borderRadius: 10,
     resizeMode: 'cover',
   },
@@ -351,11 +354,11 @@ const styles = StyleSheet.create({
   },
 
   tweetFooter: {
-    // width: 300,
+    width: 300,
     // borderWidth: 2,
     marginVertical: 10,
     flexDirection: 'row',
-    marginHorizontal: 10,
+    // marginHorizontal: 10,
     justifyContent: 'space-between',
   },
   footerFields: {
@@ -365,16 +368,16 @@ const styles = StyleSheet.create({
     // borderWidth: 2
   },
   tweetIcons: {
-    height: 30,
+    height: 20,
     marginRight: 5,
-    width: 30,
+    width: 20,
     resizeMode: 'contain',
   },
   verifiedImage: {
     height: 20,
     width: 20,
     borderRadius: 35,
-    marginVertical: 20,
+    marginVertical: 10,
     marginLeft: 5,
   },
 });
