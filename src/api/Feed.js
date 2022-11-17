@@ -10,11 +10,10 @@ async function getToken() {
 }
 
 export const getUserFeed = async data => {
-  console.log("feed");
+  console.log('feed');
   const {userId, token} = await getToken();
   return Axios.get(`/user/${userId}/feeds`)
     .then(res => {
-      // console.log("api")
       return res.data;
     })
     .catch(e => console.log(e));

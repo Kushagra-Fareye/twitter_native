@@ -33,6 +33,15 @@ export const login = async data => {
   }).then(res => {
     return res.data;
   });
+  const userLikes = await Axios.get(`/user/tweetLike/${userData.userId}`, {
+    withCredentials: true,
+  }).then(res => {
+    return res.data;
+  });
+  await AsyncStorage.setItem(
+    AsyncStorageConstants.USER_LIKES,
+    JSON.stringify(userLikes),
+  );
   await AsyncStorage.setItem(
     AsyncStorageConstants.USER_ID,
     userData.userId.toString(),
@@ -53,12 +62,13 @@ export const login = async data => {
 };
 
 export const signUp = async user => {
-  console.log(user,"signup calllllllllllllllllled");
   return Axios.post('/signup', user['user'])
     .then(res => {
+      console.log(res, 'gvhbjnkm');
       return res.data;
     })
     .catch(error => {
+      console.log(error);
       return error.response.status;
     });
 };

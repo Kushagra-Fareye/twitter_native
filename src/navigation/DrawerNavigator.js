@@ -2,6 +2,8 @@ import React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import TabNavigator from './TabNavigator';
 import {
+  AddTweetPage,
+  CommentPage,
   ConfirmRetweetPage,
   EditProfilePage,
   ForgotPasswordPage,
@@ -103,6 +105,20 @@ const DrawerNavigator = () => {
       <Drawer.Screen
         name="Confirm Retweet Page"
         component={ConfirmRetweetPage}
+        options={{
+          drawerItemStyle: {height: 0},
+        }}
+      />
+      <Drawer.Screen
+        name="Comment Page"
+        component={CommentPage}
+        options={{
+          drawerItemStyle: {height: 0},
+        }}
+      />
+      <Drawer.Screen
+        name="Add Tweet Page"
+        component={AddTweetPage}
         options={{
           drawerItemStyle: {height: 0},
         }}

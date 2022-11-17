@@ -15,6 +15,7 @@ export const FeedString = {
   EMPTY_FOLLOWER_LIST: `You dont have any followers.`,
   EMPTY_FOLLOWING_LIST: `You are not following anyone.`,
   EMPTY_SEARCH_RESULT:`No user find with this name`,
+  EMPTY_COMMENTS: `This post does not has any comments.`,
 };
 export const NotificationType = {
   BLUE_TICK: 'blue tick',

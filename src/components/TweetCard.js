@@ -1,6 +1,7 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useEffect, useState} from 'react';
 import {Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import {addBookmark, getTweetData, likeTweet} from '../api/Tweet';
+import {addBookmark, getTweetData, likeTweet, removeLike} from '../api/Tweet';
 import {
   imageReply,
   imageRetweet,
@@ -13,18 +14,18 @@ import {
   imageRetweeted,
   imageReplied,
 } from '../assets/index';
+import {AsyncStorageConstants} from '../constants/AsyncStorageConstants';
 
 function TweetCard(props) {
   const [tweetData, setTweetData] = useState(props.tweet);
   const [isBookmarked, toggleBookmark] = useState(false);
-  const [isLiked, toggleLiked] = useState(false);
+  const [isLiked, toggleLiked] = useState(props.tweet?.isLiked);
   const [isRetweeted, toggleRetweet] = useState(false);
   const [isReplied, toggleReply] = useState(false);
 
   async function fetchTweet(tweetId) {
     const tweet = await getTweetData(tweetId);
     setTweetData(tweet);
-    console.log("bbbbbbbbbbbbbb", tweet)
   }
   useEffect(() => {
     if (props.tweet?.msg) {
@@ -34,12 +35,9 @@ function TweetCard(props) {
 
   async function handleCommentButtonClick(tweetId) {
     toggleReply(!isReplied);
-
-    // await postComment(tweetId);
     console.log(tweetId);
-    props.navigation.navigate('MessagesPage', {
-      screen: 'Comment Page',
-      params: {tweetId},
+    props.navigation.navigate('Comment Page', {
+      tweetId,
     });
 
     // await fetchTweet(tweetId);
@@ -54,12 +52,33 @@ function TweetCard(props) {
     props.navigation.navigate('Confirm Retweet Page', {tweet});
   }
   async function handleLikeButtonClick(tweetId) {
-    toggleLiked(!isLiked);
-    const updatedlLikes = await likeTweet(tweetId);
-    setTweetData({
-      ...tweetData,
-      numberofLikes: updatedlLikes,
-    });
+    if (isLiked) {
+      const updatedLikes = await removeLike(tweetId);
+      const data1 = await AsyncStorage.getItem(
+        AsyncStorageConstants.USER_LIKES,
+      );
+      const likes = JSON.parse(data1);
+      const index = likes.indexOf(5);
+      if (index > -1) {
+        likes.splice(index, 1);
+      }
+      await AsyncStorage.setItem(
+        AsyncStorageConstants.USER_LIKES,
+        JSON.stringify(likes),
+      );
+      setTweetData({
+        ...tweetData,
+        numberOFLikes: updatedLikes,
+      });
+      toggleLiked(false);
+    } else {
+      const updatedLikes = await likeTweet(tweetId);
+      toggleLiked(true);
+      setTweetData({
+        ...tweetData,
+        numberOFLikes: updatedLikes,
+      });
+    }
   }
 
   const TweetImageRendering = image => {
@@ -128,19 +147,24 @@ function TweetCard(props) {
       <Image
         style={styles.profileImage}
         source={
-          tweetData.createdUser?.avatar ? {uri: tweetData.createdUser?.avatar} : imageDefault
+          tweetData.createdUser?.avatar
+            ? {uri: tweetData.createdUser?.avatar}
+            : imageDefault
         }
       />
       <View style={styles.details}>
         <View style={styles.tweetHeader}>
-          <TouchableOpacity style = {{flexDirection: 'row'}}
+          <TouchableOpacity
+            style={{flexDirection: 'row'}}
             onPress={() => {
               props.navigation.navigate('Profile', {
                 userId: tweetData.postedUserId,
               });
             }}>
             <Text style={styles.username}>{tweetData.createdUser?.name}</Text>
-            <Text style={styles.handle}>@{tweetData.createdUser?.userName}</Text>
+            <Text style={styles.handle}>
+              @{tweetData.createdUser?.userName}
+            </Text>
           </TouchableOpacity>
           <Image
             style={styles.verifiedImage}
@@ -184,7 +208,7 @@ function TweetCard(props) {
             <Image
               style={styles.tweetIcons}
               source={isLiked ? imageLiked : imageLike}></Image>
-            <Text>{tweetData.numberofLikes || '0'}</Text>
+            <Text>{tweetData.numberOFLikes}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.footerFields}
@@ -232,7 +256,7 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     fontWeight: 'bold',
     color: 'black',
-    fontSize: 15
+    fontSize: 15,
   },
 
   handle: {
@@ -253,7 +277,7 @@ const styles = StyleSheet.create({
     // marginRight: ,
     fontSize: 18,
     marginBottom: 10,
-    marginTop: 5
+    marginTop: 5,
   },
   tweetImageContainer: {
     flexDirection: 'row',
