@@ -143,7 +143,6 @@ export default function ProfilePage({navigation, route}) {
               <Text
                 style={{color: 'black', fontWeight: 'bold', marginRight: 5}}>
                 {userData.numberOfFollowing}
-                {34}
               </Text>
               <Text style={{marginRight: 15}}>Following</Text>
             </TouchableOpacity>
