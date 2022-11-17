@@ -7,19 +7,37 @@ import {
   StyleSheet,
   Image,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {ProfilePicture, SendIcon} from '../assets';
 import {FlatList} from 'react-native-gesture-handler';
-import {AdminUserCard, TweetCard} from '../components';
+import {UserCard, TweetCard} from '../components';
+
 import Axios from '../api/Axios';
 import SearchBar from '../components/SearchBar';
 import {FeedString} from '../constants/Feed';
+import { fetchTrendingUser } from '../api/User';
 
 export default function SearchPage() {
+
   const [searchText, setSearchText] = useState('');
   const [userList, setUserList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [type, setType] = useState('search');
   console.log(searchText);
+
+  async function fetchTrending() {
+    const data = await fetchTrendingUser();
+    console.log(data);
+    setUserList(data);
+  }
+  useEffect(() => {
+    console.log('called her elease');
+    if (type !== 'search') {
+      fetchTrending();
+    } else {
+      searchArticles();
+    }
+  }, [type]);
 
   const searchArticles = () => {
     if (searchText !== '') {
@@ -61,6 +79,22 @@ export default function SearchPage() {
           <Image source={SendIcon} style={{height:25 , width:25}}/>
         </TouchableOpacity>
       </View>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <Text
+          onPress={() => setType('search')}
+          style={{flex: 2, alignSelf: 'center'}}>
+          Search
+        </Text>
+        <Text
+          style={{flex: 2, alignSelf: 'center'}}
+          onPress={() => {
+            console.log('ghjkjhgfghjkjhgf');
+            setUserList([]);
+            setType('trending');
+          }}>
+          Who to follow..?
+        </Text>
+      </View>
       {isLoading ? (
         <View style={{flex: 1, justifyContent: 'center'}}>
           <ActivityIndicator size="large" color="rgba(42,169,224,255)" />
@@ -69,7 +103,7 @@ export default function SearchPage() {
         <FlatList
           data={userList}
           renderItem={({item}) => (
-            <AdminUserCard key={item.userId} data={item} />
+            <UserCard key={item.userId} data={item} />
           )}
           keyExtractor={item => item.userId}
         />

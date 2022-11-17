@@ -59,7 +59,8 @@ export const followUser = async followingId => {
   let {userId, token} = await getToken();
   await Axios.post(`/user/following/${userId}/${followingId}`)
     .then(res => {
-      console.log('i am here');
+      console.log('yahan bhi aa gay')
+
       return res.data;
     })
     .catch(e => console.log(e, 'error in followUser'));
@@ -67,8 +68,9 @@ export const followUser = async followingId => {
 
 export const unfollowUser = async followingId => {
   let {userId, token} = await getToken();
-  await Axios.post(`/user/following/${userId}/${followingId}`)
+  await Axios.delete(`/user/following/${userId}/${followingId}`)
     .then(res => {
+      console.log('unfollwed')
       return res.data;
     })
     .catch(e => console.log(e));
