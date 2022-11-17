@@ -1,11 +1,19 @@
-import {View, Text ,TextInput, ActivityIndicator, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  ActivityIndicator,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+} from 'react-native';
 import React, {useState} from 'react';
-import {ProfilePicture} from '../assets';
+import {ProfilePicture, SendIcon} from '../assets';
 import {FlatList} from 'react-native-gesture-handler';
 import {AdminUserCard, TweetCard} from '../components';
 import Axios from '../api/Axios';
 import SearchBar from '../components/SearchBar';
-import { FeedString } from '../constants/Feed';
+import {FeedString} from '../constants/Feed';
 
 export default function SearchPage() {
   const [searchText, setSearchText] = useState('');
@@ -14,38 +22,43 @@ export default function SearchPage() {
   console.log(searchText);
 
   const searchArticles = () => {
-    if(searchText!==''){
+    if (searchText !== '') {
       setIsLoading(true);
       console.log(searchText);
-    Axios.get(`/user/search/${searchText}`, {
-      params: {},
-    })
-      .then(response => {
-        console.log(response.status);
-        setUserList(response.data);
-        setIsLoading(false);
+      Axios.get(`/user/search/${searchText}`, {
+        params: {},
       })
-      .catch(function (error) {
-        console.log(error);
-      })
-      .then(function () {});
+        .then(response => {
+          console.log(response.status);
+          setUserList(response.data);
+          setIsLoading(false);
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+        .then(function () {});
+    }
   };
-}
   return (
     <View style={{backgroundColor: 'white'}}>
-      <View style={{flexDirection: 'row',justifyContent: 'center',alignItems: 'center',}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
         <View style={styles.container}>
-          <TextInput placeholder="Search users..."
-                style={styles.input}
-                value={searchText}
-                onChangeText={searchText => {
-                  setSearchText(searchText);
-                }}/>
+          <TextInput
+            placeholder="Search users..."
+            style={styles.input}
+            value={searchText}
+            onChangeText={searchText => {
+              setSearchText(searchText);
+            }}
+          />
         </View>
         <TouchableOpacity onPress={searchArticles}>
-          <Image
-            source={require('/home/shubham/Documents/twitter project/twitter_native/src/assets/send.png')}
-          />
+          <Image source={SendIcon} />
         </TouchableOpacity>
       </View>
       {isLoading ? (
@@ -69,9 +82,9 @@ const styles = StyleSheet.create({
   headerIconContainer: {margin: 5},
   headerIcon: {height: 25, width: 25, resizeMode: 'contain', borderRadius: 50},
   searchbar: {flex: 1, backgroundColor: '#fff'},
-  container:{
-    backgroundColor: "#F0F0F0",
+  container: {
+    backgroundColor: '#F0F0F0',
     margin: 10,
-    width:'85%',
+    width: '85%',
   },
 });

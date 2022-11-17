@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {
   ImageBackground,
   ScrollView,
@@ -24,9 +24,7 @@ export default function Logout({navigation}) {
   }
 
   return (
-    <KeyboardAvoidingView
-    //   style={styles.container}
-    >
+    <KeyboardAvoidingView>
       <ScrollView>
         <ImageBackground
           source={loginBG2}
@@ -68,9 +66,7 @@ export default function Logout({navigation}) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    //   flex: 1
-  },
+  container: {},
 
   adminButton: {
     marginTop: 20,
@@ -86,7 +82,6 @@ const styles = StyleSheet.create({
 
   welcome: {
     flex: 2,
-    //   marginTop:50,
     justifyContent: 'center',
   },
 
@@ -99,7 +94,6 @@ const styles = StyleSheet.create({
 
   contentContainer: {
     flex: 3,
-    // borderRadius: 20,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingTop: 50,

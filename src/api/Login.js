@@ -73,12 +73,11 @@ export const signUp = async user => {
     });
 };
 
-
 export const updateUser = async user => {
-  console.log(user,"update called calllllllllllllllllled");
+  console.log(user, 'update called calllllllllllllllllled');
   return Axios.put('/user', user)
     .then(res => {
-      console.log(res,"upppppppppppppppppppppppppdate");
+      console.log(res, 'upppppppppppppppppppppppppdate');
       return res.data;
     })
     .catch(error => {

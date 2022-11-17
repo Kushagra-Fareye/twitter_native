@@ -32,7 +32,7 @@ export const bellIcon = require('./imageBell.png');
 export const HomeIcon = require('./homeicon.jpg');
 export const NotificationIcon = require('./notificationicon.png');
 export const MessageIcon = require('./messageicon.png');
-// export const Bookmark = require('./bookmark.png');
+export const SendIcon = require('./send.png');
 
 export const imageJoined = require('./joined.png');
 
