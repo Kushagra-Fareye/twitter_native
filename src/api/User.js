@@ -55,15 +55,25 @@ export const logout = async () => {
   await AsyncStorage.setItem(AsyncStorageConstants.USER_ID, '');
 };
 
-export const followUser = async followerId => {
+export const followUser = async followingId => {
   let {userId, token} = await getToken();
-
-  await Axios.put(`/user/${userId}/following`)
+  await Axios.post(`/user/following/${userId}/${followingId}`)
     .then(res => {
-      console.log('i am here');
+      console.log('yahan bhi aa gay')
+
       return res.data;
     })
     .catch(e => console.log(e, 'error in followUser'));
+};
+
+export const unfollowUser = async followingId => {
+  let {userId, token} = await getToken();
+  await Axios.delete(`/user/following/${userId}/${followingId}`)
+    .then(res => {
+      console.log('unfollwed')
+      return res.data;
+    })
+    .catch(e => console.log(e));
 };
 
 export const ApplyBluetick = async data => {

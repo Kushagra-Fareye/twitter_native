@@ -7,10 +7,11 @@ import {
   StyleSheet,
   Image,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {ProfilePicture, SendIcon} from '../assets';
 import {FlatList} from 'react-native-gesture-handler';
-import {AdminUserCard, TweetCard} from '../components';
+import {UserCard, TweetCard} from '../components';
+
 import Axios from '../api/Axios';
 import SearchBar from '../components/SearchBar';
 import {FeedString} from '../constants/Feed';
@@ -21,6 +22,7 @@ export default function SearchPage() {
   const [userList, setUserList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [type, setType] = useState('search');
+  console.log(searchText);
 
   async function fetchTrending() {
     const data = await fetchTrendingUser();
@@ -35,6 +37,7 @@ export default function SearchPage() {
       searchArticles();
     }
   }, [type]);
+
   const searchArticles = () => {
     if (searchText !== '') {
       setIsLoading(true);
@@ -72,7 +75,7 @@ export default function SearchPage() {
           />
         </View>
         <TouchableOpacity onPress={searchArticles}>
-          <Image source={SendIcon} style={styles.SendIcon} />
+          <Image source={SendIcon} style={{height: 25, width: 25}} />
         </TouchableOpacity>
       </View>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -84,6 +87,7 @@ export default function SearchPage() {
         <Text
           style={{flex: 2, alignSelf: 'center'}}
           onPress={() => {
+            console.log('ghjkjhgfghjkjhgf');
             setUserList([]);
             setType('trending');
           }}>
@@ -97,9 +101,7 @@ export default function SearchPage() {
       ) : (
         <FlatList
           data={userList}
-          renderItem={({item}) => (
-            <AdminUserCard key={item.userId} data={item} />
-          )}
+          renderItem={({item}) => <UserCard key={item.userId} data={item} />}
           keyExtractor={item => item.userId}
         />
       )}

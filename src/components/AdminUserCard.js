@@ -11,8 +11,7 @@ import {imageProfile} from '../assets/index';
 import {deleteUser} from '../api/AdminApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AsyncStorageConstants} from '../constants/AsyncStorageConstants';
-import { color } from 'react-native-reanimated';
-import { black } from 'react-native-paper/lib/typescript/styles/colors';
+
 
 export default function AdminUserCard(props) {
   const {data} = props;

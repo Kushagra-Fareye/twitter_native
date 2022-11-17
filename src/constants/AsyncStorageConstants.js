@@ -6,4 +6,5 @@ export const AsyncStorageConstants = {
   USER_FOLLOWERS: 'userFollowers',
   USER_FOLLOWINGS: 'userFollowings',
   USER_LIKES: 'userLikes',
+  USER_FOLLOWINGS_IDS:'userFollowingIds'
 };

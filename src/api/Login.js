@@ -38,6 +38,11 @@ export const login = async data => {
   }).then(res => {
     return res.data;
   });
+  const userFollowingIds= userFollowing.map(user=>{return user.userId})
+  await AsyncStorage.setItem(
+    AsyncStorageConstants.USER_FOLLOWINGS_IDS,
+    JSON.stringify(userFollowingIds),
+  );
   await AsyncStorage.setItem(
     AsyncStorageConstants.USER_LIKES,
     JSON.stringify(userLikes),
