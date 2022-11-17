@@ -13,6 +13,7 @@ import {Image, StyleSheet} from 'react-native';
 import {
   imageEditProfile,
   imageHome,
+  imageLogout,
   imageProfilePageIcon,
   imageSettings,
 } from '../assets';
@@ -78,7 +79,7 @@ const DrawerNavigator = () => {
         options={{
           drawerLabel: 'Logout',
           drawerIcon: ({}) => (
-            <Image source={imageEditProfile} style={styles.homeIcon} />
+            <Image source={imageLogout} style={styles.homeIcon} />
           ),
           drawerLabelStyle: {fontSize: 18, fontWeight: 'bold'},
           drawerItemStyle: {borderRadius: 50, marginTop: 0},
@@ -106,7 +107,7 @@ const styles = StyleSheet.create({
   homeIcon: {
     height: 30,
     width: 30,
-    marginVertical: 15,
+    marginVertical: 5,
     marginLeft: 15,
   },
 

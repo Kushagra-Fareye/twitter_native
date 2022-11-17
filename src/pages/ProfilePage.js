@@ -11,7 +11,7 @@ import {
   FlatList,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {imageBanner, imageBirthday, imageJoined, imageProfile} from '../assets';
+import {imageBanner, imageBirthday, imageDefault, imageJoined, imageProfile} from '../assets';
 import {TweetCard} from '../components';
 import {followUser, getUserData, getUserTweets} from '../api/User';
 import {FeedString} from '../constants/Feed';
@@ -46,7 +46,9 @@ export default function ProfilePage({navigation, route}) {
   async function fetchUserData() {
     const data = await getUserData(
       route?.params?.userId ? route?.params?.userId : null,
-    );
+    )
+    console.log(data)
+    ;
     const tweets = await getUserTweets(
       route?.params?.userId ? route?.params?.userId : null,
     );
@@ -61,6 +63,7 @@ export default function ProfilePage({navigation, route}) {
     const details1 = JSON.parse(data2);
     setUserFollowing(details1);
     setUserData(data);
+    console.log(userData)
     setUserTweets(tweets);
   }
   async function handleFollowClick() {
@@ -87,9 +90,9 @@ export default function ProfilePage({navigation, route}) {
   return (
     <SafeAreaView style={styles.profile}>
       <Animated.View style={[styles.header]}>
-        <Image style={styles.bannerImage} source={imageBanner} />
+        <Image style={styles.bannerImage} source={userData.bannerImage ? {uri: userData.bannerImage} : imageBanner} />
         <View style={styles.dpandedit}>
-          <Image source={imageProfile} style={styles.profileImage}></Image>
+          <Image source={userData.avatar ? {uri: userData.avatar} : imageDefault} style={styles.profileImage}></Image>
           {route?.params?.userId === userDetails.userId ? (
             <TouchableOpacity
               style={styles.editButton}
@@ -377,7 +380,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     position: 'absolute',
     right: 35,
-    top: 700,
+    bottom: 30,
     elevation: 10,
     shadowOffset: {
       width: 0,
