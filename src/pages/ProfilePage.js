@@ -11,7 +11,13 @@ import {
   FlatList,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {imageBanner, imageBirthday, imageDefault, imageJoined, imageProfile} from '../assets';
+import {
+  imageBanner,
+  imageBirthday,
+  imageDefault,
+  imageJoined,
+  imageProfile,
+} from '../assets';
 import {TweetCard} from '../components';
 import {followUser, getUserData, getUserTweets} from '../api/User';
 import {FeedString} from '../constants/Feed';
@@ -46,9 +52,8 @@ export default function ProfilePage({navigation, route}) {
   async function fetchUserData() {
     const data = await getUserData(
       route?.params?.userId ? route?.params?.userId : null,
-    )
-    console.log(data)
-    ;
+    );
+    console.log(data);
     const tweets = await getUserTweets(
       route?.params?.userId ? route?.params?.userId : null,
     );
@@ -63,7 +68,7 @@ export default function ProfilePage({navigation, route}) {
     const details1 = JSON.parse(data2);
     setUserFollowing(details1);
     setUserData(data);
-    console.log(userData)
+    console.log(userData);
     setUserTweets(tweets);
   }
   async function handleFollowClick() {
@@ -90,9 +95,16 @@ export default function ProfilePage({navigation, route}) {
   return (
     <SafeAreaView style={styles.profile}>
       <Animated.View style={[styles.header]}>
-        <Image style={styles.bannerImage} source={userData.bannerImage ? {uri: userData.bannerImage} : imageBanner} />
+        <Image
+          style={styles.bannerImage}
+          source={
+            userData.bannerImage ? {uri: userData.bannerImage} : imageBanner
+          }
+        />
         <View style={styles.dpandedit}>
-          <Image source={userData.avatar ? {uri: userData.avatar} : imageDefault} style={styles.profileImage}></Image>
+          <Image
+            source={userData.avatar ? {uri: userData.avatar} : imageDefault}
+            style={styles.profileImage}></Image>
           {route?.params?.userId === userDetails.userId ? (
             <TouchableOpacity
               style={styles.editButton}
@@ -143,7 +155,6 @@ export default function ProfilePage({navigation, route}) {
               <Text
                 style={{color: 'black', fontWeight: 'bold', marginRight: 5}}>
                 {userData.numberOfFollowing}
-                {34}
               </Text>
               <Text style={{marginRight: 15}}>Following</Text>
             </TouchableOpacity>
@@ -244,7 +255,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#EFEFF4',
     borderBottomWidth: 2,
     height: animatedHeaderHeight,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
     // padding: 10,
     // position: 'absolute'
   },

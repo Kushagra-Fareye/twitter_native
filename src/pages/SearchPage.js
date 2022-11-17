@@ -72,7 +72,7 @@ export default function SearchPage() {
           />
         </View>
         <TouchableOpacity onPress={searchArticles}>
-          <Image source={SendIcon} />
+          <Image source={SendIcon} style={styles.SendIcon} />
         </TouchableOpacity>
       </View>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
