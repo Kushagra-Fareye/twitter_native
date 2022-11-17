@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {imageProfile} from '../assets/index';
-import {deleteUser} from '../api/AdminApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AsyncStorageConstants} from '../constants/AsyncStorageConstants';
 import {followUser, unfollowUser} from '../api/User';
