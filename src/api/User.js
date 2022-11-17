@@ -10,7 +10,8 @@ async function getToken() {
 
 export const updateUserDetails = async user => {
   const {userId, token} = await getToken();
-  return Axios.post(`/user`, user)
+  console.log("sssssssssssssssssssss", user)
+  return Axios.put(`/user`, user)
     .then(res => {
       return res.data;
     })
@@ -42,17 +43,18 @@ export const getUserTweets = async userId => {
 
 export const getUserList = async type => {
   let {userId, token} = await getToken();
+  console.log(`/user/${userId}/${type}`, 'api call');
   return Axios.get(`/user/${userId}/${type}`).then(res => {
     return res.data;
   });
 };
 
 export const logout = async () => {
+  console.log('reached here');
   await Axios.get(`/logout`)
     .then(res => {
       return res.data;
     })
-    .catch(e => console.log(e));
   await AsyncStorage.setItem(AsyncStorageConstants.USER_DETAILS, '');
   await AsyncStorage.setItem(AsyncStorageConstants.USER_ID, '');
 };
@@ -62,6 +64,7 @@ export const followUser = async followerId => {
 
   await Axios.put(`/user/${userId}/following`)
     .then(res => {
+      console.log('i am here')
       return res.data;
     })
     .catch(e => console.log(e));

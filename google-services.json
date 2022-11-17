@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "146917744178",
-    "project_id": "sasta-twitter-63cb3",
-    "storage_bucket": "sasta-twitter-63cb3.appspot.com"
+    "project_number": "615845846412",
+    "project_id": "sasta-twitter-e09a6",
+    "storage_bucket": "sasta-twitter-e09a6.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:146917744178:android:33558f4ef50b12fd83662b",
+        "mobilesdk_app_id": "1:615845846412:android:a9806753bc709b80d80aa9",
         "android_client_info": {
           "package_name": "com.twitter_native"
         }
       },
       "oauth_client": [
         {
-          "client_id": "146917744178-elnqbb623hvr96i99afvnh62f0h11uo4.apps.googleusercontent.com",
+          "client_id": "615845846412-7g4jt1sb8lonmva7oh39htvd8h69rolt.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAOaaxl1_blyPcrFF6dgzbXl04iFZ09SJg"
+          "current_key": "AIzaSyD7ofosoN1xJKC2ZNVdre9M6m8FSdiwp5k"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "146917744178-elnqbb623hvr96i99afvnh62f0h11uo4.apps.googleusercontent.com",
+              "client_id": "615845846412-7g4jt1sb8lonmva7oh39htvd8h69rolt.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

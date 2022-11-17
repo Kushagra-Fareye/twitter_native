@@ -37,7 +37,7 @@ export const getUserComment = async data => {
   const {userId, token} = await getToken();
   const tweetId=7
   return Axios.get(`/user/tweets/${tweetId}/comments`).then(res =>{
-    console.log("sssssssssssssssssssss",res.data);
+
     return res.data;
   });
 };
@@ -48,7 +48,7 @@ export const postComment = async data => {
   return Axios.post(`/user/tweets/comments`, data).then(res => {
     return res.data;
   }).catch(error => console.log(error.response.request._response));
-  console.log(tweetId);
+
   return new Promise(resolve => setTimeout(resolve, 100, true));
 };
 
@@ -67,11 +67,15 @@ export const postRetweet = async (tweetId, tweet) => {
   });
 };
 
-export const postTweet = async tweetText => {
+export const postTweet = async tweet => {
   const {userId, token} = await getToken();
-  return Axios.post(`/user/tweets`, {tweet}).then(res => {
-    return res.data;
-  }).catch((error) => console.log( error.response.request._response ) );;
+  console.log('aaaaaaaaa', tweet);
+
+  return Axios.post(`/user/tweets`, tweet)
+    .then(res => {
+      return res.data;
+    })
+    .catch(error => console.log(error.response.request._response));
 };
 
 export const addBookmark = async tweetId => {
