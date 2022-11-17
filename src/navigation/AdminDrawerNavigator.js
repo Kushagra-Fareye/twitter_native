@@ -10,12 +10,38 @@ export default function AdminDrawerNavigator() {
       <Drawer.Screen
         name="Admin ALl Users Page"
         component={AdminAllUsersPage}
-        options={{drawerLabel: 'All Users'}}
+        options={{
+          drawerLabel: 'All Users',
+          drawerLabelStyle: {fontSize: 18, fontWeight: 'bold'},
+          drawerIcon: ({}) => (
+            <Image source={imageHome} style={styles.homeIcon} />
+          ),
+          drawerItemStyle: {borderRadius: 50, marginTop: 20},
+        }}
       />
       <Drawer.Screen
         name="Admin Requests Page"
         component={AdminBlueTickRequestPage}
-        options={{drawerLabel: 'Blue Tick Requests'}}
+        options={{
+          drawerLabel: 'Blue Tick Requests',
+          drawerLabelStyle: {fontSize: 18, fontWeight: 'bold'},
+          drawerIcon: ({}) => (
+            <Image source={imageHome} style={styles.homeIcon} />
+          ),
+          drawerItemStyle: {borderRadius: 50, marginTop: 20},
+        }}
+      />
+      <Drawer.Screen
+        name="Admin Requests Page"
+        component={AdminBlueTickRequestPage}
+        options={{
+          drawerLabel: 'Logout',
+          drawerLabelStyle: {fontSize: 18, fontWeight: 'bold'},
+          drawerIcon: ({}) => (
+            <Image source={imageHome} style={styles.homeIcon} />
+          ),
+          drawerItemStyle: {borderRadius: 50, marginTop: 20},
+        }}
       />
     </Drawer.Navigator>
   );

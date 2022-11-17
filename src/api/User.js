@@ -42,12 +42,14 @@ export const getUserTweets = async userId => {
 
 export const getUserList = async type => {
   let {userId, token} = await getToken();
+  console.log(`/user/${userId}/${type}`, 'api call');
   return Axios.get(`/user/${userId}/${type}`).then(res => {
     return res.data;
   });
 };
 
 export const logout = async () => {
+  console.log('reached here');
   await Axios.get(`/logout`)
     .then(res => {
       return res.data;

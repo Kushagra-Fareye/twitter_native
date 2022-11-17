@@ -14,7 +14,7 @@ import {
   imageReplied,
 } from '../assets/index';
 
-function TweetCard(props) {
+function StaticTweetCard(props) {
   const [tweetData, setTweetData] = useState(props.tweet);
   const [isBookmarked, toggleBookmark] = useState(false);
   const [isLiked, toggleLiked] = useState(false);
@@ -31,27 +31,6 @@ function TweetCard(props) {
     }
   }, []);
 
-  async function handleCommentButtonClick(tweetId) {
-    toggleReply(!isReplied);
-
-    // await postComment(tweetId);
-    console.log(tweetId);
-    props.navigation.navigate('MessagesPage', {
-      screen: 'Comment Page',
-      params: {tweetId},
-    });
-
-    // await fetchTweet(tweetId);
-  }
-  async function handleBookmarkButtonClick(tweetId) {
-    toggleBookmark(!isBookmarked);
-    await addBookmark(tweetId);
-    // await fetchTweet(tweetId);
-  }
-
-  async function handleRetweetButtonClick(tweetId, tweet) {
-    props.navigation.navigate('Confirm Retweet Page', {tweet});
-  }
   async function handleLikeButtonClick(tweetId) {
     toggleLiked(!isLiked);
     const updatedlLikes = await likeTweet(tweetId);
@@ -62,64 +41,13 @@ function TweetCard(props) {
   }
 
   const TweetImageRendering = image => {
-    const noOfPics = 1;
-    if (noOfPics == 1) {
-      return (
-        <View style={styles.tweetImageContainer}>
-          <Image
-            style={styles.tweetImage}
-            source={{uri: `${image.images}`}}></Image>
-        </View>
-      );
-    } else if (noOfPics == 2) {
-      return (
-        <View style={styles.tweetImageContainer}>
-          <Image
-            style={styles.tweetImage2_1}
-            source={{uri: `${image.images[0]}`}}></Image>
-          <Image
-            style={styles.tweetImage2_2}
-            source={{uri: `${image.images[0]}`}}></Image>
-        </View>
-      );
-    } else if (noOfPics == 3) {
-      return (
-        <View style={styles.tweetImageContainer}>
-          <Image
-            style={styles.tweetImage3_1}
-            source={{uri: `${image.images[0]}`}}></Image>
-          <View style={styles.tweetImage3}>
-            <Image
-              style={styles.tweetImage3_2}
-              source={{uri: `${image.images[0]}`}}></Image>
-            <Image
-              style={styles.tweetImage3_3}
-              source={{uri: `${image.images[0]}`}}></Image>
-          </View>
-        </View>
-      );
-    } else if (noOfPics == 4) {
-      return (
-        <View style={styles.tweetImageContainer}>
-          <View style={styles.tweetImage2}>
-            <Image
-              style={styles.tweetImage4_1}
-              source={{uri: `${image.images[0]}`}}></Image>
-            <Image
-              style={styles.tweetImage4_2}
-              source={{uri: `${image.images[0]}`}}></Image>
-          </View>
-          <View style={styles.tweetImage2}>
-            <Image
-              style={styles.tweetImage4_3}
-              source={{uri: `${image.images[0]}`}}></Image>
-            <Image
-              style={styles.tweetImage4_4}
-              source={{uri: `${image.images[0]}`}}></Image>
-          </View>
-        </View>
-      );
-    }
+    return (
+      <View style={styles.tweetImageContainer}>
+        <Image
+          style={styles.tweetImage}
+          source={{uri: `${image.images}`}}></Image>
+      </View>
+    );
   };
 
   return (
@@ -134,17 +62,8 @@ function TweetCard(props) {
       />
       <View style={styles.details}>
         <View style={styles.tweetHeader}>
-          <TouchableOpacity
-            onPress={() => {
-              props.navigation.navigate('Profile', {
-                userId: tweetData.postedUserId,
-              });
-            }}>
-            <Text style={styles.username}>{tweetData.createdUser?.name}</Text>
-            <Text style={styles.handle}>
-              @{tweetData.createdUser?.userName}
-            </Text>
-          </TouchableOpacity>
+          <Text style={styles.username}>{tweetData.createdUser?.name}</Text>
+          <Text style={styles.handle}>@{tweetData.createdUser?.userName}</Text>
           <Image
             style={styles.verifiedImage}
             source={
@@ -161,43 +80,29 @@ function TweetCard(props) {
           )}
         </View>
         <View style={styles.tweetFooter}>
-          <TouchableOpacity
-            style={styles.footerFields}
-            onPress={() => handleCommentButtonClick(tweetData.tweetId)}>
+          <View style={styles.footerFields}>
             <Image
               style={styles.tweetIcons}
               source={isReplied ? imageReplied : imageReply}></Image>
             <Text>{tweetData.numberofComments || '0'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.footerFields}
-            onPress={() =>
-              handleRetweetButtonClick(tweetData.tweetId, tweetData)
-            }>
+          </View>
+          <View style={styles.footerFields}>
             <Image
               style={styles.tweetIcons}
               source={isRetweeted ? imageRetweeted : imageRetweet}></Image>
             <Text>{tweetData.numberofTweets || '0'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.footerFields}
-            onPress={() => {
-              handleLikeButtonClick(tweetData.tweetId);
-            }}>
+          </View>
+          <View style={styles.footerFields}>
             <Image
               style={styles.tweetIcons}
               source={isLiked ? imageLiked : imageLike}></Image>
             <Text>{tweetData.numberofLikes || '0'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.footerFields}
-            onPress={() => {
-              handleBookmarkButtonClick(tweetData.tweetId);
-            }}>
+          </View>
+          <View style={styles.footerFields}>
             <Image
               style={styles.tweetIcons}
               source={isBookmarked ? Bookmarked : Bookmark}></Image>
-          </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>
@@ -307,7 +212,6 @@ const styles = StyleSheet.create({
   tweetImage3_3: {
     height: 123,
     width: 138,
-    // marginTop: 20,
     marginHorizontal: 2,
     borderBottomRightRadius: 10,
     resizeMode: 'cover',
@@ -344,8 +248,6 @@ const styles = StyleSheet.create({
   },
 
   tweetFooter: {
-    // width: 300,
-    // borderWidth: 2,
     marginVertical: 10,
     flexDirection: 'row',
     marginHorizontal: 10,
@@ -372,4 +274,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TweetCard;
+export default StaticTweetCard;
