@@ -53,11 +53,7 @@ export const login = async data => {
 };
 
 export const signUp = async user => {
-<<<<<<< HEAD
   console.log(user,"signup calllllllllllllllllled");
-=======
-  console.log(user)
->>>>>>> 44df5881119804f341842e901784eeca780321e5
   return Axios.post('/signup', user['user'])
     .then(res => {
       return res.data;
