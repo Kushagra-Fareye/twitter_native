@@ -12,6 +12,9 @@ export const imageProfilePageIcon = require('./profile2.png');
 export const imageSettings = require('./settings.png');
 export const imageEditProfile = require('./imageEditProfile.png');
 export const imageBirthday = require('./birthday6.png');
+export const sendIcon = require('./send.png');
+
+
 export const LogoutIcon = require('./power-off.png');
 export const imageBanner = require('./imageBanner.png');
 export const imageVerified = require('./verified2.png');

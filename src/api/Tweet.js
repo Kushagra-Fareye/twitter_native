@@ -35,7 +35,7 @@ export const removeLike = async tweetId => {
 export const getUserComment = async tweetId => {
   return Axios.get(`/user/tweets/${tweetId}/comments`).then(res => {
     return res.data;
-  });
+  }).catch(e => console.log(e, 'error in getUserComment'));;
 };
 
 export const postComment = async data => {
@@ -53,7 +53,7 @@ export const getTweetData = async tweetId => {
 
   return Axios.get(`/user/tweets/${tweetId}`).then(res => {
     return res.data;
-  });
+  }).catch(e => console.log(e, 'error in getTweetData'));;
 };
 
 export const postRetweet = async tweetId => {
@@ -61,7 +61,7 @@ export const postRetweet = async tweetId => {
   console.log(`/user/${userId}/retweets/${tweetId}`);
   return Axios.post(`/user/${userId}/retweets/${tweetId}`).then(res => {
     return res.data;
-  });
+  }).catch(e => console.log(e, 'error in postRetweet'));;
 };
 
 export const postTweet = async tweet => {
@@ -81,5 +81,5 @@ export const addBookmark = async tweetId => {
     tweetId: tweetId,
   }).then(res => {
     return res.data;
-  });
+  }).catch(e => console.log(e, 'error in addBookmark'));;
 };

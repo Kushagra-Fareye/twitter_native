@@ -13,7 +13,8 @@ export const getAllUsers = async () => {
 
   return Axios.get('/user').then(res => {
     return res.data;
-  });
+  })
+  .catch(e => console.log(e, 'error in getAllUsers'));
 };
 
 export const getAllBlueTickRequests = async () => {
@@ -22,7 +23,7 @@ export const getAllBlueTickRequests = async () => {
     .then(res => {
       return res.data;
     })
-    .catch(e => console.log(e, 'there is error in this request'));
+    .catch(e => console.log(e, 'there is error in getAllBluetickRequests'));
 };
 
 export const blueTickResponse = async (data,status) => {
