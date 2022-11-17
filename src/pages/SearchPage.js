@@ -2,7 +2,8 @@ import {View, Text ,TextInput, ActivityIndicator, TouchableOpacity, StyleSheet, 
 import React, {useState} from 'react';
 import {ProfilePicture} from '../assets';
 import {FlatList} from 'react-native-gesture-handler';
-import {AdminUserCard, TweetCard} from '../components';
+ import {AdminUserCard} from '../components';
+import {UserCard} from '../components'
 import Axios from '../api/Axios';
 import SearchBar from '../components/SearchBar';
 import { FeedString } from '../constants/Feed';
@@ -56,7 +57,7 @@ export default function SearchPage() {
         <FlatList
           data={userList}
           renderItem={({item}) => (
-            <AdminUserCard key={item.userId} data={item} />
+            <UserCard key={item.userId} data={item} />
           )}
           keyExtractor={item => item.userId}
         />

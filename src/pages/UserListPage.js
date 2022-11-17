@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {AdminUserCard, TweetCard} from '../components';
+import {AdminUserCard, TweetCard, UserCard} from '../components';
 import {getUserBookmarkedFeed} from '../api/Feed';
 import {useIsFocused} from '@react-navigation/native';
 import {FeedString} from '../constants/Feed';
@@ -57,7 +57,7 @@ export default function UserListPage(props) {
         <FlatList
           data={userList}
           renderItem={({item}) => (
-            <AdminUserCard key={item.userId} data={item} />
+            <UserCard key={item.userId} data={item} />
           )}
           keyExtractor={item => item.userId}
           ListEmptyComponent={
