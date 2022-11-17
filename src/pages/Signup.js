@@ -68,7 +68,7 @@ const Signup = ({navigation}) => {
   return (
     <KeyboardAvoidingView>
       <ScrollView style={styles.container}>
-        <ImageBackground source={image} resizeMode="cover" style={styles.image}>
+        <ImageBackground source={ImageBackground} resizeMode="cover" style={styles.image}>
           <View style={styles.welcome}>
             <Image style={styles.logoImage} source={imageLogo} />
           </View>
