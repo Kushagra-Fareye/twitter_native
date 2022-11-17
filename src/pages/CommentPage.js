@@ -27,7 +27,7 @@ export default function CommentPage({navigation, route}) {
 
   const isFocused = useIsFocused();
   async function fetchComment() {
-    const data = await getUserComment();
+    const data = await getUserComment(tweetId);
     setcommentFeed(data);
     setIsLoading(false);
   }
@@ -46,7 +46,6 @@ export default function CommentPage({navigation, route}) {
     await fetchComment();
     setCommentText('');
     Keyboard.dismiss();
-    // this.flatList.scrollToEnd({animated: true})
   };
 
   return (
@@ -68,7 +67,7 @@ export default function CommentPage({navigation, route}) {
               keyExtractor={item => item.commentId}
               ListEmptyComponent={
                 <Text style={styles.emptyList}>
-                  {FeedString.EMPTY_BOOKMARK_FEED}
+                  {FeedString.EMPTY_COMMENTS}
                 </Text>
               }
             />
@@ -103,7 +102,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     // marginTop: 625
   },
-
+  emptyList: {
+    fontWeight: 'bold',
+    alignSelf: 'center',
+    marginTop: 100,
+    fontSize: 20,
+    color: 'black',
+    textAlign: 'center',
+  },
   commentButton: {
     backgroundColor: 'rgba(42,169,224,255)',
     borderColor: 'rgba(0,0,0,0.5)',

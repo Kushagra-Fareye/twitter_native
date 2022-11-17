@@ -27,7 +27,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AsyncStorageConstants} from '../constants/AsyncStorageConstants';
 
 let profilepic = 'set';
-let isVerified = 'set';
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 
@@ -114,11 +113,7 @@ const AddTweetPage = ({navigation}) => {
   };
 
   async function handleAddTweetClick() {
-    // const imageUrl = await uploadImageToAWS(imageData);
-    // const reference = storage().ref(imageData.name);
-    // await reference.putFile(imageData.uri);
-    if(imageData||tweetText)
-    {
+    if (imageData || tweetText) {
       const userId = await AsyncStorage.getItem(AsyncStorageConstants.USER_ID);
 
       let imageFirebase = await fetch(imageData.uri);
@@ -139,11 +134,10 @@ const AddTweetPage = ({navigation}) => {
             });
             console.log(res, 'new tweetdata');
             await navigation.navigate('Feed Page', {screen: 'Home'});
-            setImageData({})
-            setTweetText('')
+            setImageData({});
+            setTweetText('');
           });
         });
-  
     }
   }
   return (

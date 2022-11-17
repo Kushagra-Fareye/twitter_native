@@ -16,7 +16,6 @@ export const LogoutIcon = require('./power-off.png');
 export const imageBanner = require('./imageBanner.png');
 export const imageVerified = require('./verified2.png');
 export const imageLogout = require('./logout.png');
-
 export const loginBG2 = require('./loginBG3.jpg');
 export const imageLike = require('./like5.png');
 export const imageLiked = require('./liked2.png');
