@@ -7,20 +7,34 @@ import {
   StyleSheet,
   Image,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ProfilePicture, SendIcon} from '../assets';
 import {FlatList} from 'react-native-gesture-handler';
 import {AdminUserCard, TweetCard} from '../components';
 import Axios from '../api/Axios';
 import SearchBar from '../components/SearchBar';
 import {FeedString} from '../constants/Feed';
+import {fetchTrendingUser} from '../api/User';
 
 export default function SearchPage() {
   const [searchText, setSearchText] = useState('');
   const [userList, setUserList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  console.log(searchText);
+  const [type, setType] = useState('search');
 
+  async function fetchTrending() {
+    const data = await fetchTrendingUser();
+    console.log(data);
+    setUserList(data);
+  }
+  useEffect(() => {
+    console.log('called her elease');
+    if (type !== 'search') {
+      fetchTrending();
+    } else {
+      searchArticles();
+    }
+  }, [type]);
   const searchArticles = () => {
     if (searchText !== '') {
       setIsLoading(true);
@@ -60,6 +74,21 @@ export default function SearchPage() {
         <TouchableOpacity onPress={searchArticles}>
           <Image source={SendIcon} />
         </TouchableOpacity>
+      </View>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <Text
+          onPress={() => setType('search')}
+          style={{flex: 2, alignSelf: 'center'}}>
+          Search
+        </Text>
+        <Text
+          style={{flex: 2, alignSelf: 'center'}}
+          onPress={() => {
+            setUserList([]);
+            setType('trending');
+          }}>
+          Who to follow..?
+        </Text>
       </View>
       {isLoading ? (
         <View style={{flex: 1, justifyContent: 'center'}}>
