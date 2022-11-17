@@ -18,41 +18,31 @@ export const getAllUsers = async () => {
 
 export const getAllBlueTickRequests = async () => {
   const {userId, token} = await getToken();
-  return Axios.get('/user/bluetick')
+  return Axios.get('/user/admin/bluetick')
     .then(res => {
       return res.data;
     })
     .catch(e => console.log(e, 'there is error in this request'));
 };
 
-export const acceptBlueTickRequests = async data => {
+export const blueTickResponse = async (data,status) => {
   const {userId} = data;
+  
+  console.log(`user/admin/bluetick/status/${userId}/${status}`);
   return Axios.put(
-    `bluetick/status/${userId}`,
-    {data},
-    {
-      auth: {
-        username: 'foo',
-        password: 'bar',
-      },
-    },
+    `user/admin/bluetick/status/${userId}/${status}`,   
   ).then(res => {
-    console.log(res);
+    console.log(res.data);
     return res.data;
-  });
+  }).catch(e =>console.log("error",e));
 };
 
-export const rejectBlueTickRequests = async data => {
-  const {userId, token} = await getToken();
-
-  return new Promise(resolve => setTimeout(resolve, 5000, false));
-};
 
 export const deleteUser = async data => {
   const {userId, token} = await getToken();
-  // return Axios.delete(`/user/${userId}`,
-  // {data},
-  // ).then(res => {
-  //   return res.data;
-  // })
+  return Axios.delete(`/user/${userId}`,
+  ).then(res => {
+    console.log(res.data);
+    return res.data;
+  }).catch( err =>console.log('Delete user api error',err));
 };

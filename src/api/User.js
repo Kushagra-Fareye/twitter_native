@@ -69,3 +69,14 @@ export const followUser = async followerId => {
     })
     .catch(e => console.log(e));
 };
+
+export const ApplyBluetick = async data =>{
+  let {userId, token} = await getToken();
+
+  await Axios.put(`/user/bluetick/${userId}`).then(res =>{
+    console.log('resuuuuuuuuuuult =',res.status);
+    console.log('result data',res.data);
+    return res.data;
+  })
+  .catch(e=> console.log("Apply blue tick erroro" , e));
+};

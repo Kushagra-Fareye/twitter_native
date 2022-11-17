@@ -62,7 +62,6 @@ export const login = async data => {
 };
 
 export const signUp = async user => {
-  console.log(user);
   return Axios.post('/signup', user['user'])
     .then(res => {
       console.log(res, 'gvhbjnkm');
@@ -70,6 +69,19 @@ export const signUp = async user => {
     })
     .catch(error => {
       console.log(error);
+      return error.response.status;
+    });
+};
+
+
+export const updateUser = async user => {
+  console.log(user,"update called calllllllllllllllllled");
+  return Axios.put('/user', user)
+    .then(res => {
+      console.log(res,"upppppppppppppppppppppppppdate");
+      return res.data;
+    })
+    .catch(error => {
       return error.response.status;
     });
 };

@@ -6,6 +6,7 @@ import {
   CommentPage,
   ConfirmRetweetPage,
   EditProfilePage,
+  ForgotPasswordPage,
   Logout,
   ProfilePage,
   SettingsPage,
@@ -90,6 +91,13 @@ const DrawerNavigator = () => {
       <Drawer.Screen
         name="Follower Page"
         component={UserListPage}
+        options={{
+          drawerItemStyle: {height: 0},
+        }}
+      />
+      <Drawer.Screen
+        name="Forgot Password Page"
+        component={ForgotPasswordPage}
         options={{
           drawerItemStyle: {height: 0},
         }}
