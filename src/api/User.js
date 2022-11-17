@@ -72,6 +72,7 @@ export const ApplyBluetick = async data =>{
 
   await Axios.put(`/user/bluetick/${userId}`).then(res =>{
     console.log('resuuuuuuuuuuult =',res.status);
+    console.log('result data',res.data);
     return res.data;
   })
   .catch(e=> console.log("Apply blue tick erroro" , e));

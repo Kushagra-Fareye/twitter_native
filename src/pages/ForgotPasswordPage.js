@@ -16,7 +16,7 @@ import {
 } from 'react-native';
 import {imageLogo, loginBG2} from '../assets';
 import LinearGradient from 'react-native-linear-gradient';
-import {login, signUp} from '../api/Login';
+import {login, signUp, updateUser} from '../api/Login';
 import {decode as atob, encode as btoa} from 'base-64';
 import {useIsFocused} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -71,14 +71,17 @@ export default function ForgotPasswordPage({navigation}) {
               <TouchableOpacity
                 style={styles.button}
                 onPress={async () => {
-
                   if (password1 !== password2) {
                     Alert.alert('Password are not same');
                     setPassword2('');
-                  }
+                  }else 
+                  if (password1 === '') {
+                    Alert.alert('Empty password not allowed');
+                    setPassword2('');
+                  }else{
                   const data = await fetchUserInfo(password1);
                   //const res = await login({name: password1, password: password2});
-                  const res = await signUp(data);
+                  const res = await updateUser(data);
                   console.log(res);
                   if (res) {
                       await AsyncStorage.setItem(
@@ -87,13 +90,14 @@ export default function ForgotPasswordPage({navigation}) {
                       );
                       setPassword1('');
                       setPassword2('');
-                      navigation.navigate('User Pages');
+                      // navigation.navigate('User Pages');
                       console.log(data);
                   } else {
                     Alert.alert('Unable to change password.');
                     setPassword1('');
                     setPassword2('');
                   }
+                }
                 }}>
                 <Text
                   style={{fontSize: 18, fontWeight: 'bold', color: 'white'}}>

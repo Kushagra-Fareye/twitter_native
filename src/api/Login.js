@@ -62,3 +62,16 @@ export const signUp = async user => {
       return error.response.status;
     });
 };
+
+
+export const updateUser = async user => {
+  console.log(user,"update called calllllllllllllllllled");
+  return Axios.put('/user', user)
+    .then(res => {
+      console.log(res,"upppppppppppppppppppppppppdate");
+      return res.data;
+    })
+    .catch(error => {
+      return error.response.status;
+    });
+};
