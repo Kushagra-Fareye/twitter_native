@@ -1,23 +1,23 @@
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
-import { imageProfile } from '../assets';
+import { imageDefault, imageProfile } from '../assets';
 
 
-export default function MessageScreenCard({navigation, data}) {
+export default function MessageScreenCard(props) {
+  const {data} = props;
   return (
+    <TouchableOpacity >
       <View style={styles.tweetContainer}>
-        <Image style={styles.profileImage} source={imageProfile}></Image>
+        <Image style={styles.profileImage} source={(data.avatar)?{uri: data.avatar}:imageDefault}></Image>
 
         <View style={styles.details}>
           <View style={styles.tweetHeader}>
-            {/* <Text style={styles.username}>{data.name}</Text>
-            <Text style={styles.handle}>@{data.userName}</Text> */}
-            <Text style={styles.username}>dummy</Text>
-            <Text style={styles.handle}>@dummy</Text>
+            <Text style={styles.username}>{data.name}</Text>
+            <Text style={styles.handle}>@{data.userName}</Text>
           </View>
-          <Text style={styles.message}>This is the last dummy message</Text>
-        </View>
+          </View>
       </View>
+      </TouchableOpacity>
   );
 }
 

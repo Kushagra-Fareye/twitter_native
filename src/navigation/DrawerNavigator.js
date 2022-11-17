@@ -23,7 +23,8 @@ import {
 
 const Drawer = createDrawerNavigator();
 
-const DrawerNavigator = () => {
+const DrawerNavigator = props => {
+  const {setIsLoggedIn} = props;
   return (
     <Drawer.Navigator
       screenOptions={{headerShown: false}}
@@ -86,6 +87,7 @@ const DrawerNavigator = () => {
           ),
           drawerLabelStyle: {fontSize: 18, fontWeight: 'bold'},
           drawerItemStyle: {borderRadius: 50, marginTop: 0},
+          setIsLoggedIn: {setIsLoggedIn},
         }}
       />
       <Drawer.Screen

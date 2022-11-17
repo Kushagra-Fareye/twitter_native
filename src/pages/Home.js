@@ -84,11 +84,11 @@ export default function Home({navigation}) {
           ...tweet,
           isLiked: true,
         };
-      }
-      return {
-        ...tweet,
-        isLiked: false,
-      };
+      } else
+        return {
+          ...tweet,
+          isLiked: false,
+        };
     });
     setFeedData(updatedData);
     setIsLoading(false);

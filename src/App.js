@@ -40,7 +40,7 @@ function MainNavigator() {
       ) : !isLoggedIn ? (
         <LoginNavigator />
       ) : (
-        <DrawerNavigator />
+        <DrawerNavigator setIsLoggedIn={setIsLoggedIn} />
       )}
     </>
   );

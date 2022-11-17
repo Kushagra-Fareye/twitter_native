@@ -1,53 +1,95 @@
-import {View, Text ,TextInput, ActivityIndicator, TouchableOpacity, StyleSheet, Image} from 'react-native';
-import React, {useState} from 'react';
-import {ProfilePicture} from '../assets';
+import {
+  View,
+  Text,
+  TextInput,
+  ActivityIndicator,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {ProfilePicture, SendIcon} from '../assets';
 import {FlatList} from 'react-native-gesture-handler';
  import {AdminUserCard} from '../components';
 import {UserCard} from '../components'
 import Axios from '../api/Axios';
 import SearchBar from '../components/SearchBar';
-import { FeedString } from '../constants/Feed';
+import {FeedString} from '../constants/Feed';
+import {fetchTrendingUser} from '../api/User';
 
 export default function SearchPage() {
   const [searchText, setSearchText] = useState('');
   const [userList, setUserList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  console.log(searchText);
+  const [type, setType] = useState('search');
 
+  async function fetchTrending() {
+    const data = await fetchTrendingUser();
+    console.log(data);
+    setUserList(data);
+  }
+  useEffect(() => {
+    console.log('called her elease');
+    if (type !== 'search') {
+      fetchTrending();
+    } else {
+      searchArticles();
+    }
+  }, [type]);
   const searchArticles = () => {
-    if(searchText!==''){
+    if (searchText !== '') {
       setIsLoading(true);
       console.log(searchText);
-    Axios.get(`/user/search/${searchText}`, {
-      params: {},
-    })
-      .then(response => {
-        console.log(response.status);
-        setUserList(response.data);
-        setIsLoading(false);
+      Axios.get(`/user/search/${searchText}`, {
+        params: {},
       })
-      .catch(function (error) {
-        console.log(error);
-      })
-      .then(function () {});
+        .then(response => {
+          console.log(response.status);
+          setUserList(response.data);
+          setIsLoading(false);
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+        .then(function () {});
+    }
   };
-}
   return (
     <View style={{backgroundColor: 'white'}}>
-      <View style={{flexDirection: 'row',justifyContent: 'center',alignItems: 'center',}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
         <View style={styles.container}>
-          <TextInput placeholder="Search users..."
-                style={styles.input}
-                value={searchText}
-                onChangeText={searchText => {
-                  setSearchText(searchText);
-                }}/>
+          <TextInput
+            placeholder="Search users..."
+            style={styles.input}
+            value={searchText}
+            onChangeText={searchText => {
+              setSearchText(searchText);
+            }}
+          />
         </View>
         <TouchableOpacity onPress={searchArticles}>
-          <Image
-            source={require('/home/shubham/Documents/twitter project/twitter_native/src/assets/send.png')}
-          />
+          <Image source={SendIcon} />
         </TouchableOpacity>
+      </View>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <Text
+          onPress={() => setType('search')}
+          style={{flex: 2, alignSelf: 'center'}}>
+          Search
+        </Text>
+        <Text
+          style={{flex: 2, alignSelf: 'center'}}
+          onPress={() => {
+            setUserList([]);
+            setType('trending');
+          }}>
+          Who to follow..?
+        </Text>
       </View>
       {isLoading ? (
         <View style={{flex: 1, justifyContent: 'center'}}>
@@ -70,9 +112,9 @@ const styles = StyleSheet.create({
   headerIconContainer: {margin: 5},
   headerIcon: {height: 25, width: 25, resizeMode: 'contain', borderRadius: 50},
   searchbar: {flex: 1, backgroundColor: '#fff'},
-  container:{
-    backgroundColor: "#F0F0F0",
+  container: {
+    backgroundColor: '#F0F0F0',
     margin: 10,
-    width:'85%',
+    width: '85%',
   },
 });

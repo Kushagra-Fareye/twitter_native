@@ -17,6 +17,7 @@ import {
 import {AsyncStorageConstants} from '../constants/AsyncStorageConstants';
 
 function TweetCard(props) {
+  console.log(props.tweet.tweetId, 'bjnklk');
   const [tweetData, setTweetData] = useState(props.tweet);
   const [isBookmarked, toggleBookmark] = useState(false);
   const [isLiked, toggleLiked] = useState(props.tweet?.isLiked);
