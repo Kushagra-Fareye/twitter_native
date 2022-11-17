@@ -10,24 +10,36 @@ async function getToken() {
 
 export const getAllUserMessages = async data => {
   const {userId, token} = await getToken();
+  return Axios.get(`/user/message/${userId}`).then(res=>{
+   
+    return res.data;
+  }).catch((error) => console.log( error.response.request._response ) );;
 
   return Axios.pod
 };
 
-export const getSingleChatMessages = async data => {
+export const getSingleChatMessages = async (data) => {
   const {userId, token} = await getToken();
-
-  return new Promise(resolve =>
-    setTimeout(resolve, 5000, [
-      {text: 'something is here'},
-      {text: 'something is here1'},
-      {text: 'something is here2'},
-    ]),
-  );
+  
+  // recieverId: data.recieverId
+ return Axios.get(`/user/message/${userId}/${data}`).then(res=>{
+    return res.data;
+  }).catch((error) => console.log( error.response.request._response ) );;
 };
 
 export const postMessage = async data => {
   const {userId, token} = await getToken();
+  console.log(data, 'blah blha')
+const messageDto = {
+  text:data.text,
+  senderId: parseInt(userId),
+  recieverId:parseInt(data.recieverId),
+}
+console.log(messageDto,'njkm')
+  return Axios.post(`/user/message`,messageDto).then(res=>{
+    console.log(res.data, 'blah blah blah');
+    return res.data;
 
-  return new Promise(resolve => setTimeout(resolve, 5000, true));
+  }).catch((error) => console.log( error.response.request._response ) );;
 };
+  // new Promise(resolve => setTimeout(resolve, 5000, true));
