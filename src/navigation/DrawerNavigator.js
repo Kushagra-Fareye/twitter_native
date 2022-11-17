@@ -2,7 +2,11 @@ import React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import TabNavigator from './TabNavigator';
 import {
+  AddTweetPage,
+  CommentPage,
+  ConfirmRetweetPage,
   EditProfilePage,
+  ForgotPasswordPage,
   Logout,
   ProfilePage,
   SettingsPage,
@@ -12,6 +16,7 @@ import {Image, StyleSheet} from 'react-native';
 import {
   imageEditProfile,
   imageHome,
+  imageLogout,
   imageProfilePageIcon,
   imageSettings,
 } from '../assets';
@@ -77,7 +82,7 @@ const DrawerNavigator = () => {
         options={{
           drawerLabel: 'Logout',
           drawerIcon: ({}) => (
-            <Image source={imageEditProfile} style={styles.homeIcon} />
+            <Image source={imageLogout} style={styles.homeIcon} />
           ),
           drawerLabelStyle: {fontSize: 18, fontWeight: 'bold'},
           drawerItemStyle: {borderRadius: 50, marginTop: 0},
@@ -90,6 +95,34 @@ const DrawerNavigator = () => {
           drawerItemStyle: {height: 0},
         }}
       />
+      <Drawer.Screen
+        name="Forgot Password Page"
+        component={ForgotPasswordPage}
+        options={{
+          drawerItemStyle: {height: 0},
+        }}
+      />
+      <Drawer.Screen
+        name="Confirm Retweet Page"
+        component={ConfirmRetweetPage}
+        options={{
+          drawerItemStyle: {height: 0},
+        }}
+      />
+      <Drawer.Screen
+        name="Comment Page"
+        component={CommentPage}
+        options={{
+          drawerItemStyle: {height: 0},
+        }}
+      />
+      <Drawer.Screen
+        name="Add Tweet Page"
+        component={AddTweetPage}
+        options={{
+          drawerItemStyle: {height: 0},
+        }}
+      />
     </Drawer.Navigator>
   );
 };
@@ -98,7 +131,7 @@ const styles = StyleSheet.create({
   homeIcon: {
     height: 30,
     width: 30,
-    marginVertical: 15,
+    marginVertical: 5,
     marginLeft: 15,
   },
 

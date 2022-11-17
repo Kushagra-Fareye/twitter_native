@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   ImageBackground,
   ScrollView,
@@ -6,32 +6,40 @@ import {
   Text,
   View,
   Dimensions,
+  TextInput,
+  Button,
+  Font,
   TouchableOpacity,
   KeyboardAvoidingView,
   Image,
+  Alert,
 } from 'react-native';
 import {imageLogo, loginBG2} from '../assets';
 import LinearGradient from 'react-native-linear-gradient';
-import {logout} from '../api/User';
+import {login, signUp, updateUser} from '../api/Login';
+import {decode as atob, encode as btoa} from 'base-64';
+import {useIsFocused} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {AsyncStorageConstants} from '../constants/AsyncStorageConstants';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 
-export default function Logout({navigation}) {
-  async function handleLogout() {
-    await logout();
-    navigation.navigate('Login Page');
-  }
+async function fetchUserInfo(password1) {
+  const data = await AsyncStorage.getItem(AsyncStorageConstants.USER_DETAILS);
+  const user = JSON.parse(data);
+  user.password = password1;
+  return user;
+}
+
+export default function ForgotPasswordPage({navigation}) {
+  const [password1, setPassword1] = useState('');
+  const [password2, setPassword2] = useState('');
 
   return (
-    <KeyboardAvoidingView
-    //   style={styles.container}
-    >
+    <KeyboardAvoidingView>
       <ScrollView>
-        <ImageBackground
-          source={loginBG2}
-          resizeMode="cover"
-          style={styles.image}>
+        <ImageBackground resizeMode="cover" style={styles.image}>
           <View style={styles.welcome}>
             <Image style={styles.logoImage} source={imageLogo} />
           </View>
@@ -44,19 +52,56 @@ export default function Logout({navigation}) {
             ]}
             style={styles.contentContainer}>
             <View style={styles.view}>
-              <Text style={styles.text}>Log out of Twitter?</Text>
-              <TouchableOpacity style={styles.button}>
+              <TextInput
+                placeholder="Enter new password..."
+                style={styles.input}
+                value={password1}
+                onChangeText={name => {
+                  setPassword1(name);
+                }}></TextInput>
+              <TextInput
+                placeholder="Confirm password..."
+                style={styles.input}
+                value={password2}
+                secureTextEntry={true}
+                onChangeText={password => {
+                  setPassword2(password);
+                }}
+              />
+              <TouchableOpacity
+                style={styles.button}
+                onPress={async () => {
+                  if (password1 !== password2) {
+                    Alert.alert('Password are not same');
+                    setPassword2('');
+                  }else 
+                  if (password1 === '') {
+                    Alert.alert('Empty password not allowed');
+                    setPassword2('');
+                  }else{
+                  const data = await fetchUserInfo(password1);
+                  //const res = await login({name: password1, password: password2});
+                  const res = await updateUser(data);
+                  console.log(res);
+                  if (res) {
+                      await AsyncStorage.setItem(
+                        AsyncStorageConstants.USER_DETAILS,
+                        JSON.stringify(data),
+                      );
+                      setPassword1('');
+                      setPassword2('');
+                      // navigation.navigate('User Pages');
+                      console.log(data);
+                  } else {
+                    Alert.alert('Unable to change password.');
+                    setPassword1('');
+                    setPassword2('');
+                  }
+                }
+                }}>
                 <Text
-                  style={{fontSize: 18, fontWeight: 'bold', color: 'white'}}
-                  onPress={handleLogout}>
-                  Confirm
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.button2}>
-                <Text
-                  style={{fontSize: 18, fontWeight: 'bold', color: 'white'}}
-                  onPress={() => navigation.goBack()}>
-                  Cancel
+                  style={{fontSize: 18, fontWeight: 'bold', color: 'white'}}>
+                  Save
                 </Text>
               </TouchableOpacity>
             </View>
@@ -71,7 +116,9 @@ const styles = StyleSheet.create({
   container: {
     //   flex: 1
   },
-
+  forgotButton: {
+    alignSelf: 'center',
+  },
   adminButton: {
     marginTop: 20,
     flexDirection: 'row',
@@ -91,8 +138,7 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    marginTop: 20,
-    fontSize: 30,
+    fontSize: 40,
     fontWeight: 'bold',
     color: 'black',
   },
@@ -181,7 +227,7 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    height: screenHeight,
+   // height: screenHeight,
     width: screenWidth,
     justifyContent: 'center',
     alignItems: 'center',

@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Dimensions,
   Image,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
@@ -30,7 +31,6 @@ const Signup = ({navigation}) => {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
   const [userName, setUserName] = useState('');
-  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [dobtext, setDobtext] = useState('');
   let user = {
@@ -48,6 +48,10 @@ const Signup = ({navigation}) => {
 
   const handleSubmit = async () => {
     const userData = await signUp({user});
+    if (userData === 400) {
+      Alert.alert('Twitter Handle already exists.');
+      return;
+    }
     if (userData) {
       await AsyncStorage.setItem(
         AsyncStorageConstants.USER_DETAILS,
@@ -64,7 +68,7 @@ const Signup = ({navigation}) => {
   return (
     <KeyboardAvoidingView>
       <ScrollView style={styles.container}>
-        <ImageBackground source={image} resizeMode="cover" style={styles.image}>
+        <ImageBackground source={ImageBackground} resizeMode="cover" style={styles.image}>
           <View style={styles.welcome}>
             <Image style={styles.logoImage} source={imageLogo} />
           </View>

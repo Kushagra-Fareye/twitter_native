@@ -5,6 +5,7 @@ import ChatCard from './ChatCard';
 import MessageScreenCard from './MessageScreenCard';
 import AdminUserCard from './AdminUserCard';
 import AdminBlueTickRequestCard from './AdminBlueTickRequestCard';
+import StaticTweetCard from './StaticTweetCard';
 
 export {
   TweetCard,
@@ -14,4 +15,5 @@ export {
   NotificationCard,
   AdminUserCard,
   AdminBlueTickRequestCard,
+  StaticTweetCard,
 };

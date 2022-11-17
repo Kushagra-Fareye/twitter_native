@@ -3,6 +3,7 @@ import {AsyncStorageConstants} from '../constants/AsyncStorageConstants';
 import Axios from './Axios';
 
 export const login = async data => {
+  console.log(data.name, data.password);
   const xy = await Axios.post(
     `/login?username=${data.name}&password=${data.password}`,
     {
@@ -13,6 +14,7 @@ export const login = async data => {
       return true;
     })
     .catch(e => {
+      console.log(e);
       return false;
     });
   if (!xy) return xy;
@@ -31,6 +33,15 @@ export const login = async data => {
   }).then(res => {
     return res.data;
   });
+  const userLikes = await Axios.get(`/user/tweetLike/${userData.userId}`, {
+    withCredentials: true,
+  }).then(res => {
+    return res.data;
+  });
+  await AsyncStorage.setItem(
+    AsyncStorageConstants.USER_LIKES,
+    JSON.stringify(userLikes),
+  );
   await AsyncStorage.setItem(
     AsyncStorageConstants.USER_ID,
     userData.userId.toString(),
@@ -53,7 +64,24 @@ export const login = async data => {
 export const signUp = async user => {
   return Axios.post('/signup', user['user'])
     .then(res => {
+      console.log(res, 'gvhbjnkm');
       return res.data;
     })
-    .catch(error => console.log(error.response.request._response));
+    .catch(error => {
+      console.log(error);
+      return error.response.status;
+    });
+};
+
+
+export const updateUser = async user => {
+  console.log(user,"update called calllllllllllllllllled");
+  return Axios.put('/user', user)
+    .then(res => {
+      console.log(res,"upppppppppppppppppppppppppdate");
+      return res.data;
+    })
+    .catch(error => {
+      return error.response.status;
+    });
 };

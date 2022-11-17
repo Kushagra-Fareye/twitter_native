@@ -4,7 +4,7 @@ import {imageLogo} from './assets';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {login} from './api/Login';
 import 'react-native-gesture-handler';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, useIsFocused} from '@react-navigation/native';
 import DrawerNavigator from './navigation/DrawerNavigator';
 import {AsyncStorageConstants} from './constants/AsyncStorageConstants';
 import {LoginNavigator} from './navigation/LoginNavigator';
@@ -16,7 +16,7 @@ function MainNavigator() {
   async function handleLogin() {
     const data = await AsyncStorage.getItem(AsyncStorageConstants.USER_DETAILS);
     const credentials = JSON.parse(data);
-    
+
     if (credentials) {
       const isSuccessful = await login({
         name: credentials.userName,
@@ -26,9 +26,10 @@ function MainNavigator() {
     }
     setIsLoading(false);
   }
+  const isFocused = useIsFocused();
   useEffect(() => {
     handleLogin();
-  }, []);
+  }, [isFocused]);
 
   return (
     <>

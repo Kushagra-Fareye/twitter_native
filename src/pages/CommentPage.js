@@ -15,26 +15,21 @@ import {
 // import { TextInput } from "react-native-gesture-handler";
 import CommentCard from '../components/CommentCard';
 import {FeedString} from '../constants/Feed';
-import {LoadingImage} from '../assets';
 import {getUserComment, postComment} from '../api/Tweet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AsyncStorageConstants} from '../constants/AsyncStorageConstants';
 
-export default function CommentPage({route}) {
+export default function CommentPage({navigation, route}) {
   const {tweetId} = route.params;
-  console.log('zzzzzzzzzzzzzzzzzzzz', tweetId);
-
   const [commentFeed, setcommentFeed] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [commentText, setCommentText] = useState('');
 
   const isFocused = useIsFocused();
   async function fetchComment() {
-    const data = await getUserComment();
-    console.log(data, 'vhbjnk');
+    const data = await getUserComment(tweetId);
     setcommentFeed(data);
     setIsLoading(false);
-    // console.log(data);
   }
   useEffect(() => {
     fetchComment();
@@ -49,48 +44,50 @@ export default function CommentPage({route}) {
     };
     await postComment(data);
     await fetchComment();
+    setCommentText('');
     Keyboard.dismiss();
-    // this.flatList.scrollToEnd({animated: true})
   };
 
   return (
     <>
       <View style={{flex: 1}}>
-        {/* <CommentCard /> */}
         {isLoading ? (
           <View style={{flex: 1, justifyContent: 'center'}}>
             <ActivityIndicator size={'large'} color="rgba(42,169,224,255)" />
           </View>
         ) : (
-          <FlatList
-            inverted
-            ref={ref => (this.flatList = ref)}
-            onLayout={() => this.flatList.scrollToEnd({animated: true})}
-            data={commentFeed}
-            renderItem={({item}) => <CommentCard tweet={item} key={item.id} />}
-            keyExtractor={item => item.id}
-            ListEmptyComponent={
-              <Text style={styles.emptyList}>
-                {FeedString.EMPTY_BOOKMARK_FEED}
+          <>
+            <FlatList
+              inverted={true}
+              // onLayout={() => this.flatList.scrollToEnd({animated: true})}
+              data={commentFeed}
+              renderItem={({item}) => (
+                <CommentCard tweet={item} key={item.commentId} />
+              )}
+              keyExtractor={item => item.commentId}
+              ListEmptyComponent={
+                <Text style={styles.emptyList}>
+                  {FeedString.EMPTY_COMMENTS}
+                </Text>
+              }
+            />
+            <TextInput
+              placeholder="Comment..."
+              style={styles.commentbox}
+              value={commentText}
+              onChangeText={commentText => {
+                setCommentText(commentText);
+              }}
+            />
+            <TouchableOpacity
+              style={styles.commentButton}
+              onPress={handleCommentSubmit}>
+              <Text style={{fontSize: 18, fontWeight: 'bold', color: 'white'}}>
+                Send
               </Text>
-            }
-          />
+            </TouchableOpacity>
+          </>
         )}
-        <TextInput
-          placeholder="Comment..."
-          style={styles.commentbox}
-          value={commentText}
-          onChangeText={commentText => {
-            setCommentText(commentText);
-          }}
-        />
-        <TouchableOpacity
-          style={styles.commentButton}
-          onPress={handleCommentSubmit}>
-          <Text style={{fontSize: 18, fontWeight: 'bold', color: 'white'}}>
-            Send
-          </Text>
-        </TouchableOpacity>
       </View>
     </>
   );
@@ -105,7 +102,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     // marginTop: 625
   },
-
+  emptyList: {
+    fontWeight: 'bold',
+    alignSelf: 'center',
+    marginTop: 100,
+    fontSize: 20,
+    color: 'black',
+    textAlign: 'center',
+  },
   commentButton: {
     backgroundColor: 'rgba(42,169,224,255)',
     borderColor: 'rgba(0,0,0,0.5)',
@@ -114,7 +118,7 @@ const styles = StyleSheet.create({
     // borderWidth: 2,
     width: 185,
     alignItems: 'center',
-    marginLeft: '30',
+    // marginLeft: '30',
     // marginRight: 'auto',
     marginBottom: 20,
     marginTop: 15,
