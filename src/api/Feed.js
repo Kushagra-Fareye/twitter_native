@@ -14,7 +14,7 @@ export const getUserFeed = async data => {
   const {userId, token} = await getToken();
   return Axios.get(`/user/${userId}/feeds`)
     .then(res => {
-      console.log("api")
+      // console.log("api")
       return res.data;
     })
     .catch(e => console.log(e));

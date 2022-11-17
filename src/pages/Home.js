@@ -72,7 +72,7 @@ export default function Home({navigation}) {
   const isFocused = useIsFocused();
 
   async function fetchFeed() {
-    console.log("home");
+    // console.log("home");
     const data = await getUserFeed(userId);
     setFeedData(data);
     setIsLoading(false);
