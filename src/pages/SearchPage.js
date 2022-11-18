@@ -8,29 +8,24 @@ import {
   Image,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
-import {ProfilePicture, SendIcon} from '../assets';
+import {SendIcon} from '../assets';
 import {FlatList} from 'react-native-gesture-handler';
-import {UserCard, TweetCard} from '../components';
-
+import {UserCard} from '../components';
 import Axios from '../api/Axios';
-import SearchBar from '../components/SearchBar';
-import {FeedString} from '../constants/Feed';
 import {fetchTrendingUser} from '../api/User';
+import {searchAPI} from '../api/Search';
 
-export default function SearchPage() {
+export default function SearchPage({navigation}) {
   const [searchText, setSearchText] = useState('');
   const [userList, setUserList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [type, setType] = useState('search');
-  console.log(searchText);
 
   async function fetchTrending() {
     const data = await fetchTrendingUser();
-    console.log(data);
     setUserList(data);
   }
   useEffect(() => {
-    console.log('called her elease');
     if (type !== 'search') {
       fetchTrending();
     } else {
@@ -38,22 +33,12 @@ export default function SearchPage() {
     }
   }, [type]);
 
-  const searchArticles = () => {
+  const searchArticles = async () => {
     if (searchText !== '') {
       setIsLoading(true);
-      console.log(searchText);
-      Axios.get(`/user/search/${searchText}`, {
-        params: {},
-      })
-        .then(response => {
-          console.log(response.status);
-          setUserList(response.data);
-          setIsLoading(false);
-        })
-        .catch(function (error) {
-          console.log(error);
-        })
-        .then(function () {});
+      const data = await searchAPI(searchText);
+      setUserList(data);
+      setIsLoading(false);
     }
   };
   return (
@@ -80,14 +65,17 @@ export default function SearchPage() {
       </View>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <Text
-          onPress={() => setType('search')}
+          onPress={() => {
+            setSearchText('');
+            setType('search');
+            setUserList([]);
+          }}
           style={{flex: 2, alignSelf: 'center'}}>
           Search
         </Text>
         <Text
           style={{flex: 2, alignSelf: 'center'}}
           onPress={() => {
-            console.log('ghjkjhgfghjkjhgf');
             setUserList([]);
             setType('trending');
           }}>
@@ -101,7 +89,17 @@ export default function SearchPage() {
       ) : (
         <FlatList
           data={userList}
-          renderItem={({item}) => <UserCard key={item.userId} data={item} />}
+          renderItem={({item}) => (
+            <TouchableOpacity
+              key={item.userId}
+              onPress={() => {
+                navigation.navigate('Profile', {
+                  userId: item.userId,
+                });
+              }}>
+              <UserCard data={item} />
+            </TouchableOpacity>
+          )}
           keyExtractor={item => item.userId}
         />
       )}

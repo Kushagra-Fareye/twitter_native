@@ -52,7 +52,7 @@ const AdminLoginPage = ({navigation}) => {
                 marginLeft: 'auto',
                 marginTop: 20,
               }}>
-              A d m i n    L o g i n
+              A d m i n L o g i n
             </Text>
           </View>
 
@@ -81,7 +81,7 @@ const AdminLoginPage = ({navigation}) => {
                 }}></TextInput>
               <TouchableOpacity
                 style={styles.button}
-                onPress={() => handleAdminLogin()}>
+                onPress={async () => handleAdminLogin()}>
                 <Text
                   style={{fontSize: 18, fontWeight: 'bold', color: 'white'}}>
                   Login

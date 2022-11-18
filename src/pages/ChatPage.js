@@ -1,59 +1,64 @@
-import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput, Button, Keyboard } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { BackButton, imageProfile, sendIcon, imageDefault } from '../assets';
-import { FlatList } from 'react-native-gesture-handler';
-import { ChatCard } from '../components';
-import { getAllUserMessages, getSingleChatMessages } from '../api/Message';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AsyncStorageConstants } from '../constants/AsyncStorageConstants';
-import { postMessage } from '../api/Message';
-import { template } from 'lodash';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  TextInput,
+  Button,
+  Keyboard,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {BackButton, sendIcon, imageDefault} from '../assets';
+import {FlatList} from 'react-native-gesture-handler';
+import {ChatCard} from '../components';
+import {getSingleChatMessages} from '../api/Message';
+import {postMessage} from '../api/Message';
+import {template} from 'lodash';
 
-export default function ChatPage({ navigation, route }) {
-
-  const { data } = route.params
-
+export default function ChatPage({navigation, route}) {
+  const {data} = route.params;
+  console.log(data, 'hbjnkm');
   const [allMessages, setAllMessages] = useState([]);
   const [text, settext] = useState('');
   function handleCloseButtonClick() {
     navigation.navigate('All Messages');
   }
   async function fetchMessage() {
-    const messageList = await getSingleChatMessages(route.params.data.userId)
-    setAllMessages(messageList)
-    console.log(messageList)
+    const messageList = await getSingleChatMessages(route.params.data.userId);
+    setAllMessages(messageList);
+    console.log(messageList);
   }
   useEffect(() => {
     fetchMessage();
-  }, [])
+  }, []);
   const handleChatSubmit = async () => {
-    await postMessage({ text, recieverId: data.userId });
+    await postMessage({text, recieverId: data.userId});
     await fetchMessage();
     Keyboard.dismiss();
   };
-  // async function fetchAllMessages(){
-  //   const data = await getAllUserMessages();
-  //   setAllMessages(data);
-  // }
-  // useEffect(()=>{
-  //   fetchAllMessages();
-  // }, []);
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.headerContainer}>
         <TouchableOpacity onPress={handleCloseButtonClick}>
           <Image source={BackButton} style={styles.closeButton} />
         </TouchableOpacity>
-        <Image style={styles.profileImage} source={(data.avatar) ? { uri: data.avatar } : imageDefault}></Image>
+        <Image
+          style={styles.profileImage}
+          source={data.avatar ? {uri: data.avatar} : imageDefault}></Image>
 
         <Text style={styles.username}>{data.name}</Text>
-
       </View>
       <View style={styles.messageContainer}>
         <FlatList
           data={allMessages}
-          renderItem={({ item }) => (
-            <ChatCard key={item.userId} data={item} isTextByMe={item.senderId !== data.userId} />
+          renderItem={({item}) => (
+            <ChatCard
+              key={item.userId}
+              data={item}
+              isTextByMe={item.senderId !== data.userId}
+            />
           )}
           keyExtractor={item => item.id}
         />
@@ -62,18 +67,11 @@ export default function ChatPage({ navigation, route }) {
         <TextInput
           placeholder="Start a new message"
           style={styles.input}
-          onChangeText={(data) => settext(data)}
-        >
-        </TextInput>
-        <TouchableOpacity
-          style={styles.sendImage}
-          onPress={handleChatSubmit}
-        >
+          onChangeText={data => settext(data)}></TextInput>
+        <TouchableOpacity style={styles.sendImage} onPress={handleChatSubmit}>
           <Image source={sendIcon} style={styles.sendImage} />
         </TouchableOpacity>
       </View>
-
-
     </View>
   );
 }
@@ -81,8 +79,7 @@ export default function ChatPage({ navigation, route }) {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: '#fefefe'
-
+    backgroundColor: '#fefefe',
   },
   headerContainer: {
     // flex: 1,
@@ -96,13 +93,13 @@ const styles = StyleSheet.create({
   },
   messageContainer: {
     flex: 1,
-    backgroundColor: '#f7f7f7'
+    backgroundColor: '#f7f7f7',
   },
   closeButton: {
     height: 30,
     width: 30,
     marginTop: 20,
-    marginLeft: 15
+    marginLeft: 15,
   },
   profileImage: {
     height: 50,
@@ -114,13 +111,11 @@ const styles = StyleSheet.create({
   username: {
     fontSize: 20,
     color: 'black',
-    padding: 20
-
+    padding: 20,
   },
   handle: {
     fontSize: 15,
-    color: 'black'
-
+    color: 'black',
   },
   input: {
     backgroundColor: '#eaeef4',
@@ -131,7 +126,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: 10,
     height: 40,
-    width: 352
+    width: 352,
     // flex: 1
   },
   sendImage: {
@@ -139,12 +134,11 @@ const styles = StyleSheet.create({
     width: 35,
     resizeMode: 'contain',
     marginTop: 2,
-
   },
-  textContainer:{
+  textContainer: {
     // flex: 1,
     flexDirection: 'row',
     // borderWidth: 2
-    backgroundColor: '#f7f7f7'
-  }
+    backgroundColor: '#f7f7f7',
+  },
 });
