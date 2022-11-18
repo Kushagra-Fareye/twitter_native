@@ -1,90 +1,150 @@
-import {View, Text, TouchableOpacity, Image, StyleSheet, TextInput} from 'react-native';
-import React from 'react';
-import {BackButton, imageProfile} from '../assets';
+import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput, Button, Keyboard } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { BackButton, imageProfile, sendIcon, imageDefault } from '../assets';
+import { FlatList } from 'react-native-gesture-handler';
+import { ChatCard } from '../components';
+import { getAllUserMessages, getSingleChatMessages } from '../api/Message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AsyncStorageConstants } from '../constants/AsyncStorageConstants';
+import { postMessage } from '../api/Message';
+import { template } from 'lodash';
 
-export default function ChatPage({navigation}) {
+export default function ChatPage({ navigation, route }) {
+
+  const { data } = route.params
+
+  const [allMessages, setAllMessages] = useState([]);
+  const [text, settext] = useState('');
   function handleCloseButtonClick() {
-    navigation.goBack();
+    navigation.navigate('All Messages');
   }
-
+  async function fetchMessage() {
+    const messageList = await getSingleChatMessages(route.params.data.userId)
+    setAllMessages(messageList)
+    console.log(messageList)
+  }
+  useEffect(() => {
+    fetchMessage();
+  }, [])
+  const handleChatSubmit = async () => {
+    await postMessage({ text, recieverId: data.userId });
+    await fetchMessage();
+    Keyboard.dismiss();
+  };
+  // async function fetchAllMessages(){
+  //   const data = await getAllUserMessages();
+  //   setAllMessages(data);
+  // }
+  // useEffect(()=>{
+  //   fetchAllMessages();
+  // }, []);
   return (
     <View style={styles.mainContainer}>
-            <View style={styles.headerContainer}>
-            <TouchableOpacity onPress={{handleCloseButtonClick}}>
-                <Image source={BackButton} style={styles.closeButton} />
-            </TouchableOpacity>
-            <Image style={styles.profileImage} source={imageProfile}></Image>
-                {/* <View style={styles.userContainer}> */}
-                    <Text style={styles.username}>Dummy</Text>
-                {/* </View> */}
-            </View>
-            <View style={styles.messageContainer}>
+      <View style={styles.headerContainer}>
+        <TouchableOpacity onPress={handleCloseButtonClick}>
+          <Image source={BackButton} style={styles.closeButton} />
+        </TouchableOpacity>
+        <Image style={styles.profileImage} source={(data.avatar) ? { uri: data.avatar } : imageDefault}></Image>
 
-            </View>
-            <TextInput
-            placeholder="Start a new message"
-            style={styles.input}>
+        <Text style={styles.username}>{data.name}</Text>
 
-            </TextInput>
-        </View>
+      </View>
+      <View style={styles.messageContainer}>
+        <FlatList
+          data={allMessages}
+          renderItem={({ item }) => (
+            <ChatCard key={item.userId} data={item} isTextByMe={item.senderId !== data.userId} />
+          )}
+          keyExtractor={item => item.id}
+        />
+      </View>
+      <View style={styles.textContainer}>
+        <TextInput
+          placeholder="Start a new message"
+          style={styles.input}
+          onChangeText={(data) => settext(data)}
+        >
+        </TextInput>
+        <TouchableOpacity
+          style={styles.sendImage}
+          onPress={handleChatSubmit}
+        >
+          <Image source={sendIcon} style={styles.sendImage} />
+        </TouchableOpacity>
+      </View>
+
+
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  mainContainer:{
+  mainContainer: {
     flex: 1,
     backgroundColor: '#fefefe'
-    
+
   },
-  headerContainer:{
-      // flex: 1,
-      flexDirection: 'row',
-      // justifyContent: 'space-between',
-      // width: 20
-      // marginVertical: 5,
-      // margin: 10,
-      paddingTop: 5,
-      backgroundColor: '#efefef',
+  headerContainer: {
+    // flex: 1,
+    flexDirection: 'row',
+    // justifyContent: 'space-between',
+    // width: 20
+    // marginVertical: 5,
+    // margin: 10,
+    paddingTop: 5,
+    backgroundColor: '#efefef',
   },
-  messageContainer:{
-      flex: 1,
-      backgroundColor: '#f7f7f7'
+  messageContainer: {
+    flex: 1,
+    backgroundColor: '#f7f7f7'
   },
-  closeButton:{
-      height: 30,
-      width: 30,
-      marginTop: 20,
-      marginLeft: 15
+  closeButton: {
+    height: 30,
+    width: 30,
+    marginTop: 20,
+    marginLeft: 15
   },
   profileImage: {
-      height: 50,
-      width: 50,
-      borderRadius: 35,
-      marginVertical: 10,
-      marginLeft: 20,
-    },
-  username:{
-      fontSize: 20,
-      color: 'black',
-      padding: 20
+    height: 50,
+    width: 50,
+    borderRadius: 35,
+    marginVertical: 10,
+    marginLeft: 20,
+  },
+  username: {
+    fontSize: 20,
+    color: 'black',
+    padding: 20
 
   },
   handle: {
-      fontSize: 15,
-      color: 'black'
+    fontSize: 15,
+    color: 'black'
 
   },
   input: {
-      backgroundColor: '#eaeef4',
-      padding: 5,
-      color: '#000',
-      borderRadius: 20,
-      // borderWidth: 1,
-      marginBottom: 10,
-      marginLeft: 10
-      
+    backgroundColor: '#eaeef4',
+    padding: 5,
+    color: '#000',
+    borderRadius: 20,
+    // borderWidth: 1,
+    marginBottom: 10,
+    marginLeft: 10,
+    height: 40,
+    width: 352
+    // flex: 1
+  },
+  sendImage: {
+    height: 35,
+    width: 35,
+    resizeMode: 'contain',
+    marginTop: 2,
 
-
-      // flex: 1
+  },
+  textContainer:{
+    // flex: 1,
+    flexDirection: 'row',
+    // borderWidth: 2
+    backgroundColor: '#f7f7f7'
   }
 });

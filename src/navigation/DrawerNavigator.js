@@ -2,8 +2,11 @@ import React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import TabNavigator from './TabNavigator';
 import {
+  AddTweetPage,
+  CommentPage,
   ConfirmRetweetPage,
   EditProfilePage,
+  ForgotPasswordPage,
   Logout,
   ProfilePage,
   SettingsPage,
@@ -20,7 +23,8 @@ import {
 
 const Drawer = createDrawerNavigator();
 
-const DrawerNavigator = () => {
+const DrawerNavigator = props => {
+  const {setIsLoggedIn} = props;
   return (
     <Drawer.Navigator
       screenOptions={{headerShown: false}}
@@ -83,6 +87,7 @@ const DrawerNavigator = () => {
           ),
           drawerLabelStyle: {fontSize: 18, fontWeight: 'bold'},
           drawerItemStyle: {borderRadius: 50, marginTop: 0},
+          setIsLoggedIn: {setIsLoggedIn},
         }}
       />
       <Drawer.Screen
@@ -93,8 +98,29 @@ const DrawerNavigator = () => {
         }}
       />
       <Drawer.Screen
+        name="Forgot Password Page"
+        component={ForgotPasswordPage}
+        options={{
+          drawerItemStyle: {height: 0},
+        }}
+      />
+      <Drawer.Screen
         name="Confirm Retweet Page"
         component={ConfirmRetweetPage}
+        options={{
+          drawerItemStyle: {height: 0},
+        }}
+      />
+      <Drawer.Screen
+        name="Comment Page"
+        component={CommentPage}
+        options={{
+          drawerItemStyle: {height: 0},
+        }}
+      />
+      <Drawer.Screen
+        name="Add Tweet Page"
+        component={AddTweetPage}
         options={{
           drawerItemStyle: {height: 0},
         }}

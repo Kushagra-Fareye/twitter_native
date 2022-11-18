@@ -1,12 +1,8 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useEffect, useState} from 'react';
 import {Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {addBookmark, getTweetData, deleteBookmark, likeTweet, removeLike} from '../api/Tweet';
 import {getUserBookmarkedFeed} from '../api/Feed';
-import {
-  addBookmark,
-  deleteBookmark,
-  getTweetData,
-  likeTweet,
-} from '../api/Tweet';
 import {
   imageReply,
   imageRetweet,
@@ -19,16 +15,18 @@ import {
   imageRetweeted,
   imageReplied,
 } from '../assets/index';
+import {AsyncStorageConstants} from '../constants/AsyncStorageConstants';
 
 function TweetCard(props) {
   // console.log(props.isBookmarked, 'hbjnkm');
   const [tweetData, setTweetData] = useState(props.tweet);
+  
+  const [isRetweeted, toggleRetweet] = useState(false);
+  const [isReplied, toggleReply] = useState(false);
+  const [isLiked, toggleLiked] = useState(props.tweet?.isLiked);
   const [isBookmarked, toggleBookmark] = useState(
     props.isBookmarked ? props.isBookmarked : false,
   );
-  const [isLiked, toggleLiked] = useState(false);
-  const [isRetweeted, toggleRetweet] = useState(false);
-  const [isReplied, toggleReply] = useState(false);
 
   async function fetchTweet(tweetId) {
     const tweet = await getTweetData(tweetId);
@@ -42,12 +40,9 @@ function TweetCard(props) {
 
   async function handleCommentButtonClick(tweetId) {
     toggleReply(!isReplied);
-
-    // await postComment(tweetId);
-    // console.log(tweetId);
-    props.navigation.navigate('MessagesPage', {
-      screen: 'Comment Page',
-      params: {tweetId},
+    console.log(tweetId);
+    props.navigation.navigate('Comment Page', {
+      tweetId,
     });
 
     // await fetchTweet(tweetId);
@@ -77,12 +72,33 @@ function TweetCard(props) {
   }
 
   async function handleLikeButtonClick(tweetId) {
-    toggleLiked(!isLiked);
-    const updatedlLikes = await likeTweet(tweetId);
-    setTweetData({
-      ...tweetData,
-      numberofLikes: updatedlLikes,
-    });
+    if (isLiked) {
+      const updatedLikes = await removeLike(tweetId);
+      const data1 = await AsyncStorage.getItem(
+        AsyncStorageConstants.USER_LIKES,
+      );
+      const likes = JSON.parse(data1);
+      const index = likes.indexOf(5);
+      if (index > -1) {
+        likes.splice(index, 1);
+      }
+      await AsyncStorage.setItem(
+        AsyncStorageConstants.USER_LIKES,
+        JSON.stringify(likes),
+      );
+      setTweetData({
+        ...tweetData,
+        numberOFLikes: updatedLikes,
+      });
+      toggleLiked(false);
+    } else {
+      const updatedLikes = await likeTweet(tweetId);
+      toggleLiked(true);
+      setTweetData({
+        ...tweetData,
+        numberOFLikes: updatedLikes,
+      });
+    }
   }
 
   const TweetImageRendering = image => {
@@ -212,7 +228,7 @@ function TweetCard(props) {
             <Image
               style={styles.tweetIcons}
               source={isLiked ? imageLiked : imageLike}></Image>
-            <Text>{tweetData.numberofLikes || '0'}</Text>
+            <Text>{tweetData.numberOFLikes}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.footerFields}

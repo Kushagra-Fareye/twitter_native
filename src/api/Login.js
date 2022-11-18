@@ -37,6 +37,20 @@ export const login = async data => {
   }).then(res => {
     return res.data;
   });
+  const userLikes = await Axios.get(`/user/tweetLike/${userData.userId}`, {
+    withCredentials: true,
+  }).then(res => {
+    return res.data;
+  });
+  const userFollowingIds= userFollowing.map(user=>{return user.userId})
+  await AsyncStorage.setItem(
+    AsyncStorageConstants.USER_FOLLOWINGS_IDS,
+    JSON.stringify(userFollowingIds),
+  );
+  await AsyncStorage.setItem(
+    AsyncStorageConstants.USER_LIKES,
+    JSON.stringify(userLikes),
+  );
   await AsyncStorage.setItem(
     AsyncStorageConstants.USER_ID,
     userData.userId.toString(),
@@ -61,9 +75,22 @@ export const login = async data => {
 };
 
 export const signUp = async user => {
-  console.log(user)
   return Axios.post('/signup', user['user'])
     .then(res => {
+      console.log(res, 'gvhbjnkm');
+      return res.data;
+    })
+    .catch(error => {
+      console.log(error);
+      return error.response.status;
+    });
+};
+
+export const updateUser = async user => {
+  console.log(user, 'update called calllllllllllllllllled');
+  return Axios.put('/user', user)
+    .then(res => {
+      console.log(res, 'upppppppppppppppppppppppppdate');
       return res.data;
     })
     .catch(error => {

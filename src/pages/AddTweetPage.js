@@ -27,7 +27,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AsyncStorageConstants} from '../constants/AsyncStorageConstants';
 
 let profilepic = 'set';
-let isVerified = 'set';
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 
@@ -124,15 +123,9 @@ const AddTweetPage = ({navigation}) => {
   };
 
   async function handleAddTweetClick() {
-    // const imageUrl = await uploadImageToAWS(imageData);
-    // const reference = storage().ref(imageData.name);
-    // await reference.putFile(imageData.uri);
-    if(imageData||tweetText)
-    {
-      const userId = await AsyncStorage.getItem(AsyncStorageConstants.USER_ID);
-
+    const userId = await AsyncStorage.getItem(AsyncStorageConstants.USER_ID);
+    if (Object.keys(imageData).length && tweetText) {
       let imageFirebase = await fetch(imageData.uri);
-      console.log(imageData.uri);
       let blob = await imageFirebase.blob();
       let fileName = imageData.uri.substring(imageData.uri.lastIndexOf('/'));
       var ref = firebase
@@ -142,19 +135,24 @@ const AddTweetPage = ({navigation}) => {
         .put(blob)
         .then(data => {
           data.ref.getDownloadURL().then(async url => {
-            const res = await postTweet({
+            await postTweet({
               text: tweetText,
               image: url,
               createdUserId: userId,
             });
-            console.log(res, 'new tweetdata');
-            await navigation.navigate('Feed Page', {screen: 'Home'});
-            setImageData({})
-            setTweetText('')
           });
         });
-  
+    } else if (tweetText) {
+      console.log('here is data');
+      await postTweet({
+        text: tweetText,
+        image: '',
+        createdUserId: userId,
+      });
     }
+    navigation.navigate('Feed Page', {screen: 'Home'});
+    setImageData({});
+    setTweetText('');
   }
   return (
     <KeyboardAvoidingView style={styles.container}>

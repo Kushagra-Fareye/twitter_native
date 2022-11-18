@@ -1,18 +1,13 @@
-import { View, TextInput,Text, StyleSheet} from "react-native";
+import { View, TextInput,TouchableOpacity,Image,Text, StyleSheet} from "react-native";
 import React from "react";
 
 export default function SearchBar(){
   return(
     <View style = {styles.container}> 
-      {/* <Text>Seach Bar</Text> */}
       <TextInput
       placeholder="Search"
       style={styles.input}
-      // value={props.searchText}
-      // onChangeText={(text)=>props.setSearchText(text)}
-      // onSubmitEditing={props.onSubmit}
       />
-      {/* <Text>somehting is here</Text> */}
     </View>
   )
 }
@@ -20,7 +15,8 @@ export default function SearchBar(){
 const styles = StyleSheet.create({
   container:{
     backgroundColor: "#F0F0F0",
-    margin: 10
+    margin: 10,
+    width:'85%',
   },
   input: {
       backgroundColor: '#fff',

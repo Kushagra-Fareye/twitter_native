@@ -1,57 +1,121 @@
-import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
-import React, { useState } from 'react';
-import { ProfilePicture } from '../assets';
-import { FlatList } from 'react-native-gesture-handler';
+import {
+  View,
+  Text,
+  TextInput,
+  ActivityIndicator,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {ProfilePicture, SendIcon} from '../assets';
+import {FlatList} from 'react-native-gesture-handler';
+import {UserCard, TweetCard} from '../components';
+
 import Axios from '../api/Axios';
 import SearchBar from '../components/SearchBar';
-
+import {FeedString} from '../constants/Feed';
+import {fetchTrendingUser} from '../api/User';
 
 export default function SearchPage() {
-  const [searchText, setSearchText] = useState("");
-  const [articles, setArticles] = useState([]);
-  console.log(searchText)
-  // const searchArticles = (keyword) =>{
-  //   Axios.get(`/user/tweets/search/${keyword}`,{
-  //     params:{
+  const [searchText, setSearchText] = useState('');
+  const [userList, setUserList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [type, setType] = useState('search');
+  console.log(searchText);
 
-  //     }
-  //   })
-  //   .then((response)=>{
-  //     setArticles(response.data.articles);
-  //   })
-  //   .catch(function(error){
-  //     console.log(error);
-  //   })
-  //   .then(function(){
+  async function fetchTrending() {
+    const data = await fetchTrendingUser();
+    console.log(data);
+    setUserList(data);
+  }
+  useEffect(() => {
+    console.log('called her elease');
+    if (type !== 'search') {
+      fetchTrending();
+    } else {
+      searchArticles();
+    }
+  }, [type]);
 
-  //   });
-    
-  // }
+  const searchArticles = () => {
+    if (searchText !== '') {
+      setIsLoading(true);
+      console.log(searchText);
+      Axios.get(`/user/search/${searchText}`, {
+        params: {},
+      })
+        .then(response => {
+          console.log(response.status);
+          setUserList(response.data);
+          setIsLoading(false);
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+        .then(function () {});
+    }
+  };
   return (
-    <View>
-        <SearchBar />
-        {/* <TouchableOpacity
-            style={styles.headerIconContainer}
-            // onPress={() => navigation.openDrawer()}
-            >
-            <Image source={ProfilePicture} style={styles.headerIcon} />
-          </TouchableOpacity>
-          <View style ={styles.searchbar}>
-            {/* <SearchBar 
-            // searchText={searchText} 
-            // setSearchText={setSearchText}
-            // onSubmit={searchArticles}
-            // value={searchArticles}
-
-            /> */} 
-          </View>
-      
-    // </View>
+    <View style={{backgroundColor: 'white'}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <View style={styles.container}>
+          <TextInput
+            placeholder="Search users..."
+            style={styles.input}
+            value={searchText}
+            onChangeText={searchText => {
+              setSearchText(searchText);
+            }}
+          />
+        </View>
+        <TouchableOpacity onPress={searchArticles}>
+          <Image source={SendIcon} style={{height: 25, width: 25}} />
+        </TouchableOpacity>
+      </View>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <Text
+          onPress={() => setType('search')}
+          style={{flex: 2, alignSelf: 'center'}}>
+          Search
+        </Text>
+        <Text
+          style={{flex: 2, alignSelf: 'center'}}
+          onPress={() => {
+            console.log('ghjkjhgfghjkjhgf');
+            setUserList([]);
+            setType('trending');
+          }}>
+          Who to follow..?
+        </Text>
+      </View>
+      {isLoading ? (
+        <View style={{flex: 1, justifyContent: 'center'}}>
+          <ActivityIndicator size="large" color="rgba(42,169,224,255)" />
+        </View>
+      ) : (
+        <FlatList
+          data={userList}
+          renderItem={({item}) => <UserCard key={item.userId} data={item} />}
+          keyExtractor={item => item.userId}
+        />
+      )}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-    headerIconContainer: {margin: 5},
-    headerIcon: {height: 25, width: 25, resizeMode: 'contain', borderRadius: 50},
-    searchbar: {flex: 1, backgroundColor: "#fff"}
+  headerIconContainer: {margin: 5},
+  headerIcon: {height: 25, width: 25, resizeMode: 'contain', borderRadius: 50},
+  searchbar: {flex: 1, backgroundColor: '#fff'},
+  container: {
+    backgroundColor: '#F0F0F0',
+    margin: 10,
+    width: '85%',
+  },
 });

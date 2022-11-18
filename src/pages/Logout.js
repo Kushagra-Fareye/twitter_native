@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {
   ImageBackground,
   ScrollView,
@@ -6,46 +6,30 @@ import {
   Text,
   View,
   Dimensions,
-  TextInput,
-  Button,
-  Font,
   TouchableOpacity,
   KeyboardAvoidingView,
   Image,
-  Alert,
 } from 'react-native';
 import {imageLogo, loginBG2} from '../assets';
 import LinearGradient from 'react-native-linear-gradient';
-import {login} from '../api/Login';
-import {decode as atob, encode as btoa} from 'base-64';
-import {useIsFocused} from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {AsyncStorageConstants} from '../constants/AsyncStorageConstants';
 import {logout} from '../api/User';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 
-const loginBG = {
-  uri: 'https://img.freepik.com/free-photo/gradient-blue-abstract-background-smooth-dark-blue-with-black-vignette-studio_1258-53634.jpg?w=740&t=st=1668187272~exp=1668187872~hmac=33656eceaa60cba5a52189321212c1eded1a06622ef818cef8226bb835d01c7f',
-};
-
-export default function Logout ({navigation}) {
-    async function handleLogout() {
-        await logout();
-        navigation.navigate('Login Page');
-      }
+export default function Logout({navigation}) {
+  async function handleLogout() {
+    await logout();
+    navigation.navigate('Login Page');
+  }
 
   return (
-    <KeyboardAvoidingView
-    //   style={styles.container}
-    >
+    <KeyboardAvoidingView>
       <ScrollView>
         <ImageBackground
           source={loginBG2}
           resizeMode="cover"
           style={styles.image}>
-        
           <View style={styles.welcome}>
             <Image style={styles.logoImage} source={imageLogo} />
           </View>
@@ -58,10 +42,8 @@ export default function Logout ({navigation}) {
             ]}
             style={styles.contentContainer}>
             <View style={styles.view}>
-                <Text style={styles.text}>Log out of Twitter?</Text>
-              <TouchableOpacity
-                style={styles.button}
-                  >
+              <Text style={styles.text}>Log out of Twitter?</Text>
+              <TouchableOpacity style={styles.button}>
                 <Text
                   style={{fontSize: 18, fontWeight: 'bold', color: 'white'}}
                   onPress={handleLogout}>
@@ -71,8 +53,7 @@ export default function Logout ({navigation}) {
               <TouchableOpacity style={styles.button2}>
                 <Text
                   style={{fontSize: 18, fontWeight: 'bold', color: 'white'}}
-                  onPress={() => navigation.goBack()}
-                  >
+                  onPress={() => navigation.goBack()}>
                   Cancel
                 </Text>
               </TouchableOpacity>
@@ -82,12 +63,10 @@ export default function Logout ({navigation}) {
       </ScrollView>
     </KeyboardAvoidingView>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  container: {
-    //   flex: 1
-  },
+  container: {},
 
   adminButton: {
     marginTop: 20,
@@ -103,7 +82,6 @@ const styles = StyleSheet.create({
 
   welcome: {
     flex: 2,
-    //   marginTop:50,
     justifyContent: 'center',
   },
 
@@ -116,7 +94,6 @@ const styles = StyleSheet.create({
 
   contentContainer: {
     flex: 3,
-    // borderRadius: 20,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingTop: 50,
@@ -204,4 +181,3 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-

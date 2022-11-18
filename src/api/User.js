@@ -9,8 +9,6 @@ async function getToken() {
 }
 
 export const updateUserDetails = async user => {
-  const {userId, token} = await getToken();
-  console.log("sssssssssssssssssssss", user)
   return Axios.put(`/user`, user)
     .then(res => {
       return res.data;
@@ -50,22 +48,48 @@ export const getUserList = async type => {
 };
 
 export const logout = async () => {
-  console.log('reached here');
-  await Axios.get(`/logout`)
-    .then(res => {
-      return res.data;
-    })
+  await Axios.get(`/logout`).then(res => {
+    return res.data;
+  });
   await AsyncStorage.setItem(AsyncStorageConstants.USER_DETAILS, '');
   await AsyncStorage.setItem(AsyncStorageConstants.USER_ID, '');
 };
 
-export const followUser = async followerId => {
+export const followUser = async followingId => {
   let {userId, token} = await getToken();
-
-  await Axios.put(`/user/${userId}/following`)
+  await Axios.post(`/user/following/${userId}/${followingId}`)
     .then(res => {
-      console.log('i am here')
+      console.log('yahan bhi aa gay')
+
+      return res.data;
+    })
+    .catch(e => console.log(e, 'error in followUser'));
+};
+
+export const unfollowUser = async followingId => {
+  let {userId, token} = await getToken();
+  await Axios.delete(`/user/following/${userId}/${followingId}`)
+    .then(res => {
+      console.log('unfollwed')
       return res.data;
     })
     .catch(e => console.log(e));
+};
+
+export const ApplyBluetick = async data => {
+  let {userId, token} = await getToken();
+
+  return Axios.put(`/user/bluetick/${userId}`)
+    .then(res => {
+      return res.data;
+    })
+    .catch(e => console.log('Apply blue tick error', e));
+};
+
+export const fetchTrendingUser = async () => {
+  return Axios.get(`/user/trending`)
+    .then(res => {
+      return res.data;
+    })
+    .catch(e => console.log(e, 'error in trending'));
 };

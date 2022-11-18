@@ -43,59 +43,41 @@ function StaticTweetCard(props, navigation) {
 
   return (
     <>
-    <View style={styles.tweetContainer}>
-      <Image
-        style={styles.profileImage}
-        source={
-          tweetData?.createdUser?.avatar
-            ? {uri: `${tweetData?.createdUser?.avatar}`}
-            : imageDefault
-        }
-      />
-      <View style={styles.details}>
-        <View style={styles.tweetHeader}>
-          <Text style={styles.username}>{tweetData.createdUser?.name}</Text>
-          <Text style={styles.handle}>@{tweetData.createdUser?.userName}</Text>
-          <Image
-            style={styles.verifiedImage}
-            source={
-              tweetData?.createdUser?.isVerified === 3 ? imageVerified : ''
-            }
-          />
-        </View>
-        <View style={styles.tweet}>
-          <View>
-            <Text style={styles.tweetMessage}>{tweetData.text}</Text>
+      <View style={styles.tweetContainer}>
+        <Image
+          style={styles.profileImage}
+          source={
+            tweetData?.createdUser?.avatar
+              ? {uri: `${tweetData?.createdUser?.avatar}`}
+              : imageDefault
+          }
+        />
+        <View style={styles.details}>
+          <View style={styles.tweetHeader}>
+            <Text style={styles.username}>{tweetData.createdUser?.name}</Text>
+            <Text style={styles.handle}>
+              @{tweetData.createdUser?.userName}
+            </Text>
+            <Image
+              style={styles.verifiedImage}
+              source={
+                tweetData?.createdUser?.isVerified === 3 ? imageVerified : ''
+              }
+            />
           </View>
-          {tweetData.image && (
-            <TweetImageRendering noOfPics={1} images={tweetData.image} />
-          )}
+          <View style={styles.tweet}>
+            <View>
+              <Text style={styles.tweetMessage}>{tweetData.text}</Text>
+            </View>
+            {tweetData.image && (
+              <TweetImageRendering noOfPics={1} images={tweetData.image} />
+            )}
+          </View>
         </View>
       </View>
-    </View>
-    <View style={styles.confirmationButton}>
-            <Text style={{color: 'black', fontSize: 20}}>Retweet?</Text>
-            <TouchableOpacity>
-              <Text
-                onPress={() => navigation.navigate('Feed Page', {screen: 'Home'})}
-                style={{color: 'rgba(42,169,224,255)', fontSize: 20}}>
-                {'   '}
-                Yes
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Text
-                onPress={() => navigation.navigate('')}
-                style={{color: 'rgba(42,169,224,255)', fontSize: 20}}>
-                {'     '}
-                No
-              </Text>
-            </TouchableOpacity>
-          </View>            
     </>
   );
 }
-
 const styles = StyleSheet.create({
   tweetContainer: {
     borderBottomWidth: 1,
@@ -128,7 +110,7 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     fontWeight: 'bold',
     color: 'black',
-    fontSize: 15
+    fontSize: 15,
   },
 
   handle: {
@@ -149,7 +131,7 @@ const styles = StyleSheet.create({
     // marginRight: ,
     fontSize: 18,
     marginBottom: 10,
-    marginTop: 5
+    marginTop: 5,
   },
   tweetImageContainer: {
     flexDirection: 'row',

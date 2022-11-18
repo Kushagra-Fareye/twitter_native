@@ -13,5 +13,5 @@ export const getUserNotifications = async data => {
 
   return Axios.get(`user/notification/${userId}`).then(res => {
     return res.data;
-  });
+  }).catch(e => console.log(e, 'error in getUserNotifications'));;
 };

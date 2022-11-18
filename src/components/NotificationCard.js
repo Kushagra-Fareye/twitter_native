@@ -6,15 +6,15 @@ import {NotificationType} from '../constants/Feed';
 const props = {
   data: {
     type: NotificationType.RETWEET,
-    text: ' Your Verification application was rejected',
-    text1: 'New Tweet notifications from Ganesh',
-    profilePic: 'set',
+    text: ' Your Verification application was',
+    text1: 'New Tweet notifications from',
   },
 };
 
 
 
 const NotificationCard = ({navigation, tweet}) => {
+  console.log(tweet, 'hvbjnk');
   return (
     <View>
       {props.data.type === NotificationType.BLUE_TICK ? (
@@ -39,11 +39,16 @@ const NotificationCard = ({navigation, tweet}) => {
           <View style={styles.notificationDetails}>
             <Image
               source={
-                props.data.profilePic === 'set' ? imageProfile : imageDefault
+                tweet?.actionUser?.avatar
+                  ? tweet.actionUser.avatar
+                  : imageDefault
               }
               style={styles.notificationImage}
             />
-            <Text style={styles.notificationText}>{props.data.text1}</Text>
+            <Text style={styles.notificationText}>
+              {props.data.text1} {tweet.actionUser.name} @
+              {tweet.actionUser.userName}
+            </Text>
           </View>
         </TouchableOpacity>
       )}

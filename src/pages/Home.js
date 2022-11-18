@@ -25,6 +25,8 @@ import {TweetCard} from '../components';
 import {getSortedFeed, getUserBookmarkedFeed, getUserFeed} from '../api/Feed';
 import {FeedString, SortTypes, SortTypeString} from '../constants/Feed';
 import {useIsFocused} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {AsyncStorageConstants} from '../constants/AsyncStorageConstants';
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -67,20 +69,36 @@ export default function Home({navigation}) {
   const [feedData, setFeedData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showDropdown, toggleDropdown] = useState(false);
+  const [userLikes, setUserLikes] = useState(false);
 
   const isFocused = useIsFocused();
 
   async function fetchFeed() {
-    // console.log("home");
     const data = await getUserFeed(userId);
+    const data1 = await AsyncStorage.getItem(AsyncStorageConstants.USER_LIKES);
+    const likes = JSON.parse(data1);
+    setUserLikes(likes);
+    const updatedData = data.map(tweet => {
+      if (likes.includes(tweet.tweetId)) {
+        return {
+          ...tweet,
+          isLiked: true,
+        };
+      } else
+        return {
+          ...tweet,
+          isLiked: false,
+        };
+    });
+    setFeedData(updatedData);
     setIsLoading(false);
-    const data1 = await getUserBookmarkedFeed();
-    console.log(data1, 'data1 is here');
-    const bookMarkedTweetIds = data1.map(tweet => {
+    const data2 = await getUserBookmarkedFeed();
+    console.log(data2, 'data2 is here');
+    const bookMarkedTweetIds = data2.map(tweet => {
       return tweet.tweet.tweetId;
     });
     // console.log(bookMarkedTweetIds);
-    const updatedData = data.map(tweet => {
+    const updatedData2 = data.map(tweet => {
       if (bookMarkedTweetIds.includes(tweet.tweetId)) {
         return {
           ...tweet,
@@ -162,19 +180,9 @@ export default function Home({navigation}) {
             />
           )}
         </View>
-        {/* <View style={styles.addTweetButtonContainer}> */}
-        {/* <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('MessagesPage', {screen: 'Add Tweet Page'})
-            }>
-            <Image source={AddIcon} style={styles.addTweetButton} />
-          </TouchableOpacity> */}
-        {/* </View> */}
         <TouchableOpacity
           style={styles.addButton}
-          onPress={() =>
-            navigation.navigate('MessagesPage', {screen: 'Add Tweet Page'})
-          }>
+          onPress={() => navigation.navigate('Add Tweet Page')}>
           <Text
             style={{
               fontSize: 50,

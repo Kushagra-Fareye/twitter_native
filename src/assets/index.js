@@ -12,11 +12,13 @@ export const imageProfilePageIcon = require('./profile2.png');
 export const imageSettings = require('./settings.png');
 export const imageEditProfile = require('./imageEditProfile.png');
 export const imageBirthday = require('./birthday6.png');
+export const sendIcon = require('./send.png');
+
+
 export const LogoutIcon = require('./power-off.png');
 export const imageBanner = require('./imageBanner.png');
 export const imageVerified = require('./verified2.png');
 export const imageLogout = require('./logout.png');
-
 export const loginBG2 = require('./loginBG3.jpg');
 export const imageLike = require('./like5.png');
 export const imageLiked = require('./liked2.png');
@@ -33,7 +35,7 @@ export const bellIcon = require('./imageBell.png');
 export const HomeIcon = require('./homeicon.jpg');
 export const NotificationIcon = require('./notificationicon.png');
 export const MessageIcon = require('./messageicon.png');
-// export const Bookmark = require('./bookmark.png');
+export const SendIcon = require('./send.png');
 
 export const imageJoined = require('./joined.png');
 
