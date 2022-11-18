@@ -17,8 +17,6 @@ import {
 import {imageLogo, loginBG2} from '../assets';
 import LinearGradient from 'react-native-linear-gradient';
 import {login, signUp, updateUser} from '../api/Login';
-import {decode as atob, encode as btoa} from 'base-64';
-import {useIsFocused} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AsyncStorageConstants} from '../constants/AsyncStorageConstants';
 
@@ -28,14 +26,22 @@ const screenWidth = Dimensions.get('window').width;
 async function fetchUserInfo(password1) {
   const data = await AsyncStorage.getItem(AsyncStorageConstants.USER_DETAILS);
   const user = JSON.parse(data);
+  if(!user){
+    return false;
+    // setIsLoggedIn()
+  }
   user.password = password1;
   return user;
 }
 
 export default function ForgotPasswordPage({navigation}) {
+  const [username,setUsername] = useState('');
   const [password1, setPassword1] = useState('');
   const [password2, setPassword2] = useState('');
-
+  const[isLoggedIn,setIsLoggedIn]=useState(false)
+useEffect(()=>{
+ fetchUserInfo()
+},[])
   return (
     <KeyboardAvoidingView>
       <ScrollView>
@@ -52,6 +58,15 @@ export default function ForgotPasswordPage({navigation}) {
             ]}
             style={styles.contentContainer}>
             <View style={styles.view}>
+              {!isLoggedIn &&
+            <TextInput
+                placeholder="Enter your twitter handle"
+                style={styles.input}
+                value={username}
+                onChangeText={name => {
+                  setUsername(name);
+                }}></TextInput>
+              }
               <TextInput
                 placeholder="Enter new password..."
                 style={styles.input}

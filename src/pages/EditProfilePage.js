@@ -121,7 +121,7 @@ export default function EditProfilePage({navigation}) {
           );
           // navigation.navigate('Feed Page', {screen: 'Home'});
         });
-      });
+      }).catch(e=>console.log(e));
   };
 
   const handleBackgroundPicUpdate = async () => {

@@ -18,9 +18,11 @@ export const getAllUsers = async () => {
 };
 
 export const getAllBlueTickRequests = async () => {
+  console.log('blue tick request');
   const {userId, token} = await getToken();
   return Axios.get('/admin/bluetick')
     .then(res => {
+      console.log('blue tick request',res.data);
       return res.data;
     })
     .catch(e => console.log(e, 'there is error in getAllBluetickRequests'));

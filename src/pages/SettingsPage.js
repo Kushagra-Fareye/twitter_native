@@ -15,7 +15,6 @@ export default function SettingsPage({navigation}) {
    navigation.navigate('Forgot Password Page')
   }
   async function handleBlueTickButtonClick() {
-    console.log('callllllllllllllllllllllllllllllllllllllllllllled');
     await ApplyBluetick();
    Alert.alert(
     "Your application was successfully sent",
