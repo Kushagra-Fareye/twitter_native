@@ -7,11 +7,10 @@ import {
   Button,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {imageProfile} from '../assets/index';
+import {imageDefault} from '../assets/index';
 import {deleteUser} from '../api/AdminApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AsyncStorageConstants} from '../constants/AsyncStorageConstants';
-
 
 export default function AdminUserCard(props) {
   const {data} = props;
@@ -46,7 +45,9 @@ export default function AdminUserCard(props) {
   }
   return (
     <View style={styles.tweetContainer}>
-      <Image style={styles.profileImage} source={imageProfile}></Image>
+      <Image
+        style={styles.profileImage}
+        source={data.avatar ? data.avatar : imageDefault}></Image>
 
       <View style={styles.details}>
         <View style={styles.tweetHeader}>
@@ -73,10 +74,10 @@ export default function AdminUserCard(props) {
         </View>
       ) : data.isFollowing ? (
         <TouchableOpacity onPress={handleFollowClick}>
-          <Text style= {styles.followingList}>Follow</Text>
+          <Text style={styles.followingList}>Follow</Text>
         </TouchableOpacity>
       ) : (
-        <Text style= {styles.followingList}>Following</Text>
+        <Text style={styles.followingList}>Following</Text>
       )}
     </View>
   );
@@ -145,15 +146,15 @@ const styles = StyleSheet.create({
     marginTop: 50,
     marginLeft: -40,
   },
-  followingList:{
+  followingList: {
     padding: 10,
     color: 'black',
     fontSize: 15,
     flex: 1,
     marginTop: 45,
-    position:'absolute',
-    right:10
+    position: 'absolute',
+    right: 10,
     // alignItems: 'flex-end'
     // alignContent: 'flex-end',
-  }
+  },
 });

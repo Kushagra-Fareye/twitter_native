@@ -1,20 +1,17 @@
-import {
-  Text,
-  View,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  Button,
-  TextInput,
-} from 'react-native';
-import React, {useState} from 'react';
-import {imageProfile} from '../assets/index';
+import {Text, View, StyleSheet, Image} from 'react-native';
+import React from 'react';
+import {imageDefault} from '../assets/index';
 
 export default function CommentCard({tweet}) {
+  console.log(tweet.user.avatar);
   return (
     <View style={styles.commentContainer}>
       <View style={styles.tweetContainer}>
-        <Image style={styles.profileImage} source={imageProfile}></Image>
+        <Image
+          style={styles.profileImage}
+          source={
+            tweet.user?.avatar ? tweet.user.avatar : imageDefault
+          }></Image>
         <View style={styles.details}>
           <View style={styles.tweetHeader}>
             <Text style={styles.username}>{tweet.user.name}</Text>

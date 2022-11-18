@@ -7,7 +7,7 @@ import {
   Dimensions,
   Alert,
 } from 'react-native';
-import {imageBanner, imageDefault, imageProfile} from '../assets';
+import {imageBanner, imageDefault} from '../assets';
 import {firebase} from '../components/config';
 
 import React, {useEffect, useState} from 'react';
