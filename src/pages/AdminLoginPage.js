@@ -11,7 +11,7 @@ import {
   KeyboardAvoidingView,
   Image,
 } from 'react-native';
-import {imageLogo} from '../assets';
+import {imageLogo, loginBG2} from '../assets';
 import LinearGradient from 'react-native-linear-gradient';
 import {login} from '../api/Login';
 
@@ -38,7 +38,7 @@ const AdminLoginPage = ({navigation}) => {
     >
       <ScrollView>
         <ImageBackground
-          source={loginBG}
+          source={loginBG2}
           resizeMode="cover"
           style={styles.image}>
           <View style={styles.welcome}>
@@ -52,7 +52,7 @@ const AdminLoginPage = ({navigation}) => {
                 marginLeft: 'auto',
                 marginTop: 20,
               }}>
-              A d m i n L o g i n
+              A d m i n    L o g i n
             </Text>
           </View>
 

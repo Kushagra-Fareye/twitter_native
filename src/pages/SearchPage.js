@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Image,
 } from 'react-native';
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {ProfilePicture, SendIcon} from '../assets';
 import {FlatList} from 'react-native-gesture-handler';
 import {UserCard, TweetCard} from '../components';
@@ -15,10 +15,9 @@ import {UserCard, TweetCard} from '../components';
 import Axios from '../api/Axios';
 import SearchBar from '../components/SearchBar';
 import {FeedString} from '../constants/Feed';
-import { fetchTrendingUser } from '../api/User';
+import {fetchTrendingUser} from '../api/User';
 
 export default function SearchPage() {
-
   const [searchText, setSearchText] = useState('');
   const [userList, setUserList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -76,7 +75,7 @@ export default function SearchPage() {
           />
         </View>
         <TouchableOpacity onPress={searchArticles}>
-          <Image source={SendIcon} style={{height:25 , width:25}}/>
+          <Image source={SendIcon} style={{height: 25, width: 25}} />
         </TouchableOpacity>
       </View>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -102,9 +101,7 @@ export default function SearchPage() {
       ) : (
         <FlatList
           data={userList}
-          renderItem={({item}) => (
-            <UserCard key={item.userId} data={item} />
-          )}
+          renderItem={({item}) => <UserCard key={item.userId} data={item} />}
           keyExtractor={item => item.userId}
         />
       )}
@@ -122,4 +119,3 @@ const styles = StyleSheet.create({
     width: '85%',
   },
 });
-

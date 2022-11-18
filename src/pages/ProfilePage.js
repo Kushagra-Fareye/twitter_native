@@ -11,7 +11,13 @@ import {
   FlatList,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {imageBanner, imageBirthday, imageDefault, imageJoined, imageProfile} from '../assets';
+import {
+  imageBanner,
+  imageBirthday,
+  imageDefault,
+  imageJoined,
+  imageProfile,
+} from '../assets';
 import {TweetCard} from '../components';
 import {followUser, getUserData, getUserTweets} from '../api/User';
 import {FeedString} from '../constants/Feed';
@@ -46,9 +52,8 @@ export default function ProfilePage({navigation, route}) {
   async function fetchUserData() {
     const data = await getUserData(
       route?.params?.userId ? route?.params?.userId : null,
-    )
-    console.log(data)
-    ;
+    );
+    console.log(data);
     const tweets = await getUserTweets(
       route?.params?.userId ? route?.params?.userId : null,
     );
@@ -63,7 +68,7 @@ export default function ProfilePage({navigation, route}) {
     const details1 = JSON.parse(data2);
     setUserFollowing(details1);
     setUserData(data);
-    console.log(userData)
+    console.log(userData);
     setUserTweets(tweets);
   }
   async function handleFollowClick() {
@@ -89,10 +94,18 @@ export default function ProfilePage({navigation, route}) {
 
   return (
     <SafeAreaView style={styles.profile}>
+      
       <Animated.View style={[styles.header]}>
-        <Image style={styles.bannerImage} source={userData.bannerImage ? {uri: userData.bannerImage} : imageBanner} />
+        <Image
+          style={styles.bannerImage}
+          source={
+            userData.bannerImage ? {uri: userData.bannerImage} : imageBanner
+          }
+        />
         <View style={styles.dpandedit}>
-          <Image source={userData.avatar ? {uri: userData.avatar} : imageDefault} style={styles.profileImage}></Image>
+          <Image
+            source={userData.avatar ? {uri: userData.avatar} : imageDefault}
+            style={styles.profileImage}></Image>
           {route?.params?.userId === userDetails.userId ? (
             <TouchableOpacity
               style={styles.editButton}
@@ -117,10 +130,30 @@ export default function ProfilePage({navigation, route}) {
           ) : userFollowing.find(
               user => user.userId === route?.params?.userId,
             ) ? (
-            <Text>Following</Text>
+            <Text style={{
+              borderWidth: 0.5,
+              marginRight: 20,
+              paddingLeft: 15,
+              paddingRight: 13,
+              paddingVertical: 5,
+              color: 'black',
+              fontWeight: 'bold',
+              borderRadius: 20,
+              borderColor: 'gray',
+            }}>Following</Text>
           ) : (
-            <TouchableOpacity onPress={handleFollowClick}>
-              <Text>Follow</Text>
+            <TouchableOpacity style={styles.editButton} onPress={handleFollowClick}>
+              <Text style={{
+                  borderWidth: 0.5,
+                  marginRight: 20,
+                  paddingLeft: 15,
+                  paddingRight: 13,
+                  paddingVertical: 5,
+                  color: 'black',
+                  fontWeight: 'bold',
+                  borderRadius: 20,
+                  borderColor: 'gray',
+                }}>Follow</Text>
             </TouchableOpacity>
           )}
         </View>
@@ -243,7 +276,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#EFEFF4',
     borderBottomWidth: 2,
     height: animatedHeaderHeight,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
     // padding: 10,
     // position: 'absolute'
   },
@@ -378,8 +411,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 15,
     position: 'absolute',
-    right: 35,
-    bottom: 30,
+    right: 30,
+    bottom: 15,
     elevation: 10,
     shadowOffset: {
       width: 0,

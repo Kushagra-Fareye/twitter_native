@@ -251,6 +251,19 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     marginLeft: 5,
   },
+  confirmationButton: {
+    marginTop: 20,
+    flexDirection: 'row',
+    alignSelf: 'flex-start',
+    marginRight: 10,
+    // borderWidth: 0.5,
+    borderColor: 'gray',
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    marginLeft: 15,
+    // justifyContent: 'center'
+  },
 });
 
 export default StaticTweetCard;

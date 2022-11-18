@@ -106,29 +106,27 @@ export default function EditProfilePage({navigation}) {
       .put(blob)
       .then(data => {
         data.ref.getDownloadURL().then(async url => {
-          console.log(url);
+          console.log(url, 'url is here');
           const user = await AsyncStorage.getItem(
             AsyncStorageConstants.USER_DETAILS,
           );
           const datas = JSON.parse(user);
-          console.log('qqqqqqq', user);
-          console.log('eeeee', user['userName']);
-          console.log('wwwwwwwww', user.avatar);
-
           const updatedUser = await updateUserDetails({...datas, avatar: url});
           console.log(updatedUser, 'new tweetdata');
           await AsyncStorage.setItem(
             AsyncStorageConstants.USER_DETAILS,
             JSON.stringify(updatedUser),
           );
+<<<<<<< HEAD
 
+=======
+>>>>>>> c2e1d347f4ad0fe4a7a4c90eca677703a6a0c128
           navigation.navigate('Feed Page', {screen: 'Home'});
         });
       });
   };
 
   const handleBackgroundPicUpdate = async () => {
-    // const imageUrl = await uploadImageToAWS(imageData);
     let imageFirebase = await fetch(imageData.uri);
     console.log(imageData.uri);
     let blob = await imageFirebase.blob();
