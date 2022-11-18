@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, FlatList, Image} from 'react-native';
+import {View, Text, StyleSheet, FlatList, Image, ActivityIndicator} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useIsFocused} from '@react-navigation/native';
 import {getAllUserMessages} from '../api/Message';
@@ -24,9 +24,11 @@ export default function MessagesPage({navigation}) {
   }, [isFocused]);
 
   return (
-    <>
+    <View style= {{flex: 1,backgroundColor: 'white'}}>
       {isLoading ? (
-        <Image source={LoadingImage} style={styles.loading} />
+        <View style={{flex: 1, alignItems: 'center', marginVertical: 200}}>
+        <ActivityIndicator size="large" color="rgba(42,169,224,255)" />
+      </View>
       ) : (
         <FlatList
           data={allMessages}
@@ -41,7 +43,7 @@ export default function MessagesPage({navigation}) {
           }
         />
       )}
-    </>
+    </View>
   );
 }
 

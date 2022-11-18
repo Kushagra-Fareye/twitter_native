@@ -40,7 +40,7 @@ const NotificationCard = ({navigation, tweet}) => {
             <Image
               source={
                 tweet?.actionUser?.avatar
-                  ? tweet.actionUser.avatar
+                  ? {uri: tweet.actionUser.avatar}
                   : imageDefault
               }
               style={styles.notificationImage}
