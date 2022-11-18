@@ -121,10 +121,8 @@ export default function EditProfilePage({navigation}) {
             AsyncStorageConstants.USER_DETAILS,
             JSON.stringify(updatedUser),
           );
-          // const users= await AsyncStorage.getItem(AsyncStorageConstants.USER_DETAILS);
-          // console.log("qqqqqqqeeeeeeeeeee",users)
 
-          // navigation.navigate('Feed Page', {screen: 'Home'});
+          navigation.navigate('Feed Page', {screen: 'Home'});
         });
       });
   };

@@ -25,6 +25,8 @@ export default function UserCard(props) {
     setUserFollowing(userFollowingIds);
     if (userFollowing.includes(data.userId)) {
       toggleIsFollowed(true);
+    }else{
+      toggleIsFollowed(false);
     }
   }
   useEffect(() => {
@@ -47,7 +49,7 @@ export default function UserCard(props) {
       AsyncStorageConstants.USER_FOLLOWINGS_IDS,
       JSON.stringify(userFollowing),
     );
-    toggleIsFollowed(false);
+   // toggleIsFollowed(false);
     setUserFollowing(userFollowing);
   }
 
