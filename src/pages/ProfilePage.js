@@ -94,6 +94,7 @@ export default function ProfilePage({navigation, route}) {
 
   return (
     <SafeAreaView style={styles.profile}>
+      
       <Animated.View style={[styles.header]}>
         <Image
           style={styles.bannerImage}
@@ -129,10 +130,30 @@ export default function ProfilePage({navigation, route}) {
           ) : userFollowing.find(
               user => user.userId === route?.params?.userId,
             ) ? (
-            <Text>Following</Text>
+            <Text style={{
+              borderWidth: 0.5,
+              marginRight: 20,
+              paddingLeft: 15,
+              paddingRight: 13,
+              paddingVertical: 5,
+              color: 'black',
+              fontWeight: 'bold',
+              borderRadius: 20,
+              borderColor: 'gray',
+            }}>Following</Text>
           ) : (
-            <TouchableOpacity onPress={handleFollowClick}>
-              <Text>Follow</Text>
+            <TouchableOpacity style={styles.editButton} onPress={handleFollowClick}>
+              <Text style={{
+                  borderWidth: 0.5,
+                  marginRight: 20,
+                  paddingLeft: 15,
+                  paddingRight: 13,
+                  paddingVertical: 5,
+                  color: 'black',
+                  fontWeight: 'bold',
+                  borderRadius: 20,
+                  borderColor: 'gray',
+                }}>Follow</Text>
             </TouchableOpacity>
           )}
         </View>
@@ -390,8 +411,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 15,
     position: 'absolute',
-    right: 35,
-    bottom: 30,
+    right: 30,
+    bottom: 15,
     elevation: 10,
     shadowOffset: {
       width: 0,

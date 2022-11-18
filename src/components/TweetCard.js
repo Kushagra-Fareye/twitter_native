@@ -1,7 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useEffect, useState} from 'react';
 import {Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import {addBookmark, getTweetData, likeTweet, removeLike} from '../api/Tweet';
+import {addBookmark, getTweetData, deleteBookmark, likeTweet, removeLike} from '../api/Tweet';
+import {getUserBookmarkedFeed} from '../api/Feed';
 import {
   imageReply,
   imageRetweet,
@@ -17,21 +18,24 @@ import {
 import {AsyncStorageConstants} from '../constants/AsyncStorageConstants';
 
 function TweetCard(props) {
-  console.log(props.tweet.tweetId, 'bjnklk');
+  // console.log(props.isBookmarked, 'hbjnkm');
   const [tweetData, setTweetData] = useState(props.tweet);
-  const [isBookmarked, toggleBookmark] = useState(false);
-  const [isLiked, toggleLiked] = useState(props.tweet?.isLiked);
+  
   const [isRetweeted, toggleRetweet] = useState(false);
   const [isReplied, toggleReply] = useState(false);
+  const [isLiked, toggleLiked] = useState(props.tweet?.isLiked);
+  const [isBookmarked, toggleBookmark] = useState(
+    props.isBookmarked ? props.isBookmarked : false,
+  );
 
   async function fetchTweet(tweetId) {
     const tweet = await getTweetData(tweetId);
     setTweetData(tweet);
   }
   useEffect(() => {
-    if (props.tweet?.msg) {
-      fetchTweet(props?.tweet?.tweetId || props.tweetId);
-    }
+    // if (props.tweet?.msg) {
+    fetchTweet(props?.tweet?.tweetId || props.tweetId);
+    // }
   }, []);
 
   async function handleCommentButtonClick(tweetId) {
@@ -44,14 +48,29 @@ function TweetCard(props) {
     // await fetchTweet(tweetId);
   }
   async function handleBookmarkButtonClick(tweetId) {
-    toggleBookmark(!isBookmarked);
-    await addBookmark(tweetId);
-    // await fetchTweet(tweetId);
+    if (isBookmarked == false) {
+      await addBookmark(tweetId);
+      toggleBookmark(!isBookmarked);
+    }
+    if (isBookmarked == true) {
+      await deleteBookmark(tweetId);
+      toggleBookmark(!isBookmarked);
+      props?.setBookMarkFeed &&
+        props.setBookMarkFeed(prevFeed => {
+          // console.log(prevFeed);
+          const newData = prevFeed.filter(prevFeed => {
+            return prevFeed.tweet !== props.tweet;
+          });
+          // console.log(newData, 'hbjn');
+          return newData;
+        });
+    }
   }
 
   async function handleRetweetButtonClick(tweetId, tweet) {
     props.navigation.navigate('Confirm Retweet Page', {tweet});
   }
+
   async function handleLikeButtonClick(tweetId) {
     if (isLiked) {
       const updatedLikes = await removeLike(tweetId);
@@ -270,7 +289,8 @@ const styles = StyleSheet.create({
   tweet: {
     // marginHorizontal: 10,
     marginVertical: 0,
-    paddingRight: 5,
+    paddingRight: 75,
+    marginRight: 10,
   },
 
   tweetMessage: {
@@ -279,6 +299,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 10,
     marginTop: 5,
+    flex: 1,
+    flexWrap: 'wrap',
+    // textAlign: ''
   },
   tweetImageContainer: {
     flexDirection: 'row',
@@ -372,7 +395,7 @@ const styles = StyleSheet.create({
   },
 
   tweetFooter: {
-    width: 300,
+    width: 280,
     // borderWidth: 2,
     marginVertical: 10,
     flexDirection: 'row',

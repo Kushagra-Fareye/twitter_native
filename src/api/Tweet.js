@@ -82,12 +82,20 @@ export const postTweet = async tweet => {
 };
 
 export const addBookmark = async tweetId => {
+  console.log(tweetId)
   const {userId, token} = await getToken();
   return Axios.post(`/user/bookmark`, {
     tweetId: tweetId,
-  })
-    .then(res => {
-      return res.data;
-    })
-    .catch(e => console.log(e, 'error in addBookmark'));
+    userId, userId
+  }).then(res => {
+    return res.data;
+  }).catch(error => console.log(error.response.request._response));
+};
+
+export const deleteBookmark = async tweetId => {
+  console.log(tweetId)
+  const {userId, token} = await getToken();
+  return Axios.delete(`/user/${userId}/bookmark/${tweetId}`).then(res => {
+    return res.data;
+  }).catch(error => console.log(error.response.request._response));
 };

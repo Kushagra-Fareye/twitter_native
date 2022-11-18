@@ -10,6 +10,9 @@ const props = {
     text1: 'New Tweet notifications from',
   },
 };
+
+
+
 const NotificationCard = ({navigation, tweet}) => {
   console.log(tweet, 'hvbjnk');
   return (

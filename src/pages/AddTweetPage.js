@@ -37,10 +37,20 @@ const AddTweetPage = ({navigation}) => {
   });
   const [imageData, setImageData] = useState({});
   const [tweetText, setTweetText] = useState('');
+  const [imageProfile, setImageProfile] = useState('')
 
   useEffect(() => {
     requestCameraPermission();
+    fetchUser();
   }, []);
+
+  const fetchUser = async () => {
+    const data = await AsyncStorage.getItem(
+      AsyncStorageConstants.USER_DETAILS,
+    );
+    const details = JSON.parse(data);
+    setImageProfile(details.avatar)
+  }
 
   const requestCameraPermission = async () => {
     try {
@@ -163,7 +173,7 @@ const AddTweetPage = ({navigation}) => {
       <View style={styles.tweetDetails}>
         <Image
           style={styles.profileImage}
-          source={profilepic == 'set' ? imageProfile : imageDefault}></Image>
+          source={imageProfile ? {uri: imageProfile} : imageDefault}></Image>
         <View>
           <TextInput
             placeholder="What's happening?"
