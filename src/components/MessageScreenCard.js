@@ -1,23 +1,24 @@
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
-import { imageDefault, imageProfile } from '../assets';
-
+import {imageDefault} from '../assets';
 
 export default function MessageScreenCard(props) {
   const {data} = props;
   return (
-    <TouchableOpacity >
+    <TouchableOpacity>
       <View style={styles.tweetContainer}>
-        <Image style={styles.profileImage} source={(data.avatar)?{uri: data.avatar}:imageDefault}></Image>
+        <Image
+          style={styles.profileImage}
+          source={data.avatar ? {uri: data.avatar} : imageDefault}></Image>
 
         <View style={styles.details}>
           <View style={styles.tweetHeader}>
             <Text style={styles.username}>{data.name}</Text>
             <Text style={styles.handle}>@{data.userName}</Text>
           </View>
-          </View>
+        </View>
       </View>
-      </TouchableOpacity>
+    </TouchableOpacity>
   );
 }
 
@@ -41,12 +42,12 @@ const styles = StyleSheet.create({
   details: {
     marginRight: 10,
     // marginTop: 5,
-    padding: 5
+    padding: 5,
   },
   tweetHeader: {
     flexDirection: 'row',
     marginTop: 10,
-    padding: 5
+    padding: 5,
   },
   username: {
     alignSelf: 'center',
@@ -54,20 +55,19 @@ const styles = StyleSheet.create({
     paddingRight: 5,
     fontWeight: 'bold',
     color: 'black',
-    fontSize: 15
+    fontSize: 15,
   },
 
   handle: {
     alignSelf: 'center',
-    fontSize: 15
+    fontSize: 15,
   },
-  message:{
+  message: {
     alignSelf: 'center',
     paddingLeft: 10,
     paddingRight: 5,
     paddingTop: 5,
     color: 'black',
-    fontSize: 15
-  }
-
+    fontSize: 15,
+  },
 });

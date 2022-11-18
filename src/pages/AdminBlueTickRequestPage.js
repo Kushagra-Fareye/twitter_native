@@ -2,7 +2,7 @@ import {FlatList, Image, StyleSheet, View} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {useIsFocused} from '@react-navigation/native';
 import {getAllBlueTickRequests} from '../api/AdminApi';
-import {Blank, LoadingImage, ProfilePicture, TwitterIcon} from '../assets';
+import {Blank, imageDrawer, LoadingImage, ProfilePicture, TwitterIcon} from '../assets';
 import {AdminBlueTickRequestCard} from '../components';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
@@ -29,7 +29,7 @@ export default function AdminBlueTickRequestPage({navigation}) {
             <TouchableOpacity
               style={styles.headerIconContainer}
               onPress={() => navigation.openDrawer()}>
-              <Image source={ProfilePicture} style={styles.headerIcon} />
+              <Image source={imageDrawer} style={styles.headerIcon} />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.headerIconContainer}
@@ -78,5 +78,5 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   headerIconContainer: {margin: 5},
-  headerIcon: {height: 25, width: 25, resizeMode: 'contain', borderRadius: 10},
+  headerIcon: {height: 45, width: 45, resizeMode: 'contain', borderRadius: 10},
 });

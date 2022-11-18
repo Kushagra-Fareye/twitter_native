@@ -1,13 +1,6 @@
-import {
-  Text,
-  View,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  Button,
-} from 'react-native';
+import {Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {imageProfile} from '../assets/index';
+import {imageDefault} from '../assets/index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AsyncStorageConstants} from '../constants/AsyncStorageConstants';
 import {followUser, unfollowUser} from '../api/User';
@@ -16,6 +9,7 @@ export default function UserCard(props) {
   const {data} = props;
   const [userFollowing, setUserFollowing] = useState([]);
   const [isFollowed, toggleIsFollowed] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState(null);
 
   async function onLoad() {
     const data1 = await AsyncStorage.getItem(
@@ -25,11 +19,22 @@ export default function UserCard(props) {
     setUserFollowing(userFollowingIds);
     if (userFollowing.includes(data.userId)) {
       toggleIsFollowed(true);
+    } else {
+      toggleIsFollowed(false);
     }
+  }
+  async function getCurrentUser() {
+    const id = await AsyncStorage.getItem(AsyncStorageConstants.USER_ID);
+    console.log(id, 'id is here');
+    setCurrentUserId(id);
   }
   useEffect(() => {
     onLoad();
   }, [userFollowing]);
+  useEffect(() => {
+    getCurrentUser();
+    console.log(currentUserId, data.userId);
+  }, []);
 
   async function handleFollowClick() {
     await followUser(data.userId);
@@ -37,43 +42,48 @@ export default function UserCard(props) {
       AsyncStorageConstants.USER_FOLLOWINGS_IDS,
       JSON.stringify([...userFollowing, data.userId]),
     );
-    setUserFollowing([...userFollowing, data.userId])
+    setUserFollowing([...userFollowing, data.userId]);
   }
   async function handleRemoveFollowClick() {
     await unfollowUser(data.userId);
     const index = userFollowing.indexOf(data.userId);
     userFollowing.splice(index, 1);
-       await AsyncStorage.setItem(
+    await AsyncStorage.setItem(
       AsyncStorageConstants.USER_FOLLOWINGS_IDS,
       JSON.stringify(userFollowing),
     );
-    toggleIsFollowed(false);
     setUserFollowing(userFollowing);
   }
 
   return (
     <View style={styles.tweetContainer}>
-      <Image style={styles.profileImage} source={imageProfile}></Image>
-      
+      <Image
+        style={styles.profileImage}
+        source={data.avatar ? data.avatar : imageDefault}></Image>
+
       <View style={styles.details}>
         <View style={styles.tweetHeader}>
           <Text style={styles.username}>{data.name}</Text>
         </View>
         <Text style={styles.handle}>@{data.userName}</Text>
       </View>
-      {isFollowed ? (
-        <TouchableOpacity style={styles.follow}>
-          <Text style={styles.followingList1} onPress={handleRemoveFollowClick}>
-            Following
-          </Text>
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity style={styles.follow}>
-          <Text style={styles.followingList} onPress={handleFollowClick}>
-            Follow
-          </Text>
-        </TouchableOpacity>
-      )}
+
+      {currentUserId !== data.userId &&
+        (isFollowed ? (
+          <TouchableOpacity style={styles.follow}>
+            <Text
+              style={styles.followingList1}
+              onPress={handleRemoveFollowClick}>
+              Following
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.follow}>
+            <Text style={styles.followingList} onPress={handleFollowClick}>
+              Follow
+            </Text>
+          </TouchableOpacity>
+        ))}
     </View>
   );
 }
@@ -139,7 +149,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 10,
     backgroundColor: '#00acee',
-    color:'white',
+    color: 'white',
     borderRadius: 35,
     fontWeight: 'bold',
   },

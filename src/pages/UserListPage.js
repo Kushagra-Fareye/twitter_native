@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   View,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {AdminUserCard, TweetCard, UserCard} from '../components';
@@ -57,7 +58,14 @@ export default function UserListPage(props) {
         <FlatList
           data={userList}
           renderItem={({item}) => (
-            <UserCard key={item.userId} data={item} />
+            <TouchableOpacity
+              onPress={() => {
+                props.navigation.navigate('Profile', {
+                  userId: item.userId,
+                });
+              }}>
+              <UserCard key={item.userId} data={item} />
+            </TouchableOpacity>
           )}
           keyExtractor={item => item.userId}
           ListEmptyComponent={

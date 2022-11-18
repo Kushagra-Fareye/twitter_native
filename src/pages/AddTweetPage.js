@@ -37,10 +37,20 @@ const AddTweetPage = ({navigation}) => {
   });
   const [imageData, setImageData] = useState({});
   const [tweetText, setTweetText] = useState('');
+  const [imageProfile, setImageProfile] = useState('')
 
   useEffect(() => {
     requestCameraPermission();
+    fetchUser();
   }, []);
+
+  const fetchUser = async () => {
+    const data = await AsyncStorage.getItem(
+      AsyncStorageConstants.USER_DETAILS,
+    );
+    const details = JSON.parse(data);
+    setImageProfile(details.avatar)
+  }
 
   const requestCameraPermission = async () => {
     try {
@@ -113,11 +123,9 @@ const AddTweetPage = ({navigation}) => {
   };
 
   async function handleAddTweetClick() {
-    if (imageData || tweetText) {
-      const userId = await AsyncStorage.getItem(AsyncStorageConstants.USER_ID);
-
+    const userId = await AsyncStorage.getItem(AsyncStorageConstants.USER_ID);
+    if (Object.keys(imageData).length && tweetText) {
       let imageFirebase = await fetch(imageData.uri);
-      console.log(imageData.uri);
       let blob = await imageFirebase.blob();
       let fileName = imageData.uri.substring(imageData.uri.lastIndexOf('/'));
       var ref = firebase
@@ -127,18 +135,24 @@ const AddTweetPage = ({navigation}) => {
         .put(blob)
         .then(data => {
           data.ref.getDownloadURL().then(async url => {
-            const res = await postTweet({
+            await postTweet({
               text: tweetText,
               image: url,
               createdUserId: userId,
             });
-            console.log(res, 'new tweetdata');
-            await navigation.navigate('Feed Page', {screen: 'Home'});
-            setImageData({});
-            setTweetText('');
           });
         });
+    } else if (tweetText) {
+      console.log('here is data');
+      await postTweet({
+        text: tweetText,
+        image: '',
+        createdUserId: userId,
+      });
     }
+    navigation.navigate('Feed Page', {screen: 'Home'});
+    setImageData({});
+    setTweetText('');
   }
   return (
     <KeyboardAvoidingView style={styles.container}>
@@ -159,7 +173,7 @@ const AddTweetPage = ({navigation}) => {
       <View style={styles.tweetDetails}>
         <Image
           style={styles.profileImage}
-          source={profilepic == 'set' ? imageProfile : imageDefault}></Image>
+          source={imageProfile ? {uri: imageProfile} : imageDefault}></Image>
         <View>
           <TextInput
             placeholder="What's happening?"

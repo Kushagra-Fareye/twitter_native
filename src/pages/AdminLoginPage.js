@@ -11,7 +11,7 @@ import {
   KeyboardAvoidingView,
   Image,
 } from 'react-native';
-import {imageLogo} from '../assets';
+import {imageLogo, loginBG2} from '../assets';
 import LinearGradient from 'react-native-linear-gradient';
 import {login} from '../api/Login';
 
@@ -38,7 +38,7 @@ const AdminLoginPage = ({navigation}) => {
     >
       <ScrollView>
         <ImageBackground
-          source={loginBG}
+          source={loginBG2}
           resizeMode="cover"
           style={styles.image}>
           <View style={styles.welcome}>
@@ -81,7 +81,7 @@ const AdminLoginPage = ({navigation}) => {
                 }}></TextInput>
               <TouchableOpacity
                 style={styles.button}
-                onPress={() => handleAdminLogin()}>
+                onPress={async () => handleAdminLogin()}>
                 <Text
                   style={{fontSize: 18, fontWeight: 'bold', color: 'white'}}>
                   Login

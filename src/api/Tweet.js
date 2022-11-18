@@ -33,9 +33,11 @@ export const removeLike = async tweetId => {
 };
 
 export const getUserComment = async tweetId => {
-  return Axios.get(`/user/tweets/${tweetId}/comments`).then(res => {
-    return res.data;
-  }).catch(e => console.log(e, 'error in getUserComment'));;
+  return Axios.get(`/user/tweets/${tweetId}/comments`)
+    .then(res => {
+      return res.data;
+    })
+    .catch(e => console.log(e, 'error in getUserComment'));
 };
 
 export const postComment = async data => {
@@ -51,35 +53,49 @@ export const postComment = async data => {
 export const getTweetData = async tweetId => {
   const {userId, token} = await getToken();
 
-  return Axios.get(`/user/tweets/${tweetId}`).then(res => {
-    return res.data;
-  }).catch(e => console.log(e, 'error in getTweetData'));;
+  return Axios.get(`/user/tweets/${tweetId}`)
+    .then(res => {
+      return res.data;
+    })
+    .catch(e => console.log(e, 'error in getTweetData'));
 };
 
 export const postRetweet = async tweetId => {
   const {userId, token} = await getToken();
   console.log(`/user/${userId}/retweets/${tweetId}`);
-  return Axios.post(`/user/${userId}/retweets/${tweetId}`).then(res => {
-    return res.data;
-  }).catch(e => console.log(e, 'error in postRetweet'));;
+  return Axios.post(`/user/${userId}/retweets/${tweetId}`)
+    .then(res => {
+      return res.data;
+    })
+    .catch(e => console.log(e, 'error in postRetweet'));
 };
 
 export const postTweet = async tweet => {
-  const {userId, token} = await getToken();
   console.log('aaaaaaaaa', tweet);
 
   return Axios.post(`/user/tweets`, tweet)
     .then(res => {
+      console.log(res.data);
       return res.data;
     })
-    .catch(error => console.log(error.response.request._response));
+    .catch(error => console.log(error, 'hbjnkm'));
 };
 
 export const addBookmark = async tweetId => {
+  console.log(tweetId)
   const {userId, token} = await getToken();
   return Axios.post(`/user/bookmark`, {
     tweetId: tweetId,
+    userId, userId
   }).then(res => {
     return res.data;
-  }).catch(e => console.log(e, 'error in addBookmark'));;
+  }).catch(error => console.log(error.response.request._response));
+};
+
+export const deleteBookmark = async tweetId => {
+  console.log(tweetId)
+  const {userId, token} = await getToken();
+  return Axios.delete(`/user/${userId}/bookmark/${tweetId}`).then(res => {
+    return res.data;
+  }).catch(error => console.log(error.response.request._response));
 };

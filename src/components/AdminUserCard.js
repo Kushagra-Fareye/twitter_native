@@ -7,11 +7,10 @@ import {
   Button,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {imageProfile} from '../assets/index';
+import {imageDefault} from '../assets/index';
 import {deleteUser} from '../api/AdminApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AsyncStorageConstants} from '../constants/AsyncStorageConstants';
-
 
 export default function AdminUserCard(props) {
   const {data} = props;
@@ -46,25 +45,30 @@ export default function AdminUserCard(props) {
   }
   return (
     <View style={styles.tweetContainer}>
-      <Image style={styles.profileImage} source={imageProfile}></Image>
+      <Image
+        style={styles.profileImage}
+        source={data.avatar ? data.avatar : imageDefault}></Image>
 
       <View style={styles.details}>
         <View style={styles.tweetHeader}>
           <Text style={styles.username}>{data.name}</Text>
           <Text style={styles.handle}>@{data.userName}</Text>
         </View>
-        <View>
-          <Text style={styles.dob}>DOB: {data?.dob?.substring(0, 10)}</Text>
+        <View style = {{flexDirection: 'row'}}>
+          <Text style={styles.dob}>DOB:</Text>
+          <Text> {data?.dob?.substring(0, 10)}</Text>
         </View>
-        <View>
+        <View style = {{flexDirection: 'row'}}>
           <Text style={styles.followers}>
-            Followers: {data.numberOfFollower}
+            Followers:
           </Text>
+          <Text> {data.numberOfFollower}</Text>
         </View>
-        <View>
+        <View style = {{flexDirection: 'row'}}>
           <Text style={styles.following}>
-            Following: {data.numberOfFollowing}
+            Following:
           </Text>
+          <Text> {data.numberOfFollowing}</Text>
         </View>
       </View>
       {currentUser.roles ? (
@@ -73,10 +77,10 @@ export default function AdminUserCard(props) {
         </View>
       ) : data.isFollowing ? (
         <TouchableOpacity onPress={handleFollowClick}>
-          <Text style= {styles.followingList}>Follow</Text>
+          <Text style={styles.followingList}>Follow</Text>
         </TouchableOpacity>
       ) : (
-        <Text style= {styles.followingList}>Following</Text>
+        <Text style={styles.followingList}>Following</Text>
       )}
     </View>
   );
@@ -99,6 +103,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   details: {
+    flex:1,
     marginRight: 10,
     // marginTop: 5,
     padding: 5,
@@ -122,16 +127,19 @@ const styles = StyleSheet.create({
   dob: {
     color: 'black',
     paddingLeft: 10,
+    fontWeight: 'bold'
     // paddingRight: 5,
   },
   followers: {
     color: 'black',
     paddingLeft: 10,
+    fontWeight: 'bold'
     // paddingRight: 5,
   },
   following: {
     color: 'black',
     paddingLeft: 10,
+    fontWeight: 'bold'
     // paddingRight: 5,
   },
 
@@ -145,15 +153,15 @@ const styles = StyleSheet.create({
     marginTop: 50,
     marginLeft: -40,
   },
-  followingList:{
+  followingList: {
     padding: 10,
     color: 'black',
     fontSize: 15,
     flex: 1,
     marginTop: 45,
-    position:'absolute',
-    right:10
+    position: 'absolute',
+    right: 10,
     // alignItems: 'flex-end'
     // alignContent: 'flex-end',
-  }
+  },
 });

@@ -11,9 +11,20 @@ import {
   FlatList,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {imageBanner, imageBirthday, imageDefault, imageJoined, imageProfile} from '../assets';
+import {
+  imageBanner,
+  imageBirthday,
+  imageDefault,
+  imageJoined,
+  imageProfile,
+} from '../assets';
 import {TweetCard} from '../components';
-import {followUser, getUserData, getUserTweets} from '../api/User';
+import {
+  followUser,
+  getUserData,
+  getUserTweets,
+  unfollowUser,
+} from '../api/User';
 import {FeedString} from '../constants/Feed';
 import {useIsFocused} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -46,9 +57,7 @@ export default function ProfilePage({navigation, route}) {
   async function fetchUserData() {
     const data = await getUserData(
       route?.params?.userId ? route?.params?.userId : null,
-    )
-    console.log(data)
-    ;
+    );
     const tweets = await getUserTweets(
       route?.params?.userId ? route?.params?.userId : null,
     );
@@ -58,21 +67,34 @@ export default function ProfilePage({navigation, route}) {
     const details = JSON.parse(data1);
     setUserDetials(details);
     const data2 = await AsyncStorage.getItem(
-      AsyncStorageConstants.USER_FOLLOWINGS,
+      AsyncStorageConstants.USER_FOLLOWINGS_IDS,
     );
     const details1 = JSON.parse(data2);
     setUserFollowing(details1);
+    console.log(userFollowing, userData, 'jnkm');
     setUserData(data);
-    console.log(userData)
     setUserTweets(tweets);
   }
   async function handleFollowClick() {
-    await followUser(route.param.userId);
+    await followUser(route.params.userId);
     await AsyncStorage.setItem(
-      AsyncStorageConstants.USER_FOLLOWINGS,
-      JSON.stringify([...userFollowing, userData]),
+      AsyncStorageConstants.USER_FOLLOWINGS_IDS,
+      JSON.stringify([...userFollowing, userData.userId]),
     );
-    setUserFollowing([...userFollowing, userData]);
+    setUserFollowing([...userFollowing, userData.userId]);
+  }
+  async function handleRemoveFollowClick() {
+    console.log('spomehting');
+    await unfollowUser(route.params.userId);
+    console.log(route.params);
+    const index = userFollowing.indexOf(route.params.userId);
+    if (index > -1) userFollowing.splice(index, 1);
+    await AsyncStorage.setItem(
+      AsyncStorageConstants.USER_FOLLOWINGS_IDS,
+      JSON.stringify(userFollowing),
+    );
+    setUserFollowing(userFollowing);
+    console.log(userFollowing, 'jnkm');
   }
 
   const isOpened = useIsFocused();
@@ -90,9 +112,16 @@ export default function ProfilePage({navigation, route}) {
   return (
     <SafeAreaView style={styles.profile}>
       <Animated.View style={[styles.header]}>
-        <Image style={styles.bannerImage} source={userData.bannerImage ? {uri: userData.bannerImage} : imageBanner} />
+        <Image
+          style={styles.bannerImage}
+          source={
+            userData.bannerImage ? {uri: userData.bannerImage} : imageBanner
+          }
+        />
         <View style={styles.dpandedit}>
-          <Image source={userData.avatar ? {uri: userData.avatar} : imageDefault} style={styles.profileImage}></Image>
+          <Image
+            source={userData.avatar ? {uri: userData.avatar} : imageDefault}
+            style={styles.profileImage}></Image>
           {route?.params?.userId === userDetails.userId ? (
             <TouchableOpacity
               style={styles.editButton}
@@ -114,19 +143,62 @@ export default function ProfilePage({navigation, route}) {
                 Edit profile
               </Text>
             </TouchableOpacity>
-          ) : userFollowing.find(
-              user => user.userId === route?.params?.userId,
-            ) ? (
-            <Text>Following</Text>
+          ) : userFollowing.indexOf(route.params.userId) > -1 ? (
+            <TouchableOpacity
+              style={styles.editButton}
+              onPress={handleRemoveFollowClick}>
+              <Text
+                style={{
+                  borderWidth: 0.5,
+                  marginRight: 20,
+                  paddingLeft: 15,
+                  paddingRight: 13,
+                  paddingVertical: 5,
+                  color: 'black',
+                  fontWeight: 'bold',
+                  borderRadius: 20,
+                  borderColor: 'gray',
+                }}>
+                Following
+              </Text>
+            </TouchableOpacity>
           ) : (
-            <TouchableOpacity onPress={handleFollowClick}>
-              <Text>Follow</Text>
+            <TouchableOpacity
+              style={styles.editButton}
+              onPress={handleFollowClick}>
+              <Text
+                style={{
+                  borderWidth: 0.5,
+                  marginRight: 20,
+                  paddingLeft: 15,
+                  paddingRight: 13,
+                  paddingVertical: 5,
+                  color: 'black',
+                  fontWeight: 'bold',
+                  borderRadius: 20,
+                  borderColor: 'gray',
+                }}>
+                Follow
+              </Text>
+            </TouchableOpacity>
+          )}
+          {route?.params?.userId !== userDetails.userId && (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('MessagesPage', {
+                  screen: 'Chat Page',
+                  params: {
+                    data: userData,
+                  },
+                })
+              }>
+              <Text>Message</Text>
             </TouchableOpacity>
           )}
         </View>
         <View style={styles.profileInfo}>
           <Text style={styles.username}>{userData.name}</Text>
-          <Text style={styles.handle}>{userData.userName}</Text>
+          <Text style={styles.handle}>@{userData.userName}</Text>
           <Text style={styles.bio}>{userData.bio}</Text>
           <View style={styles.dates}>
             <Image style={styles.birthdayImage} source={imageBirthday}></Image>
@@ -243,7 +315,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#EFEFF4',
     borderBottomWidth: 2,
     height: animatedHeaderHeight,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
     // padding: 10,
     // position: 'absolute'
   },
@@ -378,8 +450,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 15,
     position: 'absolute',
-    right: 35,
-    bottom: 30,
+    right: 30,
+    bottom: 15,
     elevation: 10,
     shadowOffset: {
       width: 0,
