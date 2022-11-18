@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import {imageLogo} from '../assets';
+import {imageLogo, loginBG2} from '../assets';
 import DatePicker from 'react-native-date-picker';
 import {signUp} from '../api/Login';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -68,7 +68,7 @@ const Signup = ({navigation}) => {
   return (
     <KeyboardAvoidingView>
       <ScrollView style={styles.container}>
-        <ImageBackground source={ImageBackground} resizeMode="cover" style={styles.image}>
+        <ImageBackground source={loginBG2} resizeMode="cover" style={styles.image}>
           <View style={styles.welcome}>
             <Image style={styles.logoImage} source={imageLogo} />
           </View>
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
 
   welcome: {
     // flex: 2,
-    marginTop: 30,
+    marginTop: 100,
     justifyContent: 'center',
   },
 

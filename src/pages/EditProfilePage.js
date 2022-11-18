@@ -110,7 +110,7 @@ export default function EditProfilePage({navigation}) {
           const user = await AsyncStorage.getItem(
             AsyncStorageConstants.USER_DETAILS,
           );
-          const datas = JSON.parse(user);
+          const datas = await JSON.parse(user);
           console.log('qqqqqqq', user);
           console.log('eeeee', user['userName']);
           console.log('wwwwwwwww', user.avatar);

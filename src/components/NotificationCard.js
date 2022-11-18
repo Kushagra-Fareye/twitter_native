@@ -11,6 +11,9 @@ const props = {
     profilePic: 'set',
   },
 };
+
+
+
 const NotificationCard = ({navigation, tweet}) => {
   return (
     <View>

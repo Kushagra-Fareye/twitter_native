@@ -23,6 +23,10 @@ export const login = async data => {
   }).then(res => {
     return res.data;
   });
+  // const userBookmarks = await Axios.get(`/user/bookmark/${userData.userId}`, {withCredentials: true,
+  // }).then(res => {
+  //   return res.data;
+  // });
   const userFollowers = await Axios.get(`/user/${userData.userId}/followers`, {
     withCredentials: true,
   }).then(res => {
@@ -49,6 +53,10 @@ export const login = async data => {
     AsyncStorageConstants.USER_FOLLOWINGS,
     JSON.stringify(userFollowing),
   );
+  // await AsyncStorage.setItem(
+  //   AsyncStorageConstants.USER_BOOKMARKS,
+  //   JSON.stringify(userBookmarks),
+  // );
   return xy;
 };
 

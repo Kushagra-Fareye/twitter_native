@@ -1,6 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import {addBookmark, getTweetData, likeTweet} from '../api/Tweet';
+import {getUserBookmarkedFeed} from '../api/Feed';
+import {
+  addBookmark,
+  deleteBookmark,
+  getTweetData,
+  likeTweet,
+} from '../api/Tweet';
 import {
   imageReply,
   imageRetweet,
@@ -15,8 +21,11 @@ import {
 } from '../assets/index';
 
 function TweetCard(props) {
+  // console.log(props.isBookmarked, 'hbjnkm');
   const [tweetData, setTweetData] = useState(props.tweet);
-  const [isBookmarked, toggleBookmark] = useState(false);
+  const [isBookmarked, toggleBookmark] = useState(
+    props.isBookmarked ? props.isBookmarked : false,
+  );
   const [isLiked, toggleLiked] = useState(false);
   const [isRetweeted, toggleRetweet] = useState(false);
   const [isReplied, toggleReply] = useState(false);
@@ -24,19 +33,18 @@ function TweetCard(props) {
   async function fetchTweet(tweetId) {
     const tweet = await getTweetData(tweetId);
     setTweetData(tweet);
-    console.log("bbbbbbbbbbbbbb", tweet)
   }
   useEffect(() => {
-    if (props.tweet?.msg) {
-      fetchTweet(props?.tweet?.tweetId || props.tweetId);
-    }
+    // if (props.tweet?.msg) {
+    fetchTweet(props?.tweet?.tweetId || props.tweetId);
+    // }
   }, []);
 
   async function handleCommentButtonClick(tweetId) {
     toggleReply(!isReplied);
 
     // await postComment(tweetId);
-    console.log(tweetId);
+    // console.log(tweetId);
     props.navigation.navigate('MessagesPage', {
       screen: 'Comment Page',
       params: {tweetId},
@@ -45,14 +53,29 @@ function TweetCard(props) {
     // await fetchTweet(tweetId);
   }
   async function handleBookmarkButtonClick(tweetId) {
-    toggleBookmark(!isBookmarked);
-    await addBookmark(tweetId);
-    // await fetchTweet(tweetId);
+    if (isBookmarked == false) {
+      await addBookmark(tweetId);
+      toggleBookmark(!isBookmarked);
+    }
+    if (isBookmarked == true) {
+      await deleteBookmark(tweetId);
+      toggleBookmark(!isBookmarked);
+      props?.setBookMarkFeed &&
+        props.setBookMarkFeed(prevFeed => {
+          // console.log(prevFeed);
+          const newData = prevFeed.filter(prevFeed => {
+            return prevFeed.tweet !== props.tweet;
+          });
+          // console.log(newData, 'hbjn');
+          return newData;
+        });
+    }
   }
 
   async function handleRetweetButtonClick(tweetId, tweet) {
     props.navigation.navigate('Confirm Retweet Page', {tweet});
   }
+
   async function handleLikeButtonClick(tweetId) {
     toggleLiked(!isLiked);
     const updatedlLikes = await likeTweet(tweetId);
@@ -128,19 +151,24 @@ function TweetCard(props) {
       <Image
         style={styles.profileImage}
         source={
-          tweetData.createdUser?.avatar ? {uri: tweetData.createdUser?.avatar} : imageDefault
+          tweetData.createdUser?.avatar
+            ? {uri: tweetData.createdUser?.avatar}
+            : imageDefault
         }
       />
       <View style={styles.details}>
         <View style={styles.tweetHeader}>
-          <TouchableOpacity style = {{flexDirection: 'row'}}
+          <TouchableOpacity
+            style={{flexDirection: 'row'}}
             onPress={() => {
               props.navigation.navigate('Profile', {
                 userId: tweetData.postedUserId,
               });
             }}>
             <Text style={styles.username}>{tweetData.createdUser?.name}</Text>
-            <Text style={styles.handle}>@{tweetData.createdUser?.userName}</Text>
+            <Text style={styles.handle}>
+              @{tweetData.createdUser?.userName}
+            </Text>
           </TouchableOpacity>
           <Image
             style={styles.verifiedImage}
@@ -232,7 +260,7 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     fontWeight: 'bold',
     color: 'black',
-    fontSize: 15
+    fontSize: 15,
   },
 
   handle: {
@@ -245,7 +273,8 @@ const styles = StyleSheet.create({
   tweet: {
     // marginHorizontal: 10,
     marginVertical: 0,
-    paddingRight: 5,
+    paddingRight: 75,
+    marginRight: 10,
   },
 
   tweetMessage: {
@@ -253,7 +282,10 @@ const styles = StyleSheet.create({
     // marginRight: ,
     fontSize: 18,
     marginBottom: 10,
-    marginTop: 5
+    marginTop: 5,
+    flex: 1,
+    flexWrap: 'wrap',
+    // textAlign: ''
   },
   tweetImageContainer: {
     flexDirection: 'row',
@@ -347,7 +379,7 @@ const styles = StyleSheet.create({
   },
 
   tweetFooter: {
-    width: 300,
+    width: 280,
     // borderWidth: 2,
     marginVertical: 10,
     flexDirection: 'row',

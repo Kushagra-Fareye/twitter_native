@@ -14,7 +14,7 @@ import {
   imageReplied,
 } from '../assets/index';
 
-function StaticTweetCard(props) {
+function StaticTweetCard(props, navigation) {
   const [tweetData, setTweetData] = useState(props.tweet);
   const [isBookmarked, toggleBookmark] = useState(false);
   const [isLiked, toggleLiked] = useState(false);
@@ -31,15 +31,6 @@ function StaticTweetCard(props) {
     }
   }, []);
 
-  async function handleLikeButtonClick(tweetId) {
-    toggleLiked(!isLiked);
-    const updatedlLikes = await likeTweet(tweetId);
-    setTweetData({
-      ...tweetData,
-      numberofLikes: updatedlLikes,
-    });
-  }
-
   const TweetImageRendering = image => {
     return (
       <View style={styles.tweetImageContainer}>
@@ -51,6 +42,7 @@ function StaticTweetCard(props) {
   };
 
   return (
+    <>
     <View style={styles.tweetContainer}>
       <Image
         style={styles.profileImage}
@@ -79,51 +71,47 @@ function StaticTweetCard(props) {
             <TweetImageRendering noOfPics={1} images={tweetData.image} />
           )}
         </View>
-        <View style={styles.tweetFooter}>
-          <View style={styles.footerFields}>
-            <Image
-              style={styles.tweetIcons}
-              source={isReplied ? imageReplied : imageReply}></Image>
-            <Text>{tweetData.numberofComments || '0'}</Text>
-          </View>
-          <View style={styles.footerFields}>
-            <Image
-              style={styles.tweetIcons}
-              source={isRetweeted ? imageRetweeted : imageRetweet}></Image>
-            <Text>{tweetData.numberofTweets || '0'}</Text>
-          </View>
-          <View style={styles.footerFields}>
-            <Image
-              style={styles.tweetIcons}
-              source={isLiked ? imageLiked : imageLike}></Image>
-            <Text>{tweetData.numberofLikes || '0'}</Text>
-          </View>
-          <View style={styles.footerFields}>
-            <Image
-              style={styles.tweetIcons}
-              source={isBookmarked ? Bookmarked : Bookmark}></Image>
-          </View>
-        </View>
       </View>
     </View>
+    <View style={styles.confirmationButton}>
+            <Text style={{color: 'black', fontSize: 20}}>Retweet?</Text>
+            <TouchableOpacity>
+              <Text
+                onPress={() => navigation.navigate('Feed Page', {screen: 'Home'})}
+                style={{color: 'rgba(42,169,224,255)', fontSize: 20}}>
+                {'   '}
+                Yes
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Text
+                onPress={() => navigation.navigate('')}
+                style={{color: 'rgba(42,169,224,255)', fontSize: 20}}>
+                {'     '}
+                No
+              </Text>
+            </TouchableOpacity>
+          </View>            
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   tweetContainer: {
     borderBottomWidth: 1,
-    borderColor: 'gray',
+    borderColor: 'lightgray',
     flexDirection: 'row',
+    backgroundColor: 'rgba(42,169,224,255)',
     // marginVertical: 5,
     // margin: 5,
     backgroundColor: 'white',
   },
   profileImage: {
-    height: 70,
-    width: 70,
+    height: 60,
+    width: 60,
     borderRadius: 35,
-    marginVertical: 10,
-    marginLeft: 10,
+    marginVertical: 20,
+    marginHorizontal: 10,
   },
   details: {
     marginRight: 10,
@@ -131,31 +119,37 @@ const styles = StyleSheet.create({
   },
   tweetHeader: {
     flexDirection: 'row',
-    marginTop: 0,
+    marginTop: 10,
   },
   username: {
-    alignSelf: 'center',
-    paddingLeft: 10,
+    // alignSelf: 'center',
+    paddingLeft: 0,
     paddingRight: 5,
     paddingTop: 8,
     fontWeight: 'bold',
     color: 'black',
+    fontSize: 15
   },
 
   handle: {
-    alignSelf: 'center',
+    // alignSelf: 'center',
+    paddingLeft: 0,
+    paddingRight: 5,
+    paddingTop: 8,
   },
 
   tweet: {
     // marginHorizontal: 10,
-    marginVertical: 0,
+    marginBottom: 20,
     paddingRight: 5,
   },
 
   tweetMessage: {
     color: 'black',
     // marginRight: ,
-    fontSize: 15,
+    fontSize: 18,
+    marginBottom: 10,
+    marginTop: 5
   },
   tweetImageContainer: {
     flexDirection: 'row',
@@ -163,7 +157,7 @@ const styles = StyleSheet.create({
   tweetImage: {
     height: 250,
     width: 280,
-    marginTop: 20,
+    // marginTop: 10,
     borderRadius: 10,
     resizeMode: 'cover',
   },
@@ -212,6 +206,7 @@ const styles = StyleSheet.create({
   tweetImage3_3: {
     height: 123,
     width: 138,
+    // marginTop: 20,
     marginHorizontal: 2,
     borderBottomRightRadius: 10,
     resizeMode: 'cover',
@@ -248,9 +243,11 @@ const styles = StyleSheet.create({
   },
 
   tweetFooter: {
+    width: 300,
+    // borderWidth: 2,
     marginVertical: 10,
     flexDirection: 'row',
-    marginHorizontal: 10,
+    // marginHorizontal: 10,
     justifyContent: 'space-between',
   },
   footerFields: {
@@ -260,17 +257,30 @@ const styles = StyleSheet.create({
     // borderWidth: 2
   },
   tweetIcons: {
-    height: 30,
+    height: 20,
     marginRight: 5,
-    width: 30,
+    width: 20,
     resizeMode: 'contain',
   },
   verifiedImage: {
     height: 20,
     width: 20,
     borderRadius: 35,
-    marginVertical: 20,
+    marginVertical: 10,
     marginLeft: 5,
+  },
+  confirmationButton: {
+    marginTop: 20,
+    flexDirection: 'row',
+    alignSelf: 'flex-start',
+    marginRight: 10,
+    // borderWidth: 0.5,
+    borderColor: 'gray',
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    marginLeft: 15,
+    // justifyContent: 'center'
   },
 });
 

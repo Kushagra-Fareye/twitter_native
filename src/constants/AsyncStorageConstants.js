@@ -5,4 +5,5 @@ export const AsyncStorageConstants = {
   CREDENTIALS: 'credentials',
   USER_FOLLOWERS: 'userFollowers',
   USER_FOLLOWINGS: 'userFollowings',
+  // USER_BOOKMARKS: 'userBookmarks'
 };

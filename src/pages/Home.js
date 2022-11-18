@@ -22,10 +22,9 @@ import {
   TwitterIcon,
 } from '../assets';
 import {TweetCard} from '../components';
-import {getSortedFeed, getUserFeed} from '../api/Feed';
+import {getSortedFeed, getUserBookmarkedFeed, getUserFeed} from '../api/Feed';
 import {FeedString, SortTypes, SortTypeString} from '../constants/Feed';
 import {useIsFocused} from '@react-navigation/native';
-
 
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
@@ -74,12 +73,32 @@ export default function Home({navigation}) {
   async function fetchFeed() {
     // console.log("home");
     const data = await getUserFeed(userId);
-    setFeedData(data);
     setIsLoading(false);
+    const data1 = await getUserBookmarkedFeed();
+    console.log(data1, 'data1 is here');
+    const bookMarkedTweetIds = data1.map(tweet => {
+      return tweet.tweet.tweetId;
+    });
+    // console.log(bookMarkedTweetIds);
+    const updatedData = data.map(tweet => {
+      if (bookMarkedTweetIds.includes(tweet.tweetId)) {
+        return {
+          ...tweet,
+          isBookmarked: true,
+        };
+      }
+      return {
+        ...tweet,
+        isBookmarked: false,
+      };
+    });
+    setFeedData(updatedData);
+    // console.log(feedData);
   }
   async function fetchSortedFeed(sortType) {
     const data = await getSortedFeed(userId, sortType);
-    setFeedData(data);
+
+    // setFeedData(data);
   }
   useEffect(() => {
     fetchFeed();
@@ -117,7 +136,12 @@ export default function Home({navigation}) {
 
         <View style={styles.bodyContainer}>
           {isLoading ? (
-            <View style={{flex: 1, marginVertical: '50%',  justifyContent: 'center'}}>
+            <View
+              style={{
+                flex: 1,
+                marginVertical: '50%',
+                justifyContent: 'center',
+              }}>
               <ActivityIndicator size={'large'} color="rgba(42,169,224,255)" />
             </View>
           ) : (
@@ -128,6 +152,7 @@ export default function Home({navigation}) {
                   tweet={item}
                   key={item.tweetId}
                   navigation={navigation}
+                  // isBookmarked = {false}
                 />
               )}
               keyExtractor={item => item.tweetId}
@@ -180,10 +205,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: 'white',
     borderBottomWidth: 0.5,
-    borderColor: 'gray'
+    borderColor: 'gray',
   },
   headerIconContainer: {marginHorizontal: 10},
-  headerIcon: {height: 45, width: 45, resizeMode: 'contain',},
+  headerIcon: {height: 45, width: 45, resizeMode: 'contain'},
   headerIcon2: {height: 35, width: 35, resizeMode: 'contain', marginTop: 5},
 
   bodyContainer: {
@@ -230,8 +255,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 15,
     position: 'absolute',
-    right: 35,
-    bottom: 30,
+    right: 30,
+    bottom: 15,
     elevation: 10,
     shadowOffset: {
       width: 0,
@@ -240,5 +265,4 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
   },
-  
 });
