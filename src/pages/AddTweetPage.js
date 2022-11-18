@@ -123,12 +123,7 @@ const AddTweetPage = ({navigation}) => {
   };
 
   async function handleAddTweetClick() {
-<<<<<<< HEAD
-
-   const userId = await AsyncStorage.getItem(AsyncStorageConstants.USER_ID);
-=======
     const userId = await AsyncStorage.getItem(AsyncStorageConstants.USER_ID);
->>>>>>> c2e1d347f4ad0fe4a7a4c90eca677703a6a0c128
     if (Object.keys(imageData).length && tweetText) {
       let imageFirebase = await fetch(imageData.uri);
       let blob = await imageFirebase.blob();
@@ -148,27 +143,16 @@ const AddTweetPage = ({navigation}) => {
           });
         });
     } else if (tweetText) {
-<<<<<<< HEAD
-=======
       console.log('here is data');
->>>>>>> c2e1d347f4ad0fe4a7a4c90eca677703a6a0c128
       await postTweet({
         text: tweetText,
         image: '',
         createdUserId: userId,
       });
     }
-<<<<<<< HEAD
-     navigation.navigate('Feed Page', {screen: 'Home'});
-    setImageData({});
-    setTweetText('');
-
-
-=======
     navigation.navigate('Feed Page', {screen: 'Home'});
     setImageData({});
     setTweetText('');
->>>>>>> c2e1d347f4ad0fe4a7a4c90eca677703a6a0c128
   }
   return (
     <KeyboardAvoidingView style={styles.container}>

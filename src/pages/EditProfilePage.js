@@ -95,8 +95,9 @@ export default function EditProfilePage({navigation}) {
   };
 
   const handleProfilePicUpdate = async () => {
+    // console.log('challed')
     let imageFirebase = await fetch(imageData.uri);
-    console.log(imageData.uri);
+    // console.log('image url daaaaaaaaaaaaata',imageData.uri);
     let blob = await imageFirebase.blob();
     let fileName = imageData.uri.substring(imageData.uri.lastIndexOf('/'));
     var ref = firebase
@@ -117,13 +118,9 @@ export default function EditProfilePage({navigation}) {
             AsyncStorageConstants.USER_DETAILS,
             JSON.stringify(updatedUser),
           );
-<<<<<<< HEAD
-
-=======
->>>>>>> c2e1d347f4ad0fe4a7a4c90eca677703a6a0c128
           navigation.navigate('Feed Page', {screen: 'Home'});
         });
-      });
+      }).catch(e=>console.log(e));
   };
 
   const handleBackgroundPicUpdate = async () => {
