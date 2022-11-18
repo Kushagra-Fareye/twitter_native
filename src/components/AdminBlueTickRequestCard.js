@@ -15,7 +15,9 @@ export default function AdminBlueTickRequestCard(props) {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.nameContainer}>
-        <Text>{props.data.name}</Text>
+        <Text style = {{fontWeight: 'bold', color: 'black'}}>{props.data.name}</Text>
+        <Text>@{props.data.userName}</Text>
+        
       </View>
 
       <View style={styles.buttonContainer}>

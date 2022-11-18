@@ -55,4 +55,4 @@ export const imageMessages = require('./messages.png');
 
 export const imageBookmark = require('./bookmarks.png');
 
-export const imageDrawer = require('./imageDrawer.png');
+export const imageDrawer = require('./menu.png');

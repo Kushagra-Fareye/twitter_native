@@ -47,24 +47,26 @@ export default function AdminUserCard(props) {
   return (
     <View style={styles.tweetContainer}>
       <Image style={styles.profileImage} source={imageProfile}></Image>
-
       <View style={styles.details}>
         <View style={styles.tweetHeader}>
           <Text style={styles.username}>{data.name}</Text>
           <Text style={styles.handle}>@{data.userName}</Text>
         </View>
-        <View>
-          <Text style={styles.dob}>DOB: {data?.dob?.substring(0, 10)}</Text>
+        <View style = {{flexDirection: 'row'}}>
+          <Text style={styles.dob}>DOB:</Text>
+          <Text> {data?.dob?.substring(0, 10)}</Text>
         </View>
-        <View>
+        <View style = {{flexDirection: 'row'}}>
           <Text style={styles.followers}>
-            Followers: {data.numberOfFollower}
+            Followers:
           </Text>
+          <Text> {data.numberOfFollower}</Text>
         </View>
-        <View>
+        <View style = {{flexDirection: 'row'}}>
           <Text style={styles.following}>
-            Following: {data.numberOfFollowing}
+            Following:
           </Text>
+          <Text> {data.numberOfFollowing}</Text>
         </View>
       </View>
       {currentUser.roles ? (
@@ -99,6 +101,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   details: {
+    flex:1,
     marginRight: 10,
     // marginTop: 5,
     padding: 5,
@@ -122,16 +125,19 @@ const styles = StyleSheet.create({
   dob: {
     color: 'black',
     paddingLeft: 10,
+    fontWeight: 'bold'
     // paddingRight: 5,
   },
   followers: {
     color: 'black',
     paddingLeft: 10,
+    fontWeight: 'bold'
     // paddingRight: 5,
   },
   following: {
     color: 'black',
     paddingLeft: 10,
+    fontWeight: 'bold'
     // paddingRight: 5,
   },
 

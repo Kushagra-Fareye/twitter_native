@@ -19,7 +19,7 @@ export const getAllUsers = async () => {
 
 export const getAllBlueTickRequests = async () => {
   const {userId, token} = await getToken();
-  return Axios.get('/user/admin/bluetick')
+  return Axios.get('/admin/bluetick')
     .then(res => {
       return res.data;
     })
@@ -29,9 +29,9 @@ export const getAllBlueTickRequests = async () => {
 export const blueTickResponse = async (data,status) => {
   const {userId} = data;
   
-  console.log(`user/admin/bluetick/status/${userId}/${status}`);
+  console.log(`admin/bluetick/status/${userId}/${status}`);
   return Axios.put(
-    `user/admin/bluetick/status/${userId}/${status}`,   
+    `admin/bluetick/status/${userId}/${status}`,   
   ).then(res => {
     console.log(res.data);
     return res.data;
