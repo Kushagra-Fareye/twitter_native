@@ -21,10 +21,11 @@ export const login = async data => {
   }).then(res => {
     return res.data;
   });
-  // const userBookmarks = await Axios.get(`/user/bookmark/${userData.userId}`, {withCredentials: true,
-  // }).then(res => {
-  //   return res.data;
-  // });
+  const userBookmarks = await Axios.get(`/user/bookmark/${userData.userId}`, {
+    withCredentials: true,
+  }).then(res => {
+    return res.data;
+  });
   const userFollowers = await Axios.get(`/user/${userData.userId}/followers`, {
     withCredentials: true,
   }).then(res => {
@@ -40,7 +41,9 @@ export const login = async data => {
   }).then(res => {
     return res.data;
   });
-  const userFollowingIds= userFollowing.map(user=>{return user.userId})
+  const userFollowingIds = userFollowing.map(user => {
+    return user.userId;
+  });
   await AsyncStorage.setItem(
     AsyncStorageConstants.USER_FOLLOWINGS_IDS,
     JSON.stringify(userFollowingIds),
@@ -65,17 +68,16 @@ export const login = async data => {
     AsyncStorageConstants.USER_FOLLOWINGS,
     JSON.stringify(userFollowing),
   );
-  // await AsyncStorage.setItem(
-  //   AsyncStorageConstants.USER_BOOKMARKS,
-  //   JSON.stringify(userBookmarks),
-  // );
+  await AsyncStorage.setItem(
+    AsyncStorageConstants.USER_BOOKMARKS,
+    JSON.stringify(userBookmarks),
+  );
   return xy;
 };
 
 export const signUp = async user => {
   return Axios.post('/signup', user['user'])
     .then(res => {
-      console.log(res, 'gvhbjnkm');
       return res.data;
     })
     .catch(error => {

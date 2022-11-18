@@ -1,7 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useEffect, useState} from 'react';
 import {Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import {addBookmark, getTweetData, deleteBookmark, likeTweet, removeLike} from '../api/Tweet';
+import {
+  addBookmark,
+  getTweetData,
+  deleteBookmark,
+  likeTweet,
+  removeLike,
+} from '../api/Tweet';
 import {getUserBookmarkedFeed} from '../api/Feed';
 import {
   imageReply,
@@ -18,9 +24,8 @@ import {
 import {AsyncStorageConstants} from '../constants/AsyncStorageConstants';
 
 function TweetCard(props) {
-  // console.log(props.isBookmarked, 'hbjnkm');
   const [tweetData, setTweetData] = useState(props.tweet);
-  
+
   const [isRetweeted, toggleRetweet] = useState(false);
   const [isReplied, toggleReply] = useState(false);
   const [isLiked, toggleLiked] = useState(props.tweet?.isLiked);
@@ -33,9 +38,7 @@ function TweetCard(props) {
     setTweetData(tweet);
   }
   useEffect(() => {
-    // if (props.tweet?.msg) {
     fetchTweet(props?.tweet?.tweetId || props.tweetId);
-    // }
   }, []);
 
   async function handleCommentButtonClick(tweetId) {
@@ -44,8 +47,6 @@ function TweetCard(props) {
     props.navigation.navigate('Comment Page', {
       tweetId,
     });
-
-    // await fetchTweet(tweetId);
   }
   async function handleBookmarkButtonClick(tweetId) {
     if (isBookmarked == false) {
@@ -164,14 +165,21 @@ function TweetCard(props) {
 
   return (
     <View style={styles.tweetContainer}>
-      <Image
-        style={styles.profileImage}
-        source={
-          tweetData.createdUser?.avatar
-            ? {uri: tweetData.createdUser?.avatar}
-            : imageDefault
-        }
-      />
+      <TouchableOpacity
+        onPress={() => {
+          props.navigation.navigate('Profile', {
+            userId: tweetData.postedUserId,
+          });
+        }}>
+        <Image
+          style={styles.profileImage}
+          source={
+            tweetData.createdUser?.avatar
+              ? {uri: tweetData.createdUser?.avatar}
+              : imageDefault
+          }
+        />
+      </TouchableOpacity>
       <View style={styles.details}>
         <View style={styles.tweetHeader}>
           <TouchableOpacity
@@ -208,7 +216,7 @@ function TweetCard(props) {
             <Image
               style={styles.tweetIcons}
               source={isReplied ? imageReplied : imageReply}></Image>
-            <Text>{tweetData.numberofComments || '0'}</Text>
+            <Text>{tweetData.numberOfComments}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.footerFields}
@@ -218,7 +226,7 @@ function TweetCard(props) {
             <Image
               style={styles.tweetIcons}
               source={isRetweeted ? imageRetweeted : imageRetweet}></Image>
-            <Text>{tweetData.numberofTweets || '0'}</Text>
+            <Text>{tweetData.numberOFTweets}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.footerFields}

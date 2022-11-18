@@ -7,7 +7,7 @@ import {
   Dimensions,
   Alert,
 } from 'react-native';
-import {imageBanner, imageDefault, imageProfile} from '../assets';
+import {imageBanner, imageDefault} from '../assets';
 import {firebase} from '../components/config';
 
 import React, {useEffect, useState} from 'react';
@@ -15,7 +15,6 @@ import {TextInput} from 'react-native-gesture-handler';
 import {updateUserDetails} from '../api/User';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AsyncStorageConstants} from '../constants/AsyncStorageConstants';
-import {uploadImageToAWS} from '../api/AWSImageApi';
 import * as ImagePicker from 'react-native-image-picker';
 
 const screenHeight = Dimensions.get('window').height;

@@ -13,8 +13,6 @@ export const imageSettings = require('./settings.png');
 export const imageEditProfile = require('./imageEditProfile.png');
 export const imageBirthday = require('./birthday6.png');
 export const sendIcon = require('./send.png');
-
-
 export const LogoutIcon = require('./power-off.png');
 export const imageBanner = require('./imageBanner.png');
 export const imageVerified = require('./verified2.png');
@@ -30,29 +28,19 @@ export const SortIcon = require('./imageStars.png');
 export const Blank = require('./blank.png');
 export const Bookmark = require('./bookmark.png');
 export const Bookmarked = require('./bookmarked.png');
-
 export const bellIcon = require('./imageBell.png');
 export const HomeIcon = require('./homeicon.jpg');
 export const NotificationIcon = require('./notificationicon.png');
 export const MessageIcon = require('./messageicon.png');
 export const SendIcon = require('./send.png');
-
 export const imageJoined = require('./joined.png');
-
 export const imageLog = require('./logo.png');
-
 export const imagePlaceholder = require('./imageIcon.png');
-
 export const imageCamera = require('./camera2.png');
-
 export const imageNotification = require('./notification.png');
-
 export const imageHome = require('./home2.png');
-
 export const imageDefault = require('./default_image.png');
-
 export const imageMessages = require('./messages.png');
-
 export const imageBookmark = require('./bookmarks.png');
 
 export const imageDrawer = require('./menu.png');
