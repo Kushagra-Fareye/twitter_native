@@ -18,7 +18,6 @@ import {template} from 'lodash';
 
 export default function ChatPage({navigation, route}) {
   const {data} = route.params;
-  console.log(data, 'hbjnkm');
   const [allMessages, setAllMessages] = useState([]);
   const [text, settext] = useState('');
   function handleCloseButtonClick() {
@@ -35,6 +34,7 @@ export default function ChatPage({navigation, route}) {
   const handleChatSubmit = async () => {
     await postMessage({text, recieverId: data.userId});
     await fetchMessage();
+    settext('');
     Keyboard.dismiss();
   };
 

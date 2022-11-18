@@ -39,6 +39,7 @@ export default function SearchPage({navigation}) {
       const data = await searchAPI(searchText);
       setUserList(data);
       setIsLoading(false);
+      setType('search');
     }
   };
   return (
