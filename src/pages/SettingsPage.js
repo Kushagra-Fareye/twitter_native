@@ -17,7 +17,12 @@ export default function SettingsPage({navigation}) {
   async function handleBlueTickButtonClick() {
     console.log('callllllllllllllllllllllllllllllllllllllllllllled');
     await ApplyBluetick();
-   // Alert('Apply bluetick sucess');
+   Alert.alert(
+    "Your application was successfully sent",
+      // [
+      //   { text: "OK", onPress: () => console.log("OK Pressed") }
+      // ]
+   );
     console.log('ttttttttttttttttttttttttt');
 
   }
@@ -53,11 +58,6 @@ export default function SettingsPage({navigation}) {
       <View style={styles.listTab}>
         <TouchableOpacity onPress={handleEditProfileButtonClick}>
           <Text style={styles.tab}>Edit Profile</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.listTab}>
-        <TouchableOpacity onPress={() => console.log('Display Mode changed')}>
-          <Text style={styles.tab}>Change Display Mode</Text>
         </TouchableOpacity>
       </View>
     </View>

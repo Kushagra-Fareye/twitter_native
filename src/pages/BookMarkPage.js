@@ -32,7 +32,7 @@ let userId = 1
   }, [isFocused]);
 
   return (
-    <>
+    <View style = {{flex: 1,backgroundColor: 'white'}}>
       {isLoading ? (
         <View style={{flex: 1, justifyContent: 'center'}}>
           <ActivityIndicator size="large" color="rgba(42,169,224,255)" />
@@ -60,7 +60,7 @@ let userId = 1
           />
         </View>
       )}
-    </>
+    </View>
   );
 }
 
