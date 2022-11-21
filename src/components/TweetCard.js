@@ -36,8 +36,10 @@ function TweetCard(props) {
   async function fetchTweet(tweetId) {
     const tweet = await getTweetData(tweetId);
     setTweetData(tweet);
+    console.log(tweet)
   }
   useEffect(() => {
+    if(props?.tweet?.msg)
     fetchTweet(props?.tweet?.tweetId || props.tweetId);
   }, []);
 

@@ -12,10 +12,8 @@ export const login = async data => {
     .then(res => {
       return true;
     })
-    .catch(e => {
-      console.log(e);
-      return false;
-    });
+    .catch((error) => console.log( error.response.request._response ) );
+    
   if (!xy) return xy;
   const userData = await Axios.get(`/user/username/${data.name}`, {
     withCredentials: true,

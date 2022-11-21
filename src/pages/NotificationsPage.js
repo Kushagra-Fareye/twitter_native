@@ -1,10 +1,11 @@
-import {Text, FlatList, StyleSheet, Image} from 'react-native';
+import {Text, FlatList, StyleSheet, Image, ActivityIndicator} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {NotificationCard} from '../components';
 import {useIsFocused} from '@react-navigation/native';
 import {getUserNotifications} from '../api/Notifications';
 import {LoadingImage} from '../assets';
 import {FeedString} from '../constants/Feed';
+import { View } from 'react-native';
 
 let userId = 1;
 export default function NotificationsPage({navigation}) {
@@ -22,9 +23,11 @@ export default function NotificationsPage({navigation}) {
   }, [isFocused]);
 
   return (
-    <>
+    <View style = {{flex:1, backgroundColor : 'white'}}>
       {isLoading ? (
-        <Image source={LoadingImage} style={styles.loading} />
+        <View style={{flex: 1, alignItems: 'center', marginVertical: 200}}>
+        <ActivityIndicator size="large" color="rgba(42,169,224,255)" />
+      </View>
       ) : (
         <FlatList
           data={allNotifications}
@@ -43,7 +46,7 @@ export default function NotificationsPage({navigation}) {
           }
         />
       )}
-    </>
+    </View>
   );
 }
 

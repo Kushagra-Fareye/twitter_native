@@ -42,4 +42,5 @@ export const imageHome = require('./home2.png');
 export const imageDefault = require('./default_image.png');
 export const imageMessages = require('./messages.png');
 export const imageBookmark = require('./bookmarks.png');
-export const imageDrawer = require('./imageDrawer.png');
+
+export const imageDrawer = require('./menu.png');
