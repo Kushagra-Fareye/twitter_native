@@ -39,8 +39,7 @@ export const getUserTweets = async userId => {
   });
 };
 
-export const getUserList = async type => {
-  let {userId, token} = await getToken();
+export const getUserList = async ({type, userId}) => {
   console.log(`/user/${userId}/${type}`, 'api call');
   return Axios.get(`/user/${userId}/${type}`).then(res => {
     return res.data;
@@ -59,8 +58,6 @@ export const followUser = async followingId => {
   let {userId, token} = await getToken();
   await Axios.post(`/user/following/${userId}/${followingId}`)
     .then(res => {
-      console.log('yahan bhi aa gay')
-
       return res.data;
     })
     .catch(e => console.log(e, 'error in followUser'));
@@ -70,7 +67,6 @@ export const unfollowUser = async followingId => {
   let {userId, token} = await getToken();
   await Axios.delete(`/user/following/${userId}/${followingId}`)
     .then(res => {
-      console.log('unfollwed')
       return res.data;
     })
     .catch(e => console.log(e));

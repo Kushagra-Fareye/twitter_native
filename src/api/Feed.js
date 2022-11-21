@@ -35,13 +35,15 @@ export const getSortedFeed = async ({param}) => {
       {id: 3, text: 's2356432'},
       {id: 2, text: 'somethi24354236273463g is here2'},
     ]),
-  ).catch(e => console.log(e, 'error in getSortedFeed'));;
+  ).catch(e => console.log(e, 'error in getSortedFeed'));
 };
 
 export const getUserBookmarkedFeed = async data => {
   const {userId, token} = await getToken();
 
-  return Axios.get(`/user/bookmark/${userId}`).then(res => {
-    return res.data;
-  }).catch(e => console.log(e, 'error in getUserBookmarkedFeed'));;
+  return Axios.get(`/user/bookmark/${userId}`)
+    .then(res => {
+      return res.data;
+    })
+    .catch(e => console.log(e, 'error in getUserBookmarkedFeed'));
 };

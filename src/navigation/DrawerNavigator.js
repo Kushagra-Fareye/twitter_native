@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import TabNavigator from './TabNavigator';
 import {
@@ -17,18 +17,18 @@ import {
   imageEditProfile,
   imageHome,
   imageLogout,
-  imageProfilePageIcon,
   imageSettings,
 } from '../assets';
+import {CustomDrawer} from '../components';
 
 const Drawer = createDrawerNavigator();
 
-const DrawerNavigator = props => {
-  const {setIsLoggedIn} = props;
+const DrawerNavigator = () => {
   return (
     <Drawer.Navigator
       screenOptions={{headerShown: false}}
-      initialRouteName="Feed Page">
+      initialRouteName="Feed Page"
+      drawerContent={props => <CustomDrawer {...props} />}>
       <Drawer.Screen
         name="Feed Page"
         component={TabNavigator}
@@ -45,12 +45,7 @@ const DrawerNavigator = props => {
         name="Profile"
         component={ProfilePage}
         options={{
-          drawerLabel: 'Profile Page',
-          drawerIcon: ({}) => (
-            <Image source={imageProfilePageIcon} style={styles.homeIcon} />
-          ),
-          drawerLabelStyle: {fontSize: 18, fontWeight: 'bold'},
-          drawerItemStyle: {borderRadius: 50, marginTop: 0},
+          drawerItemStyle: {height: 0},
         }}
       />
       <Drawer.Screen
@@ -87,7 +82,6 @@ const DrawerNavigator = props => {
           ),
           drawerLabelStyle: {fontSize: 18, fontWeight: 'bold'},
           drawerItemStyle: {borderRadius: 50, marginTop: 0},
-          setIsLoggedIn: {setIsLoggedIn},
         }}
       />
       <Drawer.Screen

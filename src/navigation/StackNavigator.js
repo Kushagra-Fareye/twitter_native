@@ -13,12 +13,15 @@ const StackNavigator = () => {
         options={{
           title: 'All Messages',
           headerStyle: {
-            backgroundColor: '#f4511e',
+            backgroundColor: 'white',
           },
+
           headerTintColor: '#fff',
+          headerLeft: null,
           headerTitleStyle: {
+            color: 'black',
             fontWeight: 'bold',
-            // textAlign: 'center',
+            textAlign: 'center',
           },
         }}
       />

@@ -8,8 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {AdminUserCard, TweetCard, UserCard} from '../components';
-import {getUserBookmarkedFeed} from '../api/Feed';
+import {UserCard} from '../components';
 import {useIsFocused} from '@react-navigation/native';
 import {FeedString} from '../constants/Feed';
 import {getUserList} from '../api/User';
@@ -18,13 +17,13 @@ import {AsyncStorageConstants} from '../constants/AsyncStorageConstants';
 
 let userId = 1;
 export default function UserListPage(props) {
-  const {type} = props.route.params;
+  const {type, userId} = props.route.params;
   const [userList, setUserList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const isFocused = useIsFocused();
   async function fetchData() {
-    const data = await getUserList(type);
+    const data = await getUserList({type, userId});
     const data2 = await AsyncStorage.getItem(
       AsyncStorageConstants.USER_FOLLOWINGS,
     );

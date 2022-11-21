@@ -3,7 +3,6 @@ import {AsyncStorageConstants} from '../constants/AsyncStorageConstants';
 import Axios from './Axios';
 
 export const login = async data => {
-  console.log(data.name, data.password);
   const xy = await Axios.post(
     `/login?username=${data.name}&password=${data.password}`,
     {
@@ -78,14 +77,18 @@ export const login = async data => {
 };
 
 export const signUp = async user => {
-  return Axios.post('/signup', user['user'])
+  const res = await Axios.post('/signup', user['user'])
     .then(res => {
+      console.log(res.data, 'resdata on signup');
       return res.data;
     })
     .catch(error => {
       console.log(error);
       return error.response.status;
     });
+  const data = {name: user['user'].name, password: user['user'].password};
+  if (res !== 400) await login(data);
+  return 200;
 };
 
 export const updateUser = async user => {

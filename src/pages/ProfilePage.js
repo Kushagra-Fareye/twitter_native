@@ -84,7 +84,6 @@ export default function ProfilePage({navigation, route}) {
     setUserFollowing([...userFollowing, userData.userId]);
   }
   async function handleRemoveFollowClick() {
-    console.log('spomehting');
     await unfollowUser(route.params.userId);
     console.log(route.params);
     const index = userFollowing.indexOf(route.params.userId);
@@ -143,7 +142,7 @@ export default function ProfilePage({navigation, route}) {
                 Edit profile
               </Text>
             </TouchableOpacity>
-          ) : userFollowing.indexOf(route.params.userId) > -1 ? (
+          ) : userFollowing.indexOf(route?.params?.userId) > -1 ? (
             <TouchableOpacity
               style={styles.editButton}
               onPress={handleRemoveFollowClick}>
@@ -210,7 +209,10 @@ export default function ProfilePage({navigation, route}) {
             <TouchableOpacity
               style={styles.followingContainer}
               onPress={() =>
-                navigation.navigate('Follower Page', {type: 'followings'})
+                navigation.navigate('Follower Page', {
+                  type: 'followings',
+                  userId: userData.userId,
+                })
               }>
               <Text
                 style={{color: 'black', fontWeight: 'bold', marginRight: 5}}>
@@ -221,7 +223,10 @@ export default function ProfilePage({navigation, route}) {
             <TouchableOpacity
               style={styles.followersContainer}
               onPress={() =>
-                navigation.navigate('Follower Page', {type: 'followers'})
+                navigation.navigate('Follower Page', {
+                  type: 'followers',
+                  userId: userData.userId,
+                })
               }>
               <Text
                 style={{color: 'black', fontWeight: 'bold', marginRight: 5}}>

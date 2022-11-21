@@ -16,7 +16,6 @@ function MainNavigator() {
   async function handleLogin() {
     const data = await AsyncStorage.getItem(AsyncStorageConstants.USER_DETAILS);
     const credentials = JSON.parse(data);
-
     if (credentials) {
       const isSuccessful = await login({
         name: credentials.userName,
