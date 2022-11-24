@@ -37,7 +37,7 @@ export default function CustomDrawer(props) {
             />
           </TouchableOpacity>
 
-          <View style={{flex: 2, marginLeft: 5, justifyContent: 'center'}}>
+          <View style={{flex: 2, justifyContent: 'center'}}>
             <TouchableOpacity
               onPress={() =>
                 props.navigation.navigate('Profile', {
@@ -68,7 +68,9 @@ export default function CustomDrawer(props) {
 const styles = StyleSheet.create({
   profileImage: {
     margin: 15,
-    padding: 40,
+    padding: 35,
+    height:50,
+    width:50,
     borderRadius: 100,
     flex: 6,
   },

@@ -26,15 +26,16 @@ export default function ChatPage({navigation, route}) {
   async function fetchMessage() {
     const messageList = await getSingleChatMessages(route.params.data.userId);
     setAllMessages(messageList);
-    console.log(messageList);
+   // console.log(messageList);
   }
   useEffect(() => {
     fetchMessage();
   }, []);
   const handleChatSubmit = async () => {
+    console.log("texttttttttttttttt");
     await postMessage({text, recieverId: data.userId});
+    settext(''); 
     await fetchMessage();
-    settext('');
     Keyboard.dismiss();
   };
 
@@ -67,7 +68,8 @@ export default function ChatPage({navigation, route}) {
         <TextInput
           placeholder="Start a new message"
           style={styles.input}
-          onChangeText={data => settext(data)}></TextInput>
+          value={text}
+          onChangeText={text => settext(text)}></TextInput>
         <TouchableOpacity style={styles.sendImage} onPress={handleChatSubmit}>
           <Image source={sendIcon} style={styles.sendImage} />
         </TouchableOpacity>

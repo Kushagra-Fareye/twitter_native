@@ -19,6 +19,7 @@ const screenWidth = Dimensions.get('window').width;
 
 export default function Logout({navigation}) {
   async function handleLogout() {
+    console.log('Logout called');
     await logout();
     await navigation.navigate('Login Page');
   }
