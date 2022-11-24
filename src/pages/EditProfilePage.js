@@ -143,7 +143,7 @@ export default function EditProfilePage({navigation}) {
           const datas = JSON.parse(user);
           // console.log('qqqqqqq', user);
           // console.log('eeeee', user['userName']);
-          console.log('wwwwwwwww', user.bannerImage);
+          console.log('wwwwwwwww', user.bannerrrrrrrrrrrrrImage);
 
           const updatedUser = await updateUserDetails({
             ...datas, bannerImage: url

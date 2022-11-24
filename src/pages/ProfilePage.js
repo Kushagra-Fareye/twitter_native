@@ -143,7 +143,7 @@ export default function ProfilePage({navigation, route}) {
                 Edit profile
               </Text>
             </TouchableOpacity>
-          ) : userFollowing.indexOf(route.params.userId) > -1 ? (
+          ) : userFollowing.indexOf(route?.params?.userId) > -1 ? (
             <TouchableOpacity
               style={styles.editButton}
               onPress={handleRemoveFollowClick}>

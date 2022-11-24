@@ -48,11 +48,13 @@ export const getUserList = async type => {
   });
 };
 
-export const logout = async () => {
+export const logout = async() => {
+  console.log('logout requested');
   await Axios.get(`/logout`).then(res => {
     console.log(res.data,'logout data');
     return res.data;
   });
+  console.log('logout requested');
   await AsyncStorage.setItem(AsyncStorageConstants.USER_DETAILS, '');
   await AsyncStorage.setItem(AsyncStorageConstants.USER_ID, '');
 };

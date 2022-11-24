@@ -58,11 +58,9 @@ function TweetCard(props) {
       toggleBookmark(!isBookmarked);
       props?.setBookMarkFeed &&
         props.setBookMarkFeed(prevFeed => {
-          // console.log(prevFeed);
           const newData = prevFeed.filter(prevFeed => {
             return prevFeed.tweet !== props.tweet;
           });
-          // console.log(newData, 'hbjn');
           return newData;
         });
     }
