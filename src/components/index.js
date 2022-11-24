@@ -7,6 +7,7 @@ import AdminUserCard from './AdminUserCard';
 import AdminBlueTickRequestCard from './AdminBlueTickRequestCard';
 import StaticTweetCard from './StaticTweetCard';
 import UserCard from './UserCard';
+import CustomDrawer from './CustomDrawer';
 
 export {
   TweetCard,
@@ -18,4 +19,5 @@ export {
   AdminBlueTickRequestCard,
   StaticTweetCard,
   UserCard,
+  CustomDrawer,
 };

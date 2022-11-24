@@ -109,7 +109,6 @@ export default function Home({navigation}) {
       };
     });
     setFeedData(updatedData);
-    // console.log(feedData);
   }
   async function fetchSortedFeed(sortType) {
     const data = await getSortedFeed(userId, sortType);

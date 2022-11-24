@@ -48,6 +48,7 @@ animatedHeaderValue.addListener(({value}) => {
 });
 
 export default function ProfilePage({navigation, route}) {
+  console.log(route.params.userId)
   const [isFocused, setFocus] = useState('tweets');
   const [userData, setUserData] = useState({});
   const [userTweets, setUserTweets] = useState([]);
@@ -84,7 +85,6 @@ export default function ProfilePage({navigation, route}) {
     setUserFollowing([...userFollowing, userData.userId]);
   }
   async function handleRemoveFollowClick() {
-    console.log('spomehting');
     await unfollowUser(route.params.userId);
     console.log(route.params);
     const index = userFollowing.indexOf(route.params.userId);
@@ -168,15 +168,23 @@ export default function ProfilePage({navigation, route}) {
               onPress={handleFollowClick}>
               <Text
                 style={{
-                  borderWidth: 0.5,
-                  marginRight: 20,
-                  paddingLeft: 15,
-                  paddingRight: 13,
-                  paddingVertical: 5,
-                  color: 'black',
-                  fontWeight: 'bold',
+                  justifyContent: 'center',
+                  padding: 10,
+                  margin: 10,
+                  backgroundColor: 'rgba(42,169,224,255)',
                   borderRadius: 20,
-                  borderColor: 'gray',
+                  color: 'white',
+                  marginTop: -5
+                  // marginRight: 20,
+                  // paddingLeft: 15,
+                  // paddingRight: 13,
+                  // paddingVertical: 5,
+                  // padding: 10,
+                  // color: 'white',
+                  // // fontWeight: 'bold',
+                  // borderRadius: 20,
+                  // borderColor: 'gray',
+                  // backgroundColor: 'rgba(42,169,224,255)'
                 }}>
                 Follow
               </Text>
@@ -192,7 +200,7 @@ export default function ProfilePage({navigation, route}) {
                   },
                 })
               }>
-              <Text>Message</Text>
+              <Text style={styles.messagebutton}>Message</Text>
             </TouchableOpacity>
           )}
         </View>
@@ -210,7 +218,10 @@ export default function ProfilePage({navigation, route}) {
             <TouchableOpacity
               style={styles.followingContainer}
               onPress={() =>
-                navigation.navigate('Follower Page', {type: 'followings'})
+                navigation.navigate('Follower Page', {
+                  type: 'followings',
+                  userId: userData.userId,
+                })
               }>
               <Text
                 style={{color: 'black', fontWeight: 'bold', marginRight: 5}}>
@@ -221,7 +232,10 @@ export default function ProfilePage({navigation, route}) {
             <TouchableOpacity
               style={styles.followersContainer}
               onPress={() =>
-                navigation.navigate('Follower Page', {type: 'followers'})
+                navigation.navigate('Follower Page', {
+                  type: 'followers',
+                  userId: userData.userId,
+                })
               }>
               <Text
                 style={{color: 'black', fontWeight: 'bold', marginRight: 5}}>
@@ -467,5 +481,26 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: 'black',
     textAlign: 'center',
+  },
+  messagebutton:{
+    justifyContent: 'center',
+    padding: 10,
+    margin: 10,
+    backgroundColor: 'rgba(42,169,224,255)',
+    borderRadius: 20,
+    color: 'white',
+  },
+  message: {
+    padding: 5,
+    paddingHorizontal: 25,
+    marginHorizontal: 15,
+    color: '#00acee',
+    fontSize: 13,
+    position: 'absolute',
+    right: 10,
+    backgroundColor: '#00acee',
+    color: 'white',
+    borderRadius: 35,
+    fontWeight: 'bold',
   },
 });

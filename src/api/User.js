@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Alert } from 'react-native';
+import {Alert} from 'react-native';
 import {AsyncStorageConstants} from '../constants/AsyncStorageConstants';
 import Axios from './Axios';
 
@@ -40,8 +40,7 @@ export const getUserTweets = async userId => {
   });
 };
 
-export const getUserList = async type => {
-  let {userId, token} = await getToken();
+export const getUserList = async ({type, userId}) => {
   console.log(`/user/${userId}/${type}`, 'api call');
   return Axios.get(`/user/${userId}/${type}`).then(res => {
     return res.data;
@@ -51,7 +50,6 @@ export const getUserList = async type => {
 export const logout = async() => {
   console.log('logout requested');
   await Axios.get(`/logout`).then(res => {
-    console.log(res.data,'logout data');
     return res.data;
   });
   console.log('logout requested');
@@ -63,8 +61,6 @@ export const followUser = async followingId => {
   let {userId, token} = await getToken();
   await Axios.post(`/user/following/${userId}/${followingId}`)
     .then(res => {
-      console.log('yahan bhi aa gay')
-
       return res.data;
     })
     .catch(e => console.log(e, 'error in followUser'));
@@ -74,7 +70,6 @@ export const unfollowUser = async followingId => {
   let {userId, token} = await getToken();
   await Axios.delete(`/user/following/${userId}/${followingId}`)
     .then(res => {
-      console.log('unfollwed')
       return res.data;
     })
     .catch(e => console.log(e));

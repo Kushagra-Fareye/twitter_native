@@ -25,7 +25,6 @@ export default function UserCard(props) {
   }
   async function getCurrentUser() {
     const id = await AsyncStorage.getItem(AsyncStorageConstants.USER_ID);
-    console.log(id, 'id is here');
     setCurrentUserId(id);
   }
   useEffect(() => {
@@ -33,7 +32,6 @@ export default function UserCard(props) {
   }, [userFollowing]);
   useEffect(() => {
     getCurrentUser();
-    console.log(currentUserId, data.userId);
   }, []);
 
   async function handleFollowClick() {

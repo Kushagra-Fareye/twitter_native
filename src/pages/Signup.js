@@ -53,22 +53,18 @@ const Signup = ({navigation}) => {
       return;
     }
     if (userData) {
-      await AsyncStorage.setItem(
-        AsyncStorageConstants.USER_DETAILS,
-        JSON.stringify(userData),
-      );
-      await AsyncStorage.setItem(
-        AsyncStorageConstants.USER_ID,
-        userData.userId.toString(),
-      );
-      navigation.navigate('User Pages');
+      Alert.alert('New User is Created.', 'Please Login to Continue.');
+      navigation.navigate('Login Page');
     }
   };
 
   return (
     <KeyboardAvoidingView>
       <ScrollView style={styles.container}>
-        <ImageBackground source={loginBG2} resizeMode="cover" style={styles.image}>
+        <ImageBackground
+          source={loginBG2}
+          resizeMode="cover"
+          style={styles.image}>
           <View style={styles.welcome}>
             <Image style={styles.logoImage} source={imageLogo} />
           </View>
