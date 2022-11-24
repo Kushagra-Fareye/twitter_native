@@ -11,63 +11,71 @@ import {imageDefault, imageVerified} from '../assets';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 export default function CustomDrawer(props) {
-  const [userData, setUserData] = useState({});
-  async function handleOpenProfile() {}
+  const [userData, setUserData] = useState(null);
   async function fetchUserData() {
     const data = await AsyncStorage.getItem(AsyncStorageConstants.USER_DETAILS);
     const userDetails = await JSON.parse(data);
     setUserData(userDetails);
+    console.log(userData.avatar);
   }
   useEffect(() => {
     fetchUserData();
   }, []);
   return (
     <View>
-      <View style={{flexDirection: 'row', height: 80}}>
-        <TouchableOpacity
-          onPress={() =>
-            props.navigation.navigate('Profile', {
-              userId: userData.userId,
-            })
-          }>
-          <Image
-            source={userData.avatar ? userData.avatar : imageDefault}
-            style={styles.profileImage}
-          />
-        </TouchableOpacity>
-
-        <View style={{flex: 2, marginLeft: 20, justifyContent: 'center'}}>
+      {userData && (
+        <View style={{flexDirection: 'row'}}>
           <TouchableOpacity
             onPress={() =>
               props.navigation.navigate('Profile', {
                 userId: userData.userId,
               })
             }>
-            <Text>{userData.name}</Text>
-            <Text>@{userData.userName}</Text>
-            {userData.isVerified === 3 && (
-              <Image source={imageVerified} style={styles.verified} />
-            )}
+            <Image
+              source={userData?.avatar ? {uri: userData.avatar} : imageDefault}
+              style={styles.profileImage}
+            />
           </TouchableOpacity>
+
+          <View style={{flex: 2, marginLeft: 5, justifyContent: 'center'}}>
+            <TouchableOpacity
+              onPress={() =>
+                props.navigation.navigate('Profile', {
+                  userId: userData.userId,
+                })
+              }>
+              <Text style={{fontWeight: 'bold', color: 'black'}}>
+                {userData.name}
+              </Text>
+              <View style={{flexDirection: 'row'}}>
+                <Text>@{userData.userName}</Text>
+                {userData.isVerified === 3 && (
+                  <Image source={imageVerified} style={styles.verified} />
+                )}
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
+      )}
+      <View style={{marginTop: -15}}>
+        <DrawerContentScrollView {...props} />
+        <DrawerItemList {...props} />
       </View>
-      <DrawerContentScrollView {...props} />
-      <DrawerItemList {...props} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   profileImage: {
-    margin: 20,
-    padding: 20,
-    height: 40,
-    width: 40,
-    borderRadius: 80,
+    margin: 15,
+    padding: 40,
+    borderRadius: 100,
     flex: 6,
   },
   verified: {
-    height: 10,
-    width: 10,
+    marginLeft: 8,
+    height: 16,
+    width: 16,
+    alignSelf: 'center',
   },
 });

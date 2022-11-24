@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Alert } from 'react-native';
+import {Alert} from 'react-native';
 import {AsyncStorageConstants} from '../constants/AsyncStorageConstants';
 import Axios from './Axios';
 
@@ -49,7 +49,6 @@ export const getUserList = async ({type, userId}) => {
 
 export const logout = async () => {
   await Axios.get(`/logout`).then(res => {
-    console.log(res.data,'logout data');
     return res.data;
   });
   await AsyncStorage.setItem(AsyncStorageConstants.USER_DETAILS, '');

@@ -12,8 +12,8 @@ export const login = async data => {
     .then(res => {
       return true;
     })
-    .catch((error) => console.log( error.response.request._response ) );
-    
+    .catch(error => console.log(error.response.request._response));
+
   if (!xy) return xy;
   const userData = await Axios.get(`/user/username/${data.name}`, {
     withCredentials: true,
@@ -77,15 +77,16 @@ export const login = async data => {
 export const signUp = async user => {
   const res = await Axios.post('/signup', user['user'])
     .then(res => {
-      console.log(res.data, 'resdata on signup');
       return res.data;
     })
     .catch(error => {
-      console.log(error);
       return error.response.status;
     });
   const data = {name: user['user'].name, password: user['user'].password};
-  if (res !== 400) await login(data);
+  if (typeof res === Object) {
+    const x = await login(data);
+    console.log(x, 'ctvbjnkmljihu76tfvuhijouy8tu7yftyhgjhiyutyrfdtghfgu');
+  }
   return 200;
 };
 

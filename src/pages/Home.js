@@ -93,11 +93,9 @@ export default function Home({navigation}) {
     setFeedData(updatedData);
     setIsLoading(false);
     const data2 = await getUserBookmarkedFeed();
-    console.log(data2, 'data2 is here');
     const bookMarkedTweetIds = data2.map(tweet => {
       return tweet.tweet.tweetId;
     });
-    // console.log(bookMarkedTweetIds);
     const updatedData2 = data.map(tweet => {
       if (bookMarkedTweetIds.includes(tweet.tweetId)) {
         return {
@@ -111,7 +109,6 @@ export default function Home({navigation}) {
       };
     });
     setFeedData(updatedData);
-    // console.log(feedData);
   }
   async function fetchSortedFeed(sortType) {
     const data = await getSortedFeed(userId, sortType);

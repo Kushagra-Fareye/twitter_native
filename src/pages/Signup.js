@@ -53,7 +53,8 @@ const Signup = ({navigation}) => {
       return;
     }
     if (userData) {
-      navigation.navigate('User Pages');
+      Alert.alert('New User is Created.', 'Please Login to Continue.');
+      navigation.navigate('Login Page');
     }
   };
 
