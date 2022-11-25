@@ -5,7 +5,6 @@ import { FlatList } from 'react-native-gesture-handler';
 
 export default function ChatCard(props) {
   const { data,isTextByMe } = props
-  console.log(data,'yahan dekho')
   return (
     <View style={styles.tweetContainer}>
       {isTextByMe ?

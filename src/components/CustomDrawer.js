@@ -16,7 +16,7 @@ export default function CustomDrawer(props) {
     const data = await AsyncStorage.getItem(AsyncStorageConstants.USER_DETAILS);
     const userDetails = await JSON.parse(data);
     setUserData(userDetails);
-    console.log(userData.avatar);
+   
   }
   useEffect(() => {
     fetchUserData();

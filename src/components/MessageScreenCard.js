@@ -9,7 +9,7 @@ export default function MessageScreenCard(props) {
       <View style={styles.tweetContainer}>
         <Image
           style={styles.profileImage}
-          source={data.avatar ? {uri: data.avatar} : imageDefault}></Image>
+          source={data?.avatar ? {uri: data.avatar} : imageDefault}></Image>
 
         <View style={styles.details}>
           <View style={styles.tweetHeader}>
@@ -24,19 +24,18 @@ export default function MessageScreenCard(props) {
 
 const styles = StyleSheet.create({
   tweetContainer: {
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
+    //borderTopWidth: 1,
+    borderBottomWidth: .5,
     borderColor: 'gray',
     flexDirection: 'row',
-    marginVertical: 5,
-    margin: 10,
-    paddingTop: 5,
+    marginVertical: 2,
+    margin: 5,
   },
   profileImage: {
     height: 50,
     width: 50,
     borderRadius: 35,
-    marginVertical: 20,
+    marginVertical: 15,
     marginLeft: 10,
   },
   details: {

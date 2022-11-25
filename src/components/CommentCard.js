@@ -3,14 +3,13 @@ import React from 'react';
 import {imageDefault} from '../assets/index';
 
 export default function CommentCard({tweet}) {
-  console.log(tweet.user.avatar);
   return (
     <View style={styles.commentContainer}>
       <View style={styles.tweetContainer}>
         <Image
           style={styles.profileImage}
           source={
-            tweet.user?.avatar ? tweet.user.avatar : imageDefault
+            tweet?.user?.avatar ? {uri:tweet.user.avatar} : imageDefault
           }></Image>
         <View style={styles.details}>
           <View style={styles.tweetHeader}>

@@ -79,7 +79,7 @@ function TweetCard(props) {
         AsyncStorageConstants.USER_LIKES,
       );
       const likes = JSON.parse(data1);
-      const index = likes.indexOf(5);
+      const index = likes.indexOf(tweetId);
       if (index > -1) {
         likes.splice(index, 1);
       }
@@ -174,7 +174,7 @@ function TweetCard(props) {
         <Image
           style={styles.profileImage}
           source={
-            tweetData.createdUser?.avatar
+            tweetData?.createdUser?.avatar
               ? {uri: tweetData.createdUser?.avatar}
               : imageDefault
           }

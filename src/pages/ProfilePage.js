@@ -48,7 +48,6 @@ animatedHeaderValue.addListener(({value}) => {
 });
 
 export default function ProfilePage({navigation, route}) {
-  console.log(route.params.userId)
   const [isFocused, setFocus] = useState('tweets');
   const [userData, setUserData] = useState({});
   const [userTweets, setUserTweets] = useState([]);
@@ -72,35 +71,43 @@ export default function ProfilePage({navigation, route}) {
     );
     const details1 = JSON.parse(data2);
     setUserFollowing(details1);
-    console.log(userFollowing, userData, 'jnkm');
     setUserData(data);
     setUserTweets(tweets);
   }
   async function handleFollowClick() {
-    await followUser(route.params.userId);
-    await AsyncStorage.setItem(
-      AsyncStorageConstants.USER_FOLLOWINGS_IDS,
-      JSON.stringify([...userFollowing, userData.userId]),
-    );
-    setUserFollowing([...userFollowing, userData.userId]);
+      await followUser(route.params.userId);
+      const updatedFollowingList = [...userFollowing, userData.userId]
+      await AsyncStorage.setItem(
+        AsyncStorageConstants.USER_FOLLOWINGS_IDS,
+        JSON.stringify(updatedFollowingList),
+      );
+      setUserFollowing(updatedFollowingList);
+      setUserData({
+        ...userData,
+        numberOfFollower:userData.numberOfFollower+1
+      })
   }
   async function handleRemoveFollowClick() {
     await unfollowUser(route.params.userId);
-    console.log(route.params);
     const index = userFollowing.indexOf(route.params.userId);
-    if (index > -1) userFollowing.splice(index, 1);
+   userFollowing.splice(index, 1);
+   const updatedFollowingList = userFollowing
     await AsyncStorage.setItem(
       AsyncStorageConstants.USER_FOLLOWINGS_IDS,
       JSON.stringify(userFollowing),
     );
-    setUserFollowing(userFollowing);
-    console.log(userFollowing, 'jnkm');
-  }
+    setUserFollowing(updatedFollowingList);
+    setUserData({
+      ...userData,
+      numberOfFollower:userData.numberOfFollower-1
+    })
+ }
 
-  const isOpened = useIsFocused();
+  
   useEffect(() => {
     fetchUserData();
-  }, [isOpened]);
+  }, [useIsFocused()]);
+
   useEffect(() => {
     stickyIndex();
   }, [animatedHeaderValue._value]);
@@ -120,7 +127,7 @@ export default function ProfilePage({navigation, route}) {
         />
         <View style={styles.dpandedit}>
           <Image
-            source={userData.avatar ? {uri: userData.avatar} : imageDefault}
+            source={userData?.avatar ? {uri: userData.avatar} : imageDefault}
             style={styles.profileImage}></Image>
           {route?.params?.userId === userDetails.userId ? (
             <TouchableOpacity
@@ -158,6 +165,7 @@ export default function ProfilePage({navigation, route}) {
                   fontWeight: 'bold',
                   borderRadius: 20,
                   borderColor: 'gray',
+                  
                 }}>
                 Following
               </Text>
@@ -175,16 +183,6 @@ export default function ProfilePage({navigation, route}) {
                   borderRadius: 20,
                   color: 'white',
                   marginTop: -5
-                  // marginRight: 20,
-                  // paddingLeft: 15,
-                  // paddingRight: 13,
-                  // paddingVertical: 5,
-                  // padding: 10,
-                  // color: 'white',
-                  // // fontWeight: 'bold',
-                  // borderRadius: 20,
-                  // borderColor: 'gray',
-                  // backgroundColor: 'rgba(42,169,224,255)'
                 }}>
                 Follow
               </Text>
