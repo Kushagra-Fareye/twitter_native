@@ -26,13 +26,14 @@ export default function ChatPage({navigation, route}) {
   async function fetchMessage() {
     const messageList = await getSingleChatMessages(route.params.data.userId);
     setAllMessages(messageList);
-   // console.log(messageList);
   }
   useEffect(() => {
     fetchMessage();
   }, []);
   const handleChatSubmit = async () => {
-    console.log("texttttttttttttttt");
+    if(text.length === 0 ){
+      return;
+    }
     await postMessage({text, recieverId: data.userId});
     settext(''); 
     await fetchMessage();
@@ -47,7 +48,7 @@ export default function ChatPage({navigation, route}) {
         </TouchableOpacity>
         <Image
           style={styles.profileImage}
-          source={data.avatar ? {uri: data.avatar} : imageDefault}></Image>
+          source={data?.avatar ? {uri: data.avatar} : imageDefault}></Image>
 
         <Text style={styles.username}>{data.name}</Text>
       </View>
@@ -84,12 +85,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fefefe',
   },
   headerContainer: {
-    // flex: 1,
     flexDirection: 'row',
-    // justifyContent: 'space-between',
-    // width: 20
-    // marginVertical: 5,
-    // margin: 10,
     paddingTop: 5,
     backgroundColor: '#efefef',
   },

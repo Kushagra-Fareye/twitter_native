@@ -36,7 +36,6 @@ export const postMessage = async data => {
   };
   return Axios.post(`/user/message`, messageDto)
     .then(res => {
-      console.log(res.data, 'blah blah blah');
       return res.data;
     })
     .catch(error => console.log(error.response.request._response));

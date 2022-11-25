@@ -47,7 +47,7 @@ export default function AdminUserCard(props) {
     <View style={styles.tweetContainer}>
       <Image
         style={styles.profileImage}
-        source={data.avatar ? data.avatar : imageDefault}></Image>
+        source={data?.avatar ? data.avatar : imageDefault}></Image>
 
       <View style={styles.details}>
         <View style={styles.tweetHeader}>
